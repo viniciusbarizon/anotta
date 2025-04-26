@@ -18,14 +18,14 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AuthPanelProvider extends PanelProvider
+class ProfessionalPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
-            ->id('auth')
-            ->path('auth')
+            ->id('professional')
+            ->path('professional')
             ->registration()
             ->profile()
             ->login()
