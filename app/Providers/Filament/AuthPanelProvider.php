@@ -29,6 +29,8 @@ class AuthPanelProvider extends PanelProvider
             ->registration()
             ->profile()
             ->login()
+            ->passwordReset()
+            ->emailVerification()
             ->colors([
                 'primary' => Color::Amber,
             ])
