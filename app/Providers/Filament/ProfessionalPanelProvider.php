@@ -32,8 +32,11 @@ class ProfessionalPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Emerald,
             ])
+            ->brandLogo(asset('images/logo.png'))
+            ->favicon(asset('images/favicon.ico'))
+            ->defaultAvatarProvider(\Devaslanphp\FilamentAvatar\Core\FilamentUserAvatarProvider::class)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -42,7 +45,6 @@ class ProfessionalPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
