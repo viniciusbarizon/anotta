@@ -71,6 +71,7 @@ final class ProfessionalPanelProvider extends PanelProvider
             ])
             ->userMenuItems([
                 'profile' => MenuItem::make('profile')
+                    ->label(fn () => __('Editar Perfil'))
                     ->url(fn (): string => EditProfilePage::getUrl()),
             ]);
     }
