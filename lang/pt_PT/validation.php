@@ -96,6 +96,13 @@ return [
     'not_regex' => 'O campo ":attribute" possui um formato inválido.',
     'numeric' => 'O campo ":attribute" deve ser um número.',
     'password' => 'A senha está incorreta.',
+    'password' => [
+        'letters' => 'O campo :attribute deve conter pelo menos uma letra.',
+        'mixed' => 'O campo :attribute deve conter pelo menos uma letra maiúscula e uma letra minúscula.',
+        'numbers' => 'O campo :attribute deve conter pelo menos um número.',
+        'symbols' => 'O campo :attribute deve conter pelo menos um símbolo.',
+        'uncompromised' => 'O :attribute fornecido apareceu numa fuga de dados. Por favor, escolha um :attribute diferente.',
+    ],
     'present' => 'O campo ":attribute" deve estar presente.',
     'regex' => 'O campo ":attribute" tem um formato inválido.',
     'required' => 'O campo ":attribute" é obrigatório.',
