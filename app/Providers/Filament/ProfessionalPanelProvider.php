@@ -67,7 +67,7 @@ final class ProfessionalPanelProvider extends PanelProvider
             ->plugins([
                 FilamentEditProfilePlugin::make()
                     ->setIcon('heroicon-o-user')
-                    ->shouldShowDeleteAccountForm(false)
+                    ->shouldShowDeleteAccountForm(false),
             ])
             ->userMenuItems([
                 'profile' => MenuItem::make('profile')
