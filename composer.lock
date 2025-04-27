@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "55124d28f7c997a66e999563408a3266",
+    "content-hash": "c36ee1f7ae0e28f9e7713d3d260f8ef1",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -4505,6 +4505,73 @@
                 }
             ],
             "time": "2024-07-20T21:41:07+00:00"
+        },
+        {
+            "name": "prevailexcel/laravel-action-service-trait",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PrevailExcel/laravel-action-service-trait.git",
+                "reference": "fc8ae14b6cfb7ae4e6b43a08d7ee7bd8581a27b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PrevailExcel/laravel-action-service-trait/zipball/fc8ae14b6cfb7ae4e6b43a08d7ee7bd8581a27b5",
+                "reference": "fc8ae14b6cfb7ae4e6b43a08d7ee7bd8581a27b5",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "PrevailExcel\\ActionServiceTrait\\ASTServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PrevailExcel\\ActionServiceTrait\\": "src/"
+                },
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PrevailExcel",
+                    "email": "prevailexcellent@gmail.com"
+                }
+            ],
+            "description": "A simple Laravel package to create actions, traits and services using artisan commands",
+            "keywords": [
+                "action",
+                "command",
+                "generator",
+                "github",
+                "laravel",
+                "laravel 7",
+                "laravel 8",
+                "laravel 9",
+                "open source",
+                "php",
+                "service",
+                "traits"
+            ],
+            "support": {
+                "issues": "https://github.com/PrevailExcel/laravel-action-service-trait/issues",
+                "source": "https://github.com/PrevailExcel/laravel-action-service-trait/tree/1.0.1"
+            },
+            "time": "2024-01-24T19:42:01+00:00"
         },
         {
             "name": "psr/cache",
