@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c39569d66c3c5e9bd6f11617929c11b",
+    "content-hash": "55124d28f7c997a66e999563408a3266",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -5676,6 +5676,61 @@
                 }
             ],
             "time": "2025-04-11T15:27:14+00:00"
+        },
+        {
+            "name": "square-bit/laravel-pt-localization",
+            "version": "v12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/square-bit/laravel-pt-localization.git",
+                "reference": "72b2cb6ce6c7723f82f5fa9d6539d7f3b2061cbc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/square-bit/laravel-pt-localization/zipball/72b2cb6ce6c7723f82f5fa9d6539d7f3b2061cbc",
+                "reference": "72b2cb6ce6c7723f82f5fa9d6539d7f3b2061cbc",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^10.0|^11.0|^12.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Squarebit\\Laravelptlocalization\\LocalizationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Squarebit\\Laravelptlocalization\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Squarebit",
+                    "email": "info@square-bit.com",
+                    "homepage": "https://square-bit.com/"
+                }
+            ],
+            "description": "Portuguese Localization package for Laravel",
+            "homepage": "https://github.com/square-bit/laravel-pt-localization",
+            "keywords": [
+                "laravel",
+                "localization",
+                "portuguese",
+                "translations"
+            ],
+            "support": {
+                "issues": "https://github.com/square-bit/laravel-pt-localization/issues",
+                "source": "https://github.com/square-bit/laravel-pt-localization/tree/v12"
+            },
+            "time": "2025-02-25T19:42:54+00:00"
         },
         {
             "name": "symfony/clock",
