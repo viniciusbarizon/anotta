@@ -21,14 +21,6 @@ final class Professional extends Base
     }
 
     /**
-     * Define a many-to-many relationship between professionals and specialties.
-     */
-    public function specialties(): BelongsToMany
-    {
-        return $this->belongsToMany(Specialty::class);
-    }
-
-    /**
      * Get the user that owns the professional.
      *
      * This defines an inverse one-to-many relationship between the Professional
