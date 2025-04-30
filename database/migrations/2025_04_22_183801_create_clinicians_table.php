@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('professionals', function (Blueprint $table) {
+        Schema::create('clinicians', function (Blueprint $table) {
             $table->ulid('id')->primary();
 
             $table->timestamp('created_at', precision: 0)->useCurrent();
             $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();
             $table->softDeletes();
 
-            $table->foreignId('user_id')->constrained()->unique();
+            $table->foreignId('user_id')->constrained();
+            $table->unique('user_id');
         });
     }
 

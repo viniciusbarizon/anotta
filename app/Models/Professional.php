@@ -13,6 +13,16 @@ final class Professional extends Base
     protected $fillable = ['user_id'];
 
     /**
+     * Define a many-to-many relationship between the Professional model and the Clinic model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function clinics(): BelongsToMany
+    {
+        return $this->belongsToMany(Clinic::class);
+    }
+
+    /**
      * Define a many-to-many relationship between professionals and patients.
      */
     public function patients(): BelongsToMany

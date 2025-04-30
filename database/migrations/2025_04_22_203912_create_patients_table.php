@@ -24,8 +24,7 @@ return new class extends Migration
             $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();
             $table->softDeletes();
 
-            $table->ulid('clinic_id');
-            $table->foreign('clinic_id')->references('id')->on('clinics');
+            $table->foreignUlid('clinic_id')->constrained();
 
             $table->unique(['clinic_id', 'country_code', 'tax_id']);
             $table->index('country_code');

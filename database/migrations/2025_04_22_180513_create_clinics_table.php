@@ -19,8 +19,6 @@ return new class extends Migration
             $table->timestamp('created_at', precision: 0)->useCurrent();
             $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();
             $table->softDeletes();
-
-            $table->foreignId('user_id')->constrained()->unique();
         });
     }
 

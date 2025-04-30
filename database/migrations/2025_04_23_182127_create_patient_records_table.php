@@ -22,11 +22,9 @@ return new class extends Migration
             $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();
             $table->softDeletes();
 
-            $table->ulid('patient_id');
-            $table->foreign('patient_id')->references('id')->on('patients');
-
-            $table->ulid('professional_id');
-            $table->foreign('professional_id')->references('id')->on('professionals');
+            $table->foreignUlid('clinic_id')->constrained();
+            $table->foreignUlid('clinician_id')->constrained();
+            $table->foreignUlid('patient_id')->constrained();
         });
     }
 
