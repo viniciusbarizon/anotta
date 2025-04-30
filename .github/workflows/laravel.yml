@@ -48,7 +48,7 @@ jobs:
         echo "DB_PORT=5432" >> .env.testing
         echo "DB_DATABASE=testing" >> .env.testing
         echo "DB_USERNAME=test_user" >> .env.testing
-        echo "DB_PASSWORD=test_passx" >> .env.testing
+        echo "DB_PASSWORD=test_pass" >> .env.testing
 
     - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
       run: php artisan test
