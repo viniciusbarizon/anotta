@@ -23,14 +23,14 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 
-final class ClinicianPanelProvider extends PanelProvider
+final class MedicalPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
-            ->id('clinician')
-            ->path('clinician')
+            ->id('medical')
+            ->path('medical')
             ->registration()
             ->login()
             ->passwordReset()
