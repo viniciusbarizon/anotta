@@ -8,6 +8,8 @@ use App\Observers\UserObserver;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -40,11 +42,23 @@ final class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Get the professional associated with the user.
+     * Get the clinician associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function professional(): HasOne
+    public function clinician(): HasOne
     {
-        return $this->hasOne(Professional::class);
+        return $this->hasOne(Clinician::class);
+    }
+
+    /**
+     * Define a many-to-many relationship between the User model and the Clinic model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function clinics(): BelongsToMany
+    {
+        return $this->belongsToMany(Clinic::class);
     }
 
     /**

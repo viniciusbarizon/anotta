@@ -34,6 +34,30 @@ final class PatientRecord extends Base implements CipherSweetEncrypted
     }
 
     /**
+     * Get the clinic that owns the patient record.
+     *
+     * This defines an inverse one-to-many relationship between the PatientRecord
+     * model and the Clinic model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function clinic(): BelongsTo
+    {
+        return $this->belongsTo(Clinic::class);
+    }
+
+    /**
+     * Get the clinician that owns the patient record.
+     *
+     * This method defines an inverse one-to-many relationship
+     * between the PatientRecord model and the Clinician model.
+     */
+    public function clinician(): BelongsTo
+    {
+        return $this->belongsTo(Clinician::class);
+    }
+
+    /**
      * Get the patient that owns the patient record.
      *
      * This method defines an inverse one-to-many relationship
@@ -42,13 +66,5 @@ final class PatientRecord extends Base implements CipherSweetEncrypted
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);
-    }
-
-    /**
-     * Get the professional associated with the patient record.
-     */
-    public function professional(): BelongsTo
-    {
-        return $this->belongsTo(Professional::class);
     }
 }

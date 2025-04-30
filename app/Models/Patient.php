@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
@@ -39,11 +40,25 @@ final class Patient extends Base implements CipherSweetEncrypted
     }
 
     /**
-     * Define a many-to-many relationship between patients and professionals.
+     * Get the clinic that the patient belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function professionals(): BelongsToMany
+    public function clinic(): BelongsTo
     {
-        return $this->belongsToMany(Professional::class);
+        return $this->belongsTo(Clinic::class);
+    }
+
+    /**
+     * Get the clinicians associated with the patient.
+     *
+     * This defines a many-to-many relationship between the Patient model and the Clinician model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function clinicians(): BelongsToMany
+    {
+        return $this->belongsToMany(Clinician::class);
     }
 
     /**
