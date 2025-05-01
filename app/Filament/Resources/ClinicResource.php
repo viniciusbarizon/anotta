@@ -19,7 +19,7 @@ class ClinicResource extends Resource
 
     protected static ?string $model = Clinic::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'fas-clinic-medical';
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -28,9 +28,10 @@ class ClinicResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label(__('Nome'))
+                    ->translateLabel()
                     ->required()
-                    ->maxLength(100),
+                    ->maxLength(100)
+                    ->helperText('Se for um profissional independente, preencha com o seu próprio nome.'),
             ]);
     }
 
