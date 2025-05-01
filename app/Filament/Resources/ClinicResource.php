@@ -15,6 +15,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 final class ClinicResource extends Resource
 {
@@ -29,17 +30,18 @@ final class ClinicResource extends Resource
     /**
      * Defines the form schema for the ClinicResource.
      *
-     * @param  Form  $form  The form instance being configured.
+     * @param Form $form The form instance being configured.
+     * 
      * @return Form The configured form instance.
      *
      * The form includes the following:
-     * - A `TextInput` component for the `name` field:
+     * - A `TextInput` component for the 'name' field:
      *   - The label is translatable.
      *   - The field is required and has a maximum length of 100 characters.
      *   - A helper text is provided to guide users when filling out the field.
      *   - A custom validation rule ensures that the clinic name is unique for the authenticated user.
-     *     - If a clinic with the same name already exists for the user, an error message is displayed.
-     *     - The validation allows updating the current record without triggering the uniqueness error.
+     *     - The rule checks if a clinic with the same name (case-insensitive) already exists for the user.
+     *     - If the clinic exists and is not the current record being edited, a validation error is triggered.
      */
     public static function form(Form $form): Form
     {
@@ -52,7 +54,7 @@ final class ClinicResource extends Resource
                     ->helperText(__('Se for um profissional independente, preencha com o seu próprio nome.'))
                     ->rule(static function (Forms\Get $get, Forms\Components\Component $component): Closure {
                         return static function (string $attribute, string $value, Closure $fail) use ($component) {
-                            $existingName = Clinic::where('name', mb_trim($value))
+                            $existingName = Clinic::where(DB::raw('UPPER(name)'), mb_strtoupper(mb_trim($value)))
                                 ->whereRelation('users', 'user_id', Auth::user()->id)
                                 ->first();
 
