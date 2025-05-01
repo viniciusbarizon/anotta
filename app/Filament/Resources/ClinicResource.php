@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClinicResource\Pages;
-use App\Filament\Resources\ClinicResource\RelationManagers;
 use App\Models\Clinic;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,8 +14,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
-class ClinicResource extends Resource
+final class ClinicResource extends Resource
 {
     protected static ?string $modelLabel = 'Clínica';
 
@@ -23,6 +26,21 @@ class ClinicResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    /**
+     * Defines the form schema for the ClinicResource.
+     *
+     * @param  Form  $form  The form instance being configured.
+     * @return Form The configured form instance.
+     *
+     * The form includes the following:
+     * - A `TextInput` component for the `name` field:
+     *   - The label is translatable.
+     *   - The field is required and has a maximum length of 100 characters.
+     *   - A helper text is provided to guide users when filling out the field.
+     *   - A custom validation rule ensures that the clinic name is unique for the authenticated user.
+     *     - If a clinic with the same name already exists for the user, an error message is displayed.
+     *     - The validation allows updating the current record without triggering the uniqueness error.
+     */
     public static function form(Form $form): Form
     {
         return $form
@@ -31,7 +49,24 @@ class ClinicResource extends Resource
                     ->translateLabel()
                     ->required()
                     ->maxLength(100)
-                    ->helperText('Se for um profissional independente, preencha com o seu próprio nome.'),
+                    ->helperText(__('Se for um profissional independente, preencha com o seu próprio nome.'))
+                    ->rule(static function (Forms\Get $get, Forms\Components\Component $component): Closure {
+                        return static function (string $attribute, string $value, Closure $fail) use ($component) {
+                            $existingName = Clinic::where('name', mb_trim($value))
+                                ->whereRelation('users', 'user_id', Auth::user()->id)
+                                ->first();
+
+                            if (is_null($existingName)) {
+                                return;
+                            }
+
+                            if ($existingName->getKey() === $component->getRecord()?->getKey()) {
+                                return;
+                            }
+
+                            $fail(__('Este nome de clínica já está associado à tua conta.'));
+                        };
+                    }),
             ]);
     }
 
@@ -69,6 +104,15 @@ class ClinicResource extends Resource
             ]);
     }
 
+    /**
+     * Get the pages associated with the Clinic resource.
+     *
+     * This method returns an array mapping page identifiers to their
+     * corresponding routes. For example, the 'index' page is mapped
+     * to the route handled by the `Pages\ManageClinics` class.
+     *
+     * @return array An associative array of page identifiers and their routes.
+     */
     public static function getPages(): array
     {
         return [
@@ -76,6 +120,15 @@ class ClinicResource extends Resource
         ];
     }
 
+    /**
+     * Customize the Eloquent query used by the resource.
+     *
+     * This method overrides the parent implementation to remove specific
+     * global scopes from the query. In this case, the SoftDeletingScope
+     * is excluded, allowing the query to include soft-deleted records.
+     *
+     * @return Builder The modified Eloquent query builder.
+     */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

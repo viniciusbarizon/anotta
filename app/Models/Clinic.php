@@ -1,11 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Observers\ClinicObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Clinic extends Base
+#[ObservedBy([ClinicObserver::class])]
+final class Clinic extends Base
 {
     protected $fillable = [
         'name',
@@ -16,8 +22,6 @@ class Clinic extends Base
      *
      * This defines a one-to-many relationship between the Clinic model and the
      * PatientRecord model, where a clinic can have multiple patient records.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function patientRecords(): HasMany
     {
@@ -29,8 +33,6 @@ class Clinic extends Base
      *
      * This relationship defines a one-to-many association between the Clinic
      * model and the Patient model, where a clinic can have multiple patients.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function patients(): HasMany
     {
@@ -39,11 +41,22 @@ class Clinic extends Base
 
     /**
      * Define a many-to-many relationship between the Clinic model and the User model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * Define an accessor/mutator for the "name" attribute.
+     *
+     * This mutator trims any whitespace from the beginning and end
+     * of the provided string value before setting it.
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => mb_trim($value),
+        );
     }
 }

@@ -38,8 +38,6 @@ final class PatientRecord extends Base implements CipherSweetEncrypted
      *
      * This defines an inverse one-to-many relationship between the PatientRecord
      * model and the Clinic model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function clinic(): BelongsTo
     {
