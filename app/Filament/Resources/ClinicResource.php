@@ -72,35 +72,70 @@ final class ClinicResource extends Resource
             ]);
     }
 
+    /**
+     * Configures the table for the ClinicResource.
+     *
+     * @param Table $table The table instance to configure.
+     * 
+     * @return Table The configured table instance.
+     *
+     * Columns:
+     * - `name`: A text column for the clinic name, searchable, sortable, and with a translatable label.
+     * - `created_at`: A text column displaying the creation date with a tooltip, localized label ("Criado"), 
+     *   relative time ("since"), and sortable.
+     * - `updated_at`: A text column displaying the last update date with a tooltip, localized label ("Atualizado"), 
+     *   relative time ("since"), and sortable.
+     * - `deleted_at`: A text column displaying the deletion date with a tooltip, localized label ("Eliminado"), 
+     *   relative time ("since"), and sortable.
+     *
+     * Actions:
+     * - EditAction: Allows editing of a record.
+     * - DeleteAction: Allows deletion of a record.
+     * - RestoreAction: Allows restoration of a deleted record.
+     *
+     * Bulk Actions:
+     * - DeleteBulkAction: Allows bulk deletion of records.
+     * - RestoreBulkAction: Allows bulk restoration of records.
+     */
     public static function table(Table $table): Table
     {
         return $table
+            ->filters([
+                Tables\Filters\TrashedFilter::make()
+                    ->default('with_trashed'),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable()
+                    ->translateLabel(),
+
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTimeTooltip()
+                    ->label(__('Criado'))
+                    ->since()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTimeTooltip()
+                    ->label(__('Atualizado'))
+                    ->since()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
+                    ->dateTimeTooltip()
+                    ->label(__('Eliminado'))
+                    ->since()
                     ->sortable(),
-            ])
-            ->filters([
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
@@ -123,17 +158,20 @@ final class ClinicResource extends Resource
     }
 
     /**
-     * Customize the Eloquent query used by the resource.
+     * Customize the Eloquent query for the resource.
      *
-     * This method overrides the parent implementation to remove specific
-     * global scopes from the query. In this case, the SoftDeletingScope
-     * is excluded, allowing the query to include soft-deleted records.
+     * This method modifies the default query to include the following:
+     * - Filters the results to include only records where the related 'users' relationship
+     *   contains the currently authenticated user's ID.
+     * - Removes the global scope for soft-deleted records, allowing access to all records
+     *   regardless of their deletion status.
      *
-     * @return Builder The modified Eloquent query builder.
+     * @return \Illuminate\Database\Eloquent\Builder The modified Eloquent query builder instance.
      */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
+            ->whereRelation('users', 'user_id', Auth::user()->id)
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
