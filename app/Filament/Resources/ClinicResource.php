@@ -25,13 +25,14 @@ final class ClinicResource extends Resource
 
     protected static ?string $navigationIcon = 'fas-clinic-medical';
 
+    protected static ?int $navigationSort = 90;
+
     protected static ?string $recordTitleAttribute = 'name';
 
     /**
      * Defines the form schema for the ClinicResource.
      *
-     * @param Form $form The form instance being configured.
-     * 
+     * @param  Form  $form  The form instance being configured.
      * @return Form The configured form instance.
      *
      * The form includes the following:
@@ -75,17 +76,16 @@ final class ClinicResource extends Resource
     /**
      * Configures the table for the ClinicResource.
      *
-     * @param Table $table The table instance to configure.
-     * 
+     * @param  Table  $table  The table instance to configure.
      * @return Table The configured table instance.
      *
      * Columns:
      * - `name`: A text column for the clinic name, searchable, sortable, and with a translatable label.
-     * - `created_at`: A text column displaying the creation date with a tooltip, localized label ("Criado"), 
+     * - `created_at`: A text column displaying the creation date with a tooltip, localized label ("Criado"),
      *   relative time ("since"), and sortable.
-     * - `updated_at`: A text column displaying the last update date with a tooltip, localized label ("Atualizado"), 
+     * - `updated_at`: A text column displaying the last update date with a tooltip, localized label ("Atualizado"),
      *   relative time ("since"), and sortable.
-     * - `deleted_at`: A text column displaying the deletion date with a tooltip, localized label ("Eliminado"), 
+     * - `deleted_at`: A text column displaying the deletion date with a tooltip, localized label ("Eliminado"),
      *   relative time ("since"), and sortable.
      *
      * Actions:
@@ -166,7 +166,7 @@ final class ClinicResource extends Resource
      * - Removes the global scope for soft-deleted records, allowing access to all records
      *   regardless of their deletion status.
      *
-     * @return \Illuminate\Database\Eloquent\Builder The modified Eloquent query builder instance.
+     * @return Builder The modified Eloquent query builder instance.
      */
     public static function getEloquentQuery(): Builder
     {
