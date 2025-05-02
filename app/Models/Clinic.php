@@ -13,9 +13,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ObservedBy([ClinicObserver::class])]
 final class Clinic extends Base
 {
-    protected $fillable = [
-        'name',
+    protected $cascadeDeletes = [
+        'patientRecords',
+        'patients',
+        'users'
     ];
+
+    protected $fillable = ['name'];
 
     /**
      * Get the patient records associated with the clinic.
@@ -41,10 +45,17 @@ final class Clinic extends Base
 
     /**
      * Define a many-to-many relationship between the Clinic model and the User model.
+     *
+     * This method establishes a relationship where a clinic can have multiple users,
+     * and a user can belong to multiple clinics. The relationship is managed through
+     * the pivot model `ClinicUser`.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)
+            ->using(ClinicUser::class);
     }
 
     /**

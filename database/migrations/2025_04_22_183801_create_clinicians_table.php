@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('clinicians', function (Blueprint $table) {
             $table->ulid('id')->primary();
 
+            $table->string('name', 150);
+
             $table->timestamp('created_at', precision: 0)->useCurrent();
             $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();
             $table->softDeletes();

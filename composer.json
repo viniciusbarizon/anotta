@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.4",
         "devaslanphp/filament-avatar": "^1.0",
+        "dyrynda/laravel-cascade-soft-deletes": "^4.5",
         "filament/filament": "^3.3",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^12.0",
