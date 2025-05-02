@@ -52,7 +52,9 @@ final class ClinicResource extends Resource
                     ->translateLabel()
                     ->required()
                     ->maxLength(100)
-                    ->helperText(__('Se for um profissional independente, preencha com o seu próprio nome.'))
+                    ->helperText(str('**É um profissional independente?** Indique o seu nome profissional.')
+                        ->inlineMarkdown()
+                        ->toHtmlString())
                     ->rule(static function (Forms\Get $get, Forms\Components\Component $component): Closure {
                         return static function (string $attribute, string $value, Closure $fail) use ($component) {
                             $existingName = Clinic::where(DB::raw('UPPER(name)'), mb_strtoupper(mb_trim($value)))
