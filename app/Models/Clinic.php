@@ -16,7 +16,7 @@ final class Clinic extends Base
     protected $cascadeDeletes = [
         'patientRecords',
         'patients',
-        'users'
+        'users',
     ];
 
     protected $fillable = ['name'];
@@ -49,8 +49,6 @@ final class Clinic extends Base
      * This method establishes a relationship where a clinic can have multiple users,
      * and a user can belong to multiple clinics. The relationship is managed through
      * the pivot model `ClinicUser`.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users(): BelongsToMany
     {

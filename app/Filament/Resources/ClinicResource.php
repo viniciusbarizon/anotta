@@ -133,11 +133,15 @@ final class ClinicResource extends Resource
 
                 Tables\Actions\DeleteAction::make()
                     ->modalHeading(fn ($record) => "Tem a certeza que deseja prosseguir com a eliminação da clínica {$record->name}?")
-                    ->modalDescription("⚠️ " . __("Esta ação irá ELIMINAR EM CASCATA a
-                        equipa, os pacientes, os processos clínicos, entre outros dados associados."))
+                    ->modalDescription('⚠️ '.__('Esta ação irá ELIMINAR EM CASCATA a
+                        equipa, os pacientes, os processos clínicos, entre outros dados associados.'))
                     ->modalSubmitActionLabel(__('Sim, apagar tudo')),
 
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\RestoreAction::make()
+                    ->modalDescription('⚠️ '.__('Apenas a clínica será restaurada. Os restantes dados associados,
+                        como a equipa, os pacientes e os processos clínicos, não serão recuperados automaticamente.')
+                    )
+                    ->modalSubmitActionLabel(__('Sim, restaurar apenas a clínica')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
