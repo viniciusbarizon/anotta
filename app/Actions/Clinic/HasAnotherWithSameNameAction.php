@@ -8,7 +8,7 @@ use App\Models\Clinic;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-final class HasAnotherSameNameAction
+final class HasAnotherWithSameNameAction
 {
     private ?string $currentId;
 

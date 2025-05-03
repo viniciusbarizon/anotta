@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Actions\Clinic\HasAnotherSameNameAction;
+use App\Actions\Clinic\HasAnotherWithSameNameAction;
 use App\Filament\Resources\ClinicResource\Pages;
-use App\Models\Clinic;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -93,12 +92,12 @@ final class ClinicResource extends Resource
                     ->toHtmlString())
                 ->rule(static function (Forms\Get $get, Forms\Components\Component $component): Closure {
                     return static function (string $attribute, string $name, Closure $fail) use ($component) {
-                        $hasAnotherSameNameAction = (new HasAnotherSameNameAction)->handle(
+                        $hasAnotherWithSameNameAction = (new HasAnotherWithSameNameAction)->handle(
                             currentId: $component->getRecord()?->getKey(),
                             name: $name
                         );
 
-                        if ($hasAnotherSameNameAction === false) {
+                        if ($hasAnotherWithSameNameAction === false) {
                             return;
                         }
 
