@@ -67,12 +67,10 @@ describe('creating a new clinic', function () {
  * Determines if there is another entity with the same name.
  *
  * This function utilizes the `HasAnotherWithSameNameAction` to check
- * if there is another entity with the specified name, optionally excluding
- * the entity identified by the provided current ID.
+ * if there is another entity with the same name as the one specified
+ * in the current context.
  *
- * @param  string|null  $currentId  The ID of the current entity to exclude from the check, or null if no exclusion is needed.
- * @param  string  $name  The name to check for duplicates.
- * @return bool True if another entity with the same name exists, false otherwise.
+ * @return bool Returns true if another entity with the same name exists, false otherwise.
  */
 function hasAnotherWithSameName(): bool
 {

@@ -7,55 +7,60 @@ use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 
 it('does not reverify if email is not verified', function () {
-    $user = User::emailUnverified()->first();
+    $this->user = User::emailUnverified()->first();
 
-    reverifyEmail($user);
+    reverifyEmail();
 
-    expect($user->isClean('email_verified_at'))
+    expect($this->user->isClean('email_verified_at'))
         ->toBeTrue();
 
     $this->assertDatabaseHas('users', [
-        'id' => $user->id,
-        'email_verified_at' => $user->email_verified_at,
+        'id' => $this->user->id,
+        'email_verified_at' => $this->user->email_verified_at,
     ]);
 });
 
 it('does not reverify if email has not been changed', function () {
-    $user = getUserWithEmailVerified();
+    $this->user = getUserWithEmailVerified();
 
-    reverifyEmail($user);
+    reverifyEmail();
 
     $this->assertDatabaseHas('users', [
-        'id' => $user->id,
-        'email_verified_at' => $user->email_verified_at,
+        'id' => $this->user->id,
+        'email_verified_at' => $this->user->email_verified_at,
     ]);
 });
 
 it('does reverify the e-mail', function () {
-    $user = getUserWithEmailVerified();
+    $this->user = getUserWithEmailVerified();
 
-    $user->email = fake()->email();
-    $user->save();
+    $this->user->email = fake()->email();
+    $this->user->save();
 
     Notification::fake();
-    reverifyEmail($user);
+    reverifyEmail();
 
-    $user->refresh();
+    $this->user->refresh();
 
-    expect($user->email_verified_at)->toBeNull();
+    expect($this->user->email_verified_at)
+        ->toBeNull();
 });
 
+
 /**
- * Re-verifies the email address of the given user.
+ * Reverify the email address of the user.
  *
- * This function utilizes the ReverifyEmailAction to handle the process
- * of re-verifying the email address associated with the provided user.
+ * This method invokes the `ReverifyEmailAction` to handle the
+ * process of re-verifying the email address associated with
+ * the current user.
  *
- * @param  User  $user  The user whose email address needs to be re-verified.
+ * @return void
  */
-function reverifyEmail(User $user): void
+function reverifyEmail(): void
 {
-    (new ReverifyEmailAction)->handle($user);
+    (new ReverifyEmailAction)->handle(
+        user: test()->user
+    );
 }
 
 /**
