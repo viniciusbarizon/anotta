@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Actions\Clinic\HasAnotherSameNameAction;
 use App\Filament\Resources\ClinicResource\Pages;
 use App\Models\Clinic;
 use Closure;
@@ -14,7 +15,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 final class ClinicResource extends Resource
 {
@@ -92,16 +92,13 @@ final class ClinicResource extends Resource
                     ->inlineMarkdown()
                     ->toHtmlString())
                 ->rule(static function (Forms\Get $get, Forms\Components\Component $component): Closure {
-                    return static function (string $attribute, string $value, Closure $fail) use ($component) {
-                        $existingName = Clinic::where(DB::raw('UPPER(name)'), mb_strtoupper(mb_trim($value)))
-                            ->whereRelation('users', 'user_id', Auth::user()->id)
-                            ->first();
+                    return static function (string $attribute, string $name, Closure $fail) use ($component) {
+                        $hasAnotherSameNameAction = (new HasAnotherSameNameAction)->handle(
+                            currentId: $component->getRecord()?->getKey(),
+                            name: $name
+                        );
 
-                        if (is_null($existingName)) {
-                            return;
-                        }
-
-                        if ($existingName->getKey() === $component->getRecord()?->getKey()) {
+                        if ($hasAnotherSameNameAction === false) {
                             return;
                         }
 
