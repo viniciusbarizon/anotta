@@ -13,21 +13,58 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 final class ClinicResource extends Resource
 {
-    protected static ?string $modelLabel = 'Clínica';
-
-    protected static ?string $model = Clinic::class;
-
     protected static ?string $navigationIcon = 'fas-clinic-medical';
 
     protected static ?int $navigationSort = 90;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    /**
+     * Get the label for the model associated with this resource.
+     *
+     * @return string The localized label for the model.
+     */
+    public static function getModelLabel(): string
+    {
+        return __('Clínica');
+    }
+
+    /**
+     * Get the pages associated with the Clinic resource.
+     *
+     * This method returns an array mapping page identifiers to their
+     * corresponding routes. For example, the 'index' page is mapped
+     * to the route handled by the `Pages\ManageClinics` class.
+     *
+     * @return array An associative array of page identifiers and their routes.
+     */
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ManageClinics::route('/'),
+        ];
+    }
+
+    /**
+     * Get the Eloquent query builder for the resource.
+     *
+     * This method customizes the query to include soft-deleted records
+     * and filters the results based on the authenticated user's ID.
+     * It ensures that only records related to the current user are retrieved.
+     *
+     * @return Builder The modified query builder instance.
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withTrashed()
+            ->whereRelation('users', 'user_id', Auth::user()->id);
+    }
 
     /**
      * Defines the form schema for the ClinicResource.
@@ -46,33 +83,32 @@ final class ClinicResource extends Resource
      */
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->translateLabel()
-                    ->required()
-                    ->maxLength(100)
-                    ->helperText(str('**É um profissional independente?** Indique o seu nome profissional.')
-                        ->inlineMarkdown()
-                        ->toHtmlString())
-                    ->rule(static function (Forms\Get $get, Forms\Components\Component $component): Closure {
-                        return static function (string $attribute, string $value, Closure $fail) use ($component) {
-                            $existingName = Clinic::where(DB::raw('UPPER(name)'), mb_strtoupper(mb_trim($value)))
-                                ->whereRelation('users', 'user_id', Auth::user()->id)
-                                ->first();
+        return $form->schema([
+            Forms\Components\TextInput::make('name')
+                ->translateLabel()
+                ->required()
+                ->maxLength(100)
+                ->helperText(str('**É um profissional independente?** Indique o seu nome profissional.')
+                    ->inlineMarkdown()
+                    ->toHtmlString())
+                ->rule(static function (Forms\Get $get, Forms\Components\Component $component): Closure {
+                    return static function (string $attribute, string $value, Closure $fail) use ($component) {
+                        $existingName = Clinic::where(DB::raw('UPPER(name)'), mb_strtoupper(mb_trim($value)))
+                            ->whereRelation('users', 'user_id', Auth::user()->id)
+                            ->first();
 
-                            if (is_null($existingName)) {
-                                return;
-                            }
+                        if (is_null($existingName)) {
+                            return;
+                        }
 
-                            if ($existingName->getKey() === $component->getRecord()?->getKey()) {
-                                return;
-                            }
+                        if ($existingName->getKey() === $component->getRecord()?->getKey()) {
+                            return;
+                        }
 
-                            $fail(__('Este nome de clínica já está associado à tua conta.'));
-                        };
-                    }),
-            ]);
+                        $fail(__('Este nome de clínica já está associado à tua conta.'));
+                    };
+                }),
+        ]);
     }
 
     /**
@@ -150,42 +186,6 @@ final class ClinicResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    /**
-     * Get the pages associated with the Clinic resource.
-     *
-     * This method returns an array mapping page identifiers to their
-     * corresponding routes. For example, the 'index' page is mapped
-     * to the route handled by the `Pages\ManageClinics` class.
-     *
-     * @return array An associative array of page identifiers and their routes.
-     */
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ManageClinics::route('/'),
-        ];
-    }
-
-    /**
-     * Customize the Eloquent query for the resource.
-     *
-     * This method modifies the default query to include the following:
-     * - Filters the results to include only records where the related 'users' relationship
-     *   contains the currently authenticated user's ID.
-     * - Removes the global scope for soft-deleted records, allowing access to all records
-     *   regardless of their deletion status.
-     *
-     * @return Builder The modified Eloquent query builder instance.
-     */
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->whereRelation('users', 'user_id', Auth::user()->id)
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

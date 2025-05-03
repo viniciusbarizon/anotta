@@ -18,7 +18,8 @@
         "prevailexcel/laravel-action-service-trait": "^1.0",
         "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-ciphersweet": "^1.6",
-        "square-bit/laravel-pt-localization": "^12.0"
+        "square-bit/laravel-pt-localization": "^12.0",
+        "troccoli/blade-health-icons": "^5.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",
