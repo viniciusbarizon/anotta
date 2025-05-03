@@ -46,6 +46,19 @@ it('does reverify the e-mail', function () {
 });
 
 /**
+ * Re-verifies the email address of the given user.
+ *
+ * This function utilizes the ReverifyEmailAction to handle the process
+ * of re-verifying the email address associated with the provided user.
+ *
+ * @param  User  $user  The user whose email address needs to be re-verified.
+ */
+function reverifyEmail(User $user): void
+{
+    (new ReverifyEmailAction)->handle($user);
+}
+
+/**
  * Retrieve the first user with a verified email address.
  *
  * This method queries the database for a user whose email has been verified
@@ -56,19 +69,4 @@ it('does reverify the e-mail', function () {
 function getUserWithEmailVerified(): User
 {
     return User::emailVerified()->first();
-}
-
-/**
- * Re-verifies the email address of the given user.
- *
- * This function utilizes the ReverifyEmailAction to handle the process
- * of re-verifying the email address associated with the provided user.
- *
- * @param User $user The user whose email address needs to be re-verified.
- *
- * @return void
- */
-function reverifyEmail(User $user): void
-{
-    (new ReverifyEmailAction)->handle($user);
 }

@@ -8,12 +8,12 @@ use App\Observers\UserObserver;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
 
 #[ObservedBy([UserObserver::class])]
 final class User extends Authenticatable implements MustVerifyEmail
@@ -74,9 +74,6 @@ final class User extends Authenticatable implements MustVerifyEmail
     #[Scope]
     /**
      * Scope a query to only include users who have not verified their email.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     protected function emailUnverified(Builder $query): void
     {
@@ -86,12 +83,9 @@ final class User extends Authenticatable implements MustVerifyEmail
     #[Scope]
     /**
      * Scope a query to only include users who have verified their email.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     protected function emailVerified(Builder $query): void
     {
-        $query->whereNotNull('email_verified_at'); 
+        $query->whereNotNull('email_verified_at');
     }
 }
