@@ -13,7 +13,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
 
 final class ClinicResource extends Resource
 {
@@ -62,7 +61,7 @@ final class ClinicResource extends Resource
     {
         return parent::getEloquentQuery()
             ->withTrashed()
-            ->whereRelation('users', 'user_id', Auth::user()->id);
+            ->fromUserLogged();
     }
 
     /**

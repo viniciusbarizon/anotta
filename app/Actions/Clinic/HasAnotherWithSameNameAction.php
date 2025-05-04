@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions\Clinic;
 
 use App\Models\Clinic;
-use Illuminate\Support\Facades\Auth;
 
 final class HasAnotherWithSameNameAction
 {
@@ -38,9 +37,9 @@ final class HasAnotherWithSameNameAction
     private function has(): bool
     {
         return Clinic::withTrashed()
+            ->fromUserLogged()
             ->where('name_normalized', $this->name)
             ->where('id', '!=', $this->currentId)
-            ->whereRelation('users', 'user_id', Auth::user()->id)
             ->exists();
     }
 }

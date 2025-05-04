@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Observers\ClinicObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -88,5 +90,20 @@ final class Clinic extends Base
         return Attribute::make(
             set: fn (string $value) => (string) str($value)->squish()
         );
+    }
+
+    #[Scope]
+    /**
+     * Scope a query to filter clinics associated with the currently logged-in user.
+     *
+     * This scope applies a condition to the query that ensures only clinics
+     * related to the authenticated user are retrieved. It uses the `whereRelation`
+     * method to filter based on the relationship between clinics and users.
+     *
+     * @param  Builder  $query  The query builder instance.
+     */
+    protected function fromUserLogged(Builder $query): void
+    {
+        $query->whereRelation('users', 'user_id', auth()->user()->id);
     }
 }
