@@ -6,7 +6,6 @@ namespace App\Actions\Clinic;
 
 use App\Models\Clinic;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 final class HasAnotherWithSameNameAction
 {

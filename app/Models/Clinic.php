@@ -21,7 +21,7 @@ final class Clinic extends Base
 
     protected $fillable = [
         'name',
-        'name_normalized'
+        'name_normalized',
     ];
 
     /**
@@ -69,12 +69,10 @@ final class Clinic extends Base
      * is automatically set by normalizing the "name" attribute using the
      * "normalize_name" helper function before the model is persisted to the
      * database.
-     *
-     * @return void
      */
     protected static function booted(): void
     {
-        static::saving(function ($clinic) {
+        self::saving(function ($clinic) {
             $clinic->name_normalized = normalize_name($clinic->name);
         });
     }
@@ -84,8 +82,6 @@ final class Clinic extends Base
      *
      * This method creates an attribute mutator that processes the input value
      * by removing extra whitespace and squishing it into a single string.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     protected function name(): Attribute
     {

@@ -15,8 +15,6 @@ final class UserSeeder extends Seeder
      * This method creates:
      * - Two verified users using the User factory.
      * - One unverified user using the User factory with the `unverified` state.
-     *
-     * @return void
      */
     public function run(): void
     {

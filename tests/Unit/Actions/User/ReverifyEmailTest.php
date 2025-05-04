@@ -46,15 +46,12 @@ it('does reverify the e-mail', function () {
         ->toBeNull();
 });
 
-
 /**
  * Reverify the email address of the user.
  *
  * This method invokes the `ReverifyEmailAction` to handle the
  * process of re-verifying the email address associated with
  * the current user.
- *
- * @return void
  */
 function reverifyEmail(): void
 {

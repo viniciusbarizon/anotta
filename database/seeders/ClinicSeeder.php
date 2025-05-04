@@ -11,14 +11,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 final class ClinicSeeder extends Seeder
-{    
+{
     /**
      * Seed the database with clinics for users who have verified their email.
      *
      * This method retrieves all users with verified email addresses, logs in each user,
      * and creates a clinic associated with the logged-in user using a factory.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -35,7 +33,7 @@ final class ClinicSeeder extends Seeder
      * This method queries the User model for users whose email addresses
      * have been verified and returns them as a collection.
      *
-     * @return \Illuminate\Support\Collection A collection of users with verified emails.
+     * @return Collection A collection of users with verified emails.
      */
     private function getUsersWithEmailVerified(): Collection
     {
