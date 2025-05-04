@@ -10,11 +10,19 @@ use Illuminate\Database\Seeder;
 final class UserSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Seed the application's database with user data.
+     *
+     * This method creates:
+     * - Two verified users using the User factory.
+     * - One unverified user using the User factory with the `unverified` state.
+     *
+     * @return void
      */
     public function run(): void
     {
-        User::factory()->create();
+        User::factory()
+            ->count(2)
+            ->create();
 
         User::factory()->unverified()
             ->create();

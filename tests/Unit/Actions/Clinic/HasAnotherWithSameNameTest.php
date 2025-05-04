@@ -22,7 +22,7 @@ it('returns false if the name is the same but belongs to the current record', fu
 
 describe('creating a new clinic', function () {
     beforeEach(function () {
-        $this->user = User::first();
+        $this->user = User::emailVerified()->first();
         actingAs($this->user);
 
         $this->currentId = null;
