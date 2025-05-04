@@ -24,25 +24,26 @@ final class HasAnotherWithSameNameAction
     public function handle(?string $currentId, string $name): bool
     {
         $this->currentId = $currentId;
-        $this->name = $this->getNameUpperTrim(name: $name);
+        $this->name = $this->getNameUppercaseWithoutSpaces(name: $name);
 
         return $this->has();
     }
 
     /**
-     * Converts the given name to uppercase and trims any surrounding whitespace.
+     * Converts the given name to uppercase and removes extra spaces.
      *
-     * This method uses multibyte string functions to ensure proper handling
-     * of characters in multibyte encodings.
+     * This method takes a string input, removes any leading, trailing, 
+     * and excessive internal whitespace, and converts the resulting 
+     * string to uppercase.
      *
-     * @param  string  $name  The input name to be processed.
-     * @return string The processed name in uppercase and trimmed of whitespace.
+     * @param string $name The input name to be processed.
+     * @return string The processed name in uppercase without extra spaces.
      */
-    private function getNameUpperTrim(string $name): string
+    private function getNameUppercaseWithoutSpaces(string $name): string
     {
-        return mb_strtoupper(
-            mb_trim($name)
-        );
+        return (string) str($name)
+            ->squish()
+            ->upper();
     }
 
     /**

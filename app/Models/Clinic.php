@@ -59,15 +59,15 @@ final class Clinic extends Base
     /**
      * Define an accessor/mutator for the "name" attribute.
      *
-     * This mutator trims any whitespace from the beginning and end
-     * of the provided string value before setting it.
+     * This method creates an attribute mutator that processes the input value
+     * by removing extra whitespace (squishing) before saving it to the database.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => mb_trim(
-                preg_replace('/\s+/', ' ', $value)
-            ),
+            set: fn (string $value) => str($value)->squish()
         );
     }
 }
