@@ -22,21 +22,38 @@ it('returns false if the name is the same but belongs to the current record', fu
 
 describe('creating a new clinic', function () {
     beforeEach(function () {
-        $this->user = User::emailVerified()->first();
+        $this->user = getRandomUser();
+
         actingAs($this->user);
 
         $this->currentId = null;
     });
 
     /**
+     * Retrieve a random user who has a verified email.
+     *
+     * This method queries the database for users with a verified email address,
+     * orders them randomly, and returns the first result.
+     *
+     * @return User A randomly selected user with a verified email.
+     */
+    function getRandomUser(): User
+    {
+        return User::emailVerified()
+            ->inRandomOrder()
+            ->first();
+    }
+
+    /**
      * Retrieves the name of the first clinic associated with the current user.
      *
      * @return string The name of the first clinic.
      */
-    function getClinicName(): string
+    function getRandomClinicName(): string
     {
         return test()->user
             ->clinics()
+            ->inRandomOrder()
             ->first()
             ->name;
     }
@@ -48,15 +65,22 @@ describe('creating a new clinic', function () {
             ->toBeFalse();
     });
 
+    it('returns true if the name already exists', function () {
+        $this->name = getRandomClinicName();
+
+        expect(hasAnotherWithSameName())
+            ->toBeTrue();
+    });
+
     it('returns true if a name match is found regardless of whitespace', function () {
-        $this->name = getClinicName().' ';
+        $this->name = getRandomClinicName().' ';
 
         expect(hasAnotherWithSameName())
             ->toBeTrue();
     });
 
     it('returns true if a duplicate name exists, ignoring case', function () {
-        $this->name = mb_strtoupper(getClinicName());
+        $this->name = mb_strtoupper(getRandomClinicName());
 
         expect(hasAnotherWithSameName())
             ->toBeTrue();

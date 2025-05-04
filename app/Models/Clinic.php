@@ -65,7 +65,9 @@ final class Clinic extends Base
     protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => mb_trim($value),
+            set: fn (string $value) => mb_trim(
+                preg_replace('/\s+/', ' ', $value)
+            ),
         );
     }
 }
