@@ -12,7 +12,7 @@ use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 
-final class Patient extends Base implements CipherSweetEncrypted
+class Patient extends Base implements CipherSweetEncrypted
 {
     use UsesCipherSweet;
 
