@@ -24,42 +24,22 @@ final class HasAnotherWithSameNameAction
     public function handle(?string $currentId, string $name): bool
     {
         $this->currentId = $currentId;
-        $this->name = $this->getNameUppercaseWithoutSpaces(name: $name);
+        $this->name = normalize_name(name: $name);
 
         return $this->has();
     }
 
     /**
-     * Converts the given name to uppercase and removes extra spaces.
-     *
-     * This method takes a string input, removes any leading, trailing, 
-     * and excessive internal whitespace, and converts the resulting 
-     * string to uppercase.
-     *
-     * @param string $name The input name to be processed.
-     * @return string The processed name in uppercase without extra spaces.
-     */
-    private function getNameUppercaseWithoutSpaces(string $name): string
-    {
-        return (string) str($name)
-            ->squish()
-            ->upper();
-    }
-
-    /**
-     * Checks if there is another clinic with the same name.
-     *
-     * This method queries the database to determine if there is another clinic
-     * (including soft-deleted ones) that has the same name as the current clinic,
-     * but with a different ID. Additionally, it ensures that the clinic is
-     * associated with the currently authenticated user.
+     * Checks if there is another clinic with the same normalized name
+     * associated with the current authenticated user, excluding the clinic
+     * with the specified current ID.
      *
      * @return bool True if another clinic with the same name exists, false otherwise.
      */
     private function has(): bool
     {
         return Clinic::withTrashed()
-            ->where(DB::raw('UPPER(name)'), $this->name)
+            ->where('name_normalized', $this->name)
             ->where('id', '!=', $this->currentId)
             ->whereRelation('users', 'user_id', Auth::user()->id)
             ->exists();

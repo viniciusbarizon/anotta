@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('clinics', function (Blueprint $table) {
             $table->ulid('id')->primary();
 
-            $table->string('name', 100);
+            $table->string('name', 100)->index();
+            $table->string('name_normalized', 100)->index();
 
             $table->timestamp('created_at', precision: 0)->useCurrent();
             $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();

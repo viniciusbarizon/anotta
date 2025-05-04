@@ -45,6 +45,23 @@ describe('creating a new clinic', function () {
     }
 
     /**
+     * Retrieves a random clinic name associated with a user other than the current test user.
+     *
+     * This method queries the `Clinic` model to find a clinic that is linked to a user
+     * whose ID is not equal to the current test user's ID. It then selects a random clinic
+     * from the results and returns its name.
+     *
+     * @return string The name of a randomly selected clinic associated with another user.
+     */
+    function getRandomClinicNameFromAnotherUser(): string
+    {
+        return Clinic::whereRelation('users', 'id', '!=', test()->user->id)
+            ->inRandomOrder()
+            ->first()
+            ->name;
+    }
+
+    /**
      * Retrieves the name of the first clinic associated with the current user.
      *
      * @return string The name of the first clinic.
@@ -60,6 +77,13 @@ describe('creating a new clinic', function () {
 
     it('returns false if no duplicate name exists', function () {
         $this->name = fake()->company();
+
+        expect(hasAnotherWithSameName())
+            ->toBeFalse();
+    });
+
+    it('returns false if the name exists for another user', function () {
+        $this->name = getRandomClinicNameFromAnotherUser();
 
         expect(hasAnotherWithSameName())
             ->toBeFalse();

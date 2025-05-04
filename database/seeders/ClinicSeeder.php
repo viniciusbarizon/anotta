@@ -6,30 +6,26 @@ namespace Database\Seeders;
 
 use App\Models\Clinic;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 final class ClinicSeeder extends Seeder
-{
-    use WithoutModelEvents;
-
+{    
     /**
-     * Seed the database with clinics and associate them with users who have verified their email.
+     * Seed the database with clinics for users who have verified their email.
      *
-     * This method iterates through all users with verified email addresses, creates a new clinic
-     * for each user using the Clinic factory, and associates the clinic with the user.
+     * This method retrieves all users with verified email addresses, logs in each user,
+     * and creates a clinic associated with the logged-in user using a factory.
      *
      * @return void
      */
     public function run(): void
     {
         foreach ($this->getUsersWithEmailVerified() as $user) {
-            $clinic = Clinic::factory()->create();
+            Auth::login($user);
 
-            $user->clinics()->attach(
-                $clinic->id
-            );
+            Clinic::factory()->create();
         }
     }
 

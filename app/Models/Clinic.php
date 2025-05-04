@@ -19,7 +19,10 @@ final class Clinic extends Base
         'users',
     ];
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+        'name_normalized'
+    ];
 
     /**
      * Get the patient records associated with the clinic.
@@ -57,17 +60,37 @@ final class Clinic extends Base
     }
 
     /**
+     * The "booted" method is a model event hook that is automatically called
+     * when the model is being initialized. In this case, it is used to define
+     * a "saving" event listener for the Clinic model.
+     *
+     * The "saving" event is triggered before a model is saved (either created
+     * or updated). This listener ensures that the "name_normalized" attribute
+     * is automatically set by normalizing the "name" attribute using the
+     * "normalize_name" helper function before the model is persisted to the
+     * database.
+     *
+     * @return void
+     */
+    protected static function booted(): void
+    {
+        static::saving(function ($clinic) {
+            $clinic->name_normalized = normalize_name($clinic->name);
+        });
+    }
+
+    /**
      * Define an accessor/mutator for the "name" attribute.
      *
      * This method creates an attribute mutator that processes the input value
-     * by removing extra whitespace (squishing) before saving it to the database.
+     * by removing extra whitespace and squishing it into a single string.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => str($value)->squish()
+            set: fn (string $value) => (string) str($value)->squish()
         );
     }
 }
