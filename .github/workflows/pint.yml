@@ -23,4 +23,12 @@ jobs:
         run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Run Pint
-        run: vendor/bin/pint --test
+        run: vendor/bin/pint
+
+      - name: Commit Pint fixes
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: fix code style with Pint'
+          commit_options: '--no-verify'
+          file_pattern: '*.php'
