@@ -23,7 +23,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreignUlid('clinic_id')->constrained();
-            $table->foreignUlid('clinician_id')->constrained();
+            $table->foreignUlid('clinician_id')->constrained()->nullable();
             $table->foreignUlid('patient_id')->constrained();
         });
     }

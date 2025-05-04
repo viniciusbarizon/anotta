@@ -7,8 +7,9 @@ namespace App\Models;
 use App\Observers\UserObserver;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,8 +44,6 @@ final class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the clinician associated with the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function clinician(): HasOne
     {
@@ -53,8 +52,6 @@ final class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Define a many-to-many relationship between the User model and the Clinic model.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function clinics(): BelongsToMany
     {
@@ -72,5 +69,23 @@ final class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    #[Scope]
+    /**
+     * Scope a query to only include users who have not verified their email.
+     */
+    protected function emailUnverified(Builder $query): void
+    {
+        $query->whereNull('email_verified_at');
+    }
+
+    #[Scope]
+    /**
+     * Scope a query to only include users who have verified their email.
+     */
+    protected function emailVerified(Builder $query): void
+    {
+        $query->whereNotNull('email_verified_at');
     }
 }
