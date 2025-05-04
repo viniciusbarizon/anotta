@@ -31,4 +31,4 @@ jobs:
         with:
           commit_message: 'chore: fix code style with Pint'
           commit_options: '--no-verify'
-          file_pattern: '*.php'
+          file_pattern: '**/*.php'
