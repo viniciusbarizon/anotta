@@ -25,8 +25,10 @@ jobs:
       - name: Run Pint
         run: vendor/bin/pint
 
+      - name: Check Git Status
+        run: git status
+
       - name: Commit Pint fixes
-        if: github.base_ref == 'main' || github.ref == 'refs/heads/main'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: fix code style with Pint'
