@@ -26,7 +26,7 @@ jobs:
         run: vendor/bin/pint
 
       - name: Commit Pint fixes
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.base_ref == 'main' || github.ref == 'refs/heads/main'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: fix code style with Pint'
