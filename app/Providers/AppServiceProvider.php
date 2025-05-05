@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Database\Eloquent\Model;
 
 final class AppServiceProvider extends ServiceProvider
 {
