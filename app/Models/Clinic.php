@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy([ClinicObserver::class])]
 #[ScopedBy([UserRelationScope::class])]
-final class Clinic extends Base
+class Clinic extends Base
 {
     protected $cascadeDeletes = [
         'patientRecords',
