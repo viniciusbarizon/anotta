@@ -60,8 +60,7 @@ final class ClinicResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->withTrashed()
-            ->fromUserLogged();
+            ->withTrashed();
     }
 
     /**
