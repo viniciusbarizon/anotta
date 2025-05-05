@@ -27,8 +27,6 @@ final class AppServiceProvider extends ServiceProvider
      *   - Minimum length of 12 characters.
      *   - Must include letters, mixed case, numbers, symbols, and be uncompromised.
      * - Enables automatic eager loading of relationships for Eloquent models.
-     *
-     * @return void
      */
     public function boot(): void
     {
