@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Actions\Clinic\HasAnotherWithSameNameAction;
 use App\Models\Clinic;
+use App\Models\Scopes\UserRelationScope;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
@@ -75,7 +76,8 @@ describe('creating a new clinic', function () {
      */
     function getRandomClinicNameFromAnotherUser(): string
     {
-        return Clinic::whereRelation('users', 'id', '!=', test()->user->id)
+        return Clinic::withoutGlobalScope(UserRelationScope::class)
+            ->whereRelation('users', 'id', '!=', test()->user->id)
             ->inRandomOrder()
             ->first()
             ->name;
