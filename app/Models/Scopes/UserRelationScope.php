@@ -1,28 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class UserRelationScope implements Scope
+final class UserRelationScope implements Scope
 {
     /**
-     * Apply a global scope to the query builder to filter results based on the logged-in user.
+     * Apply the scope to a given Eloquent query builder.
      *
-     * This scope adds a condition to the query to ensure that only records
-     * related to the currently authenticated user are retrieved. It uses
-     * the `whereRelation` method to filter based on the `users` relationship
-     * and matches the `user_id` with the ID of the authenticated user.
+     * This scope restricts the query results based on the authenticated user's role.
+     * If the authenticated user is a super admin, no restrictions are applied.
+     * Otherwise, the query is filtered to include only records related to the authenticated user.
      *
-     * @param Builder $builder The query builder instance.
-     * @param Model $model The model instance being queried.
-     *
-     * @return void
+     * @param  Builder  $builder  The query builder instance.
+     * @param  Model  $model  The Eloquent model instance.
      */
     public function apply(Builder $builder, Model $model): void
     {
+        if (auth()->user()->is_super_admin) {
+            return;
+        }
+
         $builder->whereRelation('users', 'user_id', auth()->user()->id);
     }
 }

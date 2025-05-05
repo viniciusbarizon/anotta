@@ -6,9 +6,12 @@ namespace App\Policies;
 
 use App\Models\Clinic;
 use App\Models\User;
+use App\Traits\SuperAdminOverride;
 
 final class ClinicPolicy
 {
+    use SuperAdminOverride;
+
     /**
      * Determine whether the user can view any clinics.
      */

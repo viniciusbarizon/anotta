@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Observers\ClinicObserver;
 use App\Models\Scopes\UserRelationScope;
+use App\Observers\ClinicObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
 #[ObservedBy([ClinicObserver::class])]
 #[ScopedBy([UserRelationScope::class])]
