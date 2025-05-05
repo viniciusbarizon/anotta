@@ -7,6 +7,7 @@ namespace App\Providers;
 use Filament\Tables\Table;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Database\Eloquent\Model;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +34,7 @@ final class AppServiceProvider extends ServiceProvider
                 ->symbols()
                 ->uncompromised();
         });
+
+        Model::automaticallyEagerLoadRelationships();
     }
 }
