@@ -12,10 +12,6 @@ use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -119,23 +115,20 @@ final class ClinicResource extends Resource
      *
      * The table includes:
      * - Filters:
-     *   - `TrashedFilter`: Allows filtering by trashed records, with a default value of 'with_trashed'.
+     *   - `TrashedFilter`: A filter to handle trashed records, defaulting to 'with_trashed'.
      *
      * - Columns:
-     *   - `id`: A text column that is copyable and visible only to super admins, labeled as 'ID'.
+     *   - `id`: A text column that is copyable and visible only to super admins, labeled 'ID'.
      *   - `name`: A text column for the clinic name.
-     *   - `created_at`: A date-time column labeled as 'Criado' (Created).
-     *   - `updated_at`: A date-time column labeled as 'Atualizado' (Updated).
-     *   - `deleted_at`: A date-time column labeled as 'Eliminado' (Deleted).
+     *   - `created_at`: A date-time column labeled 'Criado' (Created).
+     *   - `updated_at`: A date-time column labeled 'Atualizado' (Updated).
+     *   - `deleted_at`: A date-time column labeled 'Eliminado' (Deleted).
      *
      * - Actions:
-     *   - `EditAction`: Allows editing of a record.
-     *   - `deleteCascade`: Deletes a record and its related data.
-     *   - `restoreCascade`: Restores a deleted record and its related data.
+     *   - Configured using `ActionPresets::actions()`.
      *
      * - Bulk Actions:
-     *   - `DeleteBulkAction`: Allows bulk deletion of records.
-     *   - `RestoreBulkAction`: Allows bulk restoration of deleted records.
+     *   - Configured using `ActionPresets::bulkActions()`.
      */
     public static function table(Table $table): Table
     {
@@ -168,16 +161,11 @@ final class ClinicResource extends Resource
                     label: __('Eliminado')
                 ),
             ])
-            ->actions([
-                EditAction::make(),
-                ActionPresets::deleteCascade(),
-                ActionPresets::restoreCascade(),
-            ])
+            ->actions(
+                ActionPresets::actions()
+            )
             ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+                ActionPresets::bulkActions(),
             ]);
     }
 }

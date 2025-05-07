@@ -4,11 +4,32 @@ declare(strict_types=1);
 
 namespace App\Filament\Tables;
 
+use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\RestoreBulkAction;
 
 final class ActionPresets
 {
+    /**
+     * Defines a list of actions for the table.
+     *
+     * @return array An array of actions, including:
+     *               - EditAction: Allows editing of the table entry.
+     *               - deleteCascade: Deletes the entry and its related data.
+     *               - restoreCascade: Restores the entry and its related data.
+     */
+    public static function actions(): array
+    {
+        return [
+            EditAction::make(),
+            self::deleteCascade(),
+            self::restoreCascade(),
+        ];
+    }
+
     /**
      * Creates a DeleteAction preset with a modal confirmation for cascading deletion.
      *
@@ -45,5 +66,18 @@ final class ActionPresets
                 __('Apenas este registo será restaurado. Os restantes dados associados não serão recuperados automaticamente')
             )
             ->modalSubmitActionLabel(__('Sim, restaurar apenas este registo'));
+    }
+
+    /**
+     * Defines a group of bulk actions for the table.
+     *
+     * @return BulkActionGroup The group of bulk actions, including delete and restore actions.
+     */
+    public static function bulkActions(): BulkActionGroup
+    {
+        return BulkActionGroup::make([
+            DeleteBulkAction::make(),
+            RestoreBulkAction::make(),
+        ]);
     }
 }
