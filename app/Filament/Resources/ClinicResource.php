@@ -8,11 +8,11 @@ use App\Actions\Clinic\HasAnotherWithSameNameAction;
 use App\Filament\Resources\ClinicResource\Pages;
 use App\Filament\Tables\ActionPresets;
 use App\Filament\Tables\ColumnPresets;
+use App\Filament\Tables\FilterPresets;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -110,32 +110,25 @@ final class ClinicResource extends Resource
     /**
      * Configures the table for the ClinicResource.
      *
-     * @param  Table  $table  The table instance to configure.
+     * @param Table $table The table instance to be configured.
+     * 
      * @return Table The configured table instance.
      *
      * The table includes:
-     * - Filters:
-     *   - `TrashedFilter`: A filter to handle trashed records, defaulting to 'with_trashed'.
-     *
+     * - Filters defined by `FilterPresets::filters()`.
      * - Columns:
-     *   - `id`: A text column that is copyable and visible only to super admins, labeled 'ID'.
-     *   - `name`: A text column for the clinic name.
-     *   - `created_at`: A date-time column labeled 'Criado' (Created).
-     *   - `updated_at`: A date-time column labeled 'Atualizado' (Updated).
-     *   - `deleted_at`: A date-time column labeled 'Eliminado' (Deleted).
-     *
-     * - Actions:
-     *   - Configured using `ActionPresets::actions()`.
-     *
-     * - Bulk Actions:
-     *   - Configured using `ActionPresets::bulkActions()`.
+     *   - A text column for the 'id' field, which is copyable and visible only to super admins.
+     *   - A text column for the 'name' field.
+     *   - A date-time column for the 'created_at' field, labeled as 'Criado'.
+     *   - A date-time column for the 'updated_at' field, labeled as 'Atualizado'.
+     *   - A date-time column for the 'deleted_at' field, labeled as 'Eliminado'.
+     * - Actions defined by `ActionPresets::actions()`.
+     * - Bulk actions defined by `ActionPresets::bulkActions()`.
      */
     public static function table(Table $table): Table
     {
         return $table
-            ->filters([
-                TrashedFilter::make()->default('with_trashed'),
-            ])
+            ->filters(FilterPresets::filters())
             ->columns([
                 ColumnPresets::text(
                     isCopyable: true,
