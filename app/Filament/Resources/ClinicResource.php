@@ -110,8 +110,7 @@ final class ClinicResource extends Resource
     /**
      * Configures the table for the ClinicResource.
      *
-     * @param Table $table The table instance to be configured.
-     * 
+     * @param  Table  $table  The table instance to be configured.
      * @return Table The configured table instance.
      *
      * The table includes:
