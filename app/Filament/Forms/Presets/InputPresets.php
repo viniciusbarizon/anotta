@@ -11,13 +11,12 @@ final class InputPresets
     /**
      * Creates a configured TextInput instance for Filament forms.
      *
-     * @param string      $name         The name of the input field.
-     * @param string|null $helperText   Optional helper text to display below the input.
-     * @param bool        $isRequired   Whether the input is required. Defaults to true.
-     * @param string|null $label        Optional label for the input. If null, the label will be translated.
-     * @param int|null    $maxLength    Optional maximum length for the input value.
-     *
-     * @return TextInput  The configured TextInput instance.
+     * @param  string  $name  The name of the input field.
+     * @param  string|null  $helperText  Optional helper text to display below the input.
+     * @param  bool  $isRequired  Whether the input is required. Defaults to true.
+     * @param  string|null  $label  Optional label for the input. If null, the label will be translated.
+     * @param  int|null  $maxLength  Optional maximum length for the input value.
+     * @return TextInput The configured TextInput instance.
      */
     public static function textInput(
         string $name,
