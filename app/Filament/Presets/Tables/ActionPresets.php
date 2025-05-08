@@ -43,11 +43,11 @@ final class ActionPresets
     {
         return DeleteAction::make()
             ->modalHeading(
-                fn($record) => __('Tem a certeza que deseja eliminar :name?', [
+                fn ($record) => __('Tem a certeza que deseja eliminar :name?', [
                     'name' => $record->name,
                 ])
             )
-            ->modalDescription('⚠️ ' . __('Esta ação irá ELIMINAR EM CASCATA todos os dados associados.'))
+            ->modalDescription('⚠️ '.__('Esta ação irá ELIMINAR EM CASCATA todos os dados associados.'))
             ->modalSubmitActionLabel(__('Sim, apagar tudo'));
     }
 
@@ -64,7 +64,7 @@ final class ActionPresets
     {
         return RestoreAction::make()
             ->modalDescription(
-                '⚠️ ' .
+                '⚠️ '.
                     __('Apenas este registo será restaurado. Os restantes dados associados não serão recuperados automaticamente')
             )
             ->modalSubmitActionLabel(__('Sim, restaurar apenas este registo'));
