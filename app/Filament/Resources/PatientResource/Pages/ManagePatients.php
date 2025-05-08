@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\PatientResource\Pages;
 
+use App\Filament\Presets\Actions\HeaderPresets;
 use App\Filament\Resources\PatientResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
 final class ManagePatients extends ManageRecords
@@ -14,8 +14,6 @@ final class ManagePatients extends ManageRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\CreateAction::make(),
-        ];
+        return HeaderPresets::default();
     }
 }
