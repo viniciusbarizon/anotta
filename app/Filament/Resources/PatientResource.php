@@ -109,6 +109,6 @@ final class PatientResource extends Resource
      */
     public static function getModelLabel(): string
     {
-        return __('Paciente');
+        return __('Utente');
     }
 }

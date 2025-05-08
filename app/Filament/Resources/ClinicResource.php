@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Actions\Clinic\HasAnotherWithSameNameAction;
+use App\Filament\Forms\Presets\InputPresets;
 use App\Filament\Resources\ClinicResource\Pages;
-use App\Filament\Tables\ActionPresets;
-use App\Filament\Tables\ColumnPresets;
-use App\Filament\Tables\FilterPresets;
+use App\Filament\Tables\Presets\ActionPresets;
+use App\Filament\Tables\Presets\ColumnPresets;
+use App\Filament\Tables\Presets\FilterPresets;
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\Component;
+use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
@@ -83,27 +86,24 @@ final class ClinicResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('name')
-                ->translateLabel()
-                ->required()
-                ->maxLength(100)
-                ->helperText(str('**É um profissional independente?** Indique o seu nome profissional.')
-                    ->inlineMarkdown()
-                    ->toHtmlString())
-                ->rule(static function (Forms\Get $get, Forms\Components\Component $component): Closure {
-                    return static function (string $attribute, string $name, Closure $fail) use ($component) {
-                        $hasAnotherWithSameNameAction = (new HasAnotherWithSameNameAction)->handle(
-                            currentId: $component->getRecord()?->getKey(),
-                            name: $name
-                        );
+            InputPresets::textInput(
+                name: 'name',
+                helperText: '**É um profissional independente?** Indique o seu nome profissional.',
+                maxLength: 100
+            )->rule(static function (Get $get, Component $component): Closure {
+                return static function (string $attribute, string $name, Closure $fail) use ($component) {
+                    $hasAnotherWithSameNameAction = (new HasAnotherWithSameNameAction)->handle(
+                        currentId: $component->getRecord()?->getKey(),
+                        name: $name
+                    );
 
-                        if ($hasAnotherWithSameNameAction === false) {
-                            return;
-                        }
+                    if ($hasAnotherWithSameNameAction === false) {
+                        return;
+                    }
 
-                        $fail(__('Este nome de clínica já está associado à tua conta.'));
-                    };
-                }),
+                    $fail(__('Este nome de clínica já está associado à tua conta.'));
+                };
+            }),
         ]);
     }
 

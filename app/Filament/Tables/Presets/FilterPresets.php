@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Tables;
+namespace App\Filament\Tables\Presets;
 
 use Filament\Tables\Filters\TrashedFilter;
 

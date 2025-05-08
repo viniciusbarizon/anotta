@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Tables;
+namespace App\Filament\Tables\Presets;
 
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -42,9 +42,10 @@ final class ActionPresets
     public static function deleteCascade(): DeleteAction
     {
         return DeleteAction::make()
-            ->modalHeading(fn ($record) => __('Tem a certeza que deseja eliminar :name?', [
-                'name' => $record->name,
-            ])
+            ->modalHeading(
+                fn ($record) => __('Tem a certeza que deseja eliminar :name?', [
+                    'name' => $record->name,
+                ])
             )
             ->modalDescription('⚠️ '.__('Esta ação irá ELIMINAR EM CASCATA todos os dados associados.'))
             ->modalSubmitActionLabel(__('Sim, apagar tudo'));
@@ -62,8 +63,9 @@ final class ActionPresets
     public static function restoreCascade(): RestoreAction
     {
         return RestoreAction::make()
-            ->modalDescription('⚠️ '.
-                __('Apenas este registo será restaurado. Os restantes dados associados não serão recuperados automaticamente')
+            ->modalDescription(
+                '⚠️ '.
+                    __('Apenas este registo será restaurado. Os restantes dados associados não serão recuperados automaticamente')
             )
             ->modalSubmitActionLabel(__('Sim, restaurar apenas este registo'));
     }
