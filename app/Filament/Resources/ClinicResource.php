@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Actions\Clinic\HasAnotherWithSameNameAction;
-use App\Filament\Forms\Presets\InputPresets;
+use App\Filament\Presets\Forms\InputPresets;
+use App\Filament\Presets\Tables\ActionPresets;
+use App\Filament\Presets\Tables\ColumnPresets;
+use App\Filament\Presets\Tables\FilterPresets;
 use App\Filament\Resources\ClinicResource\Pages;
-use App\Filament\Tables\Presets\ActionPresets;
-use App\Filament\Tables\Presets\ColumnPresets;
-use App\Filament\Tables\Presets\FilterPresets;
 use Closure;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Form;
