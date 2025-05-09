@@ -17,7 +17,7 @@ return new class extends Migration
      * - `created_at`: A timestamp for the creation date, with default value as the current timestamp.
      * - `updated_at`: A timestamp for the last update date, with default value as the current timestamp and updated automatically on changes.
      * - `deleted_at`: A nullable timestamp for soft deletes.
-     * 
+     *
      * Additionally, the table includes the following foreign key relationships:
      * - `clinic_id`: References the `id` column in the `clinics` table.
      * - `clinician_id`: References the `id` column in the `clinicians` table (nullable).

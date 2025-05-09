@@ -20,8 +20,6 @@ return new class extends Migration
      * - `deleted_at`: A soft delete timestamp column for soft deletion functionality.
      *
      * The table is created using Laravel's Schema Builder.
-     *
-     * @return void
      */
     public function up(): void
     {

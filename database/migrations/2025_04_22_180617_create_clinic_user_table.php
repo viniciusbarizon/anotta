@@ -11,7 +11,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      *
-     * This migration creates the `clinic_user` pivot table, which establishes a 
+     * This migration creates the `clinic_user` pivot table, which establishes a
      * many-to-many relationship between clinics and users. The table includes:
      * - `clinic_id`: A foreign ULID referencing the `clinics` table.
      * - `user_id`: A foreign ID referencing the `users` table.

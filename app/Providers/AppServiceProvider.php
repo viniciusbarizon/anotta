@@ -43,8 +43,6 @@ final class AppServiceProvider extends ServiceProvider
      * represents the day, month, year, hour, and minute.
      *
      * Example format: 25/12/2023 14:30
-     *
-     * @return void
      */
     private function setDefaultForDateTime(): void
     {
@@ -56,8 +54,6 @@ final class AppServiceProvider extends ServiceProvider
      *
      * - Enables automatic eager loading of relationships for models.
      * - Disables mass assignment protection by unguarding all models.
-     *
-     * @return void
      */
     private function setDefaultsForModels(): void
     {
@@ -76,8 +72,6 @@ final class AppServiceProvider extends ServiceProvider
      * - At least one number.
      * - At least one symbol.
      * - Ensures the password has not been compromised in known data breaches.
-     *
-     * @return void
      */
     private function setDefaultsForPasswords(): void
     {

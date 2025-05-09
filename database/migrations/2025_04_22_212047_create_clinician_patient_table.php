@@ -13,7 +13,7 @@ return new class extends Migration
      *
      * This migration creates the `clinician_patient` pivot table, which establishes
      * a many-to-many relationship between clinicians and patients. The table includes:
-     * 
+     *
      * - `clinician_id`: A foreign ULID referencing the `clinicians` table.
      * - `patient_id`: A foreign ULID referencing the `patients` table.
      * - A composite primary key consisting of `clinician_id` and `patient_id`.
@@ -21,8 +21,6 @@ return new class extends Migration
      * - A `deleted_at` column for soft deletes.
      *
      * The foreign keys are automatically constrained to ensure referential integrity.
-     *
-     * @return void
      */
     public function up(): void
     {
