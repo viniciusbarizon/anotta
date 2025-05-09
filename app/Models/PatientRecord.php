@@ -13,12 +13,6 @@ final class PatientRecord extends Base implements CipherSweetEncrypted
 {
     use UsesCipherSweet;
 
-    protected $fillable = [
-        'clinical_note',
-        'patient_id',
-        'professional_id',
-    ];
-
     /**
      * Configures the CipherSweet encryption for the PatientRecord model.
      *

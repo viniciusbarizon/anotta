@@ -30,8 +30,57 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Table::$defaultDateTimeDisplayFormat = 'd/m/Y H:i';
+        $this->setDefaultForDateTime();
+        $this->setDefaultsForModels();
+        $this->setDefaultsForPasswords();
+    }
 
+    /**
+     * Sets the default display format for DateTime values in tables.
+     *
+     * This method configures the default format for displaying DateTime
+     * values in the application. The format is set to 'd/m/Y H:i', which
+     * represents the day, month, year, hour, and minute.
+     *
+     * Example format: 25/12/2023 14:30
+     *
+     * @return void
+     */
+    private function setDefaultForDateTime(): void
+    {
+        Table::$defaultDateTimeDisplayFormat = 'd/m/Y H:i';
+    }
+
+    /**
+     * Sets default configurations for all Eloquent models.
+     *
+     * - Enables automatic eager loading of relationships for models.
+     * - Disables mass assignment protection by unguarding all models.
+     *
+     * @return void
+     */
+    private function setDefaultsForModels(): void
+    {
+        Model::automaticallyEagerLoadRelationships();
+        Model::unguard();
+    }
+
+    /**
+     * Set default password requirements for the application.
+     *
+     * This method configures the default password validation rules
+     * using Laravel's Password validation builder. The rules include:
+     * - Minimum length of 12 characters.
+     * - At least one letter.
+     * - At least one uppercase and one lowercase letter.
+     * - At least one number.
+     * - At least one symbol.
+     * - Ensures the password has not been compromised in known data breaches.
+     *
+     * @return void
+     */
+    private function setDefaultsForPasswords(): void
+    {
         Password::defaults(function () {
             return Password::min(12)
                 ->letters()
@@ -40,7 +89,5 @@ final class AppServiceProvider extends ServiceProvider
                 ->symbols()
                 ->uncompromised();
         });
-
-        Model::automaticallyEagerLoadRelationships();
     }
 }

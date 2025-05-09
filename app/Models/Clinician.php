@@ -10,10 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Clinician extends Base
 {
-    protected $fillable = [
-        'user_id',
-    ];
-
     /**
      * Define a many-to-many relationship between the clinician and clinics.
      *

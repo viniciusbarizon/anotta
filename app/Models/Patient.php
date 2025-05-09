@@ -16,12 +16,6 @@ final class Patient extends Base implements CipherSweetEncrypted
 {
     use UsesCipherSweet;
 
-    protected $fillable = [
-        'country_code',
-        'full_name',
-        'tax_id',
-    ];
-
     /**
      * Configures the CipherSweet encryption for the Patient model.
      *

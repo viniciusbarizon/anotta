@@ -24,11 +24,6 @@ final class Clinic extends Base
         'users',
     ];
 
-    protected $fillable = [
-        'name',
-        'name_normalized',
-    ];
-
     /**
      * Get the patient records associated with the clinic.
      *

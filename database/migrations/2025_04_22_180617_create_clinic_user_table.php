@@ -10,6 +10,18 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * This migration creates the `clinic_user` pivot table, which establishes a 
+     * many-to-many relationship between clinics and users. The table includes:
+     * - `clinic_id`: A foreign ULID referencing the `clinics` table.
+     * - `user_id`: A foreign ID referencing the `users` table.
+     * - A composite primary key consisting of `clinic_id` and `user_id`.
+     * - A `created_at` timestamp with default current time.
+     * - A `deleted_at` column for soft deletes.
+     *
+     * Constraints:
+     * - `clinic_id` is a foreign key constrained to the `clinics` table.
+     * - `user_id` is a foreign key constrained to the `users` table.
      */
     public function up(): void
     {
@@ -22,13 +34,5 @@ return new class extends Migration
             $table->timestamp('created_at', precision: 0)->useCurrent();
             $table->softDeletes();
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('clinic_user');
     }
 };

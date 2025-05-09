@@ -22,17 +22,4 @@ return new class extends Migration
                 ->default(false);
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * This method rolls back the changes made in the `up` method by removing
-     * the `is_super_admin` column from the `users` table.
-     */
-    public function down(): void
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_super_admin');
-        });
-    }
 };
