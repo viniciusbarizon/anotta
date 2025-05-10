@@ -143,8 +143,7 @@ final class ElementPresets
      * without making any changes. Otherwise, it will enable the "live"
      * state on the element.
      *
-     * @param bool $isLive Determines whether the element should be set to "live".
-     * @return void
+     * @param  bool  $isLive  Determines whether the element should be set to "live".
      */
     private static function setLive(bool $isLive): void
     {

@@ -10,12 +10,12 @@ use App\Models\Clinic;
 use App\Models\Country;
 use App\Models\Patient;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Get;
 
 final class PatientResource extends Resource
 {
@@ -55,7 +55,7 @@ final class PatientResource extends Resource
                     id: 'tax_id',
                     label: 'NIF'
                 ),
-                //->maxLength(fn (Get $get): int => $get('country_id') === $this->portugalId ? 9 : 20)
+                // ->maxLength(fn (Get $get): int => $get('country_id') === $this->portugalId ? 9 : 20)
             ]);
     }
 
