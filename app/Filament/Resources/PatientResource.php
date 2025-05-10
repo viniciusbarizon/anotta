@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Get;
 
 final class PatientResource extends Resource
 {
@@ -52,9 +53,9 @@ final class PatientResource extends Resource
 
                 ElementPresets::textInput(
                     id: 'tax_id',
-                    label: 'NIF',
-                    maxLength: 20
+                    label: 'NIF'
                 ),
+                //->maxLength(fn (Get $get): int => $get('country_id') === $this->portugalId ? 9 : 20)
             ]);
     }
 

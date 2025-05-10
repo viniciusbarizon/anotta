@@ -37,6 +37,7 @@ final class ElementPresets
         string $model,
         ?string $default = null,
         ?string $helperText = null,
+        bool $isLive = false,
         bool $isRequired = true
     ): Select {
         $options = $model::pluck($columnValue, 'id');
@@ -50,6 +51,7 @@ final class ElementPresets
         self::$label = $label;
 
         self::setHelperText();
+        self::setLive(isLive: $isLive);
         self::setLabel();
         self::setRequired();
 
@@ -73,7 +75,7 @@ final class ElementPresets
      */
     public static function textInput(
         string $id,
-        int $maxLength,
+        ?int $maxLength = null,
         ?string $helperText = null,
         bool $isRequired = true,
         ?string $label = null,
@@ -132,6 +134,25 @@ final class ElementPresets
         self::$element->label(
             __(self::$label)
         );
+    }
+
+    /**
+     * Sets the "live" state of the element.
+     *
+     * If the provided parameter is `false`, the method will return early
+     * without making any changes. Otherwise, it will enable the "live"
+     * state on the element.
+     *
+     * @param bool $isLive Determines whether the element should be set to "live".
+     * @return void
+     */
+    private static function setLive(bool $isLive): void
+    {
+        if ($isLive === false) {
+            return;
+        }
+
+        self::$element->live();
     }
 
     /**
