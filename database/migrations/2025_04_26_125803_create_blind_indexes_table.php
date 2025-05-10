@@ -25,7 +25,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('blind_indexes', function (Blueprint $table) {
-            $table->morphs('indexable');
+            $table->ulidMorphs('indexable');
             $table->string('name');
             $table->string('value');
 
