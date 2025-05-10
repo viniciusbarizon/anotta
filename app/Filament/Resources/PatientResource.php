@@ -45,14 +45,17 @@ final class PatientResource extends Resource
                 ElementPresets::select(
                     columnValue: 'name',
                     default: 'Portugal',
+                    helperText: 'País onde o NIF foi emitido. **Não confundir com nacionalidade.**',
                     id: 'country_id',
-                    label: 'País',
+                    label: 'País do NIF',
                     model: Country::class
                 ),
 
-                Forms\Components\TextInput::make('tax_id')
-                    ->required()
-                    ->maxLength(20),
+                ElementPresets::textInput(
+                    id: 'tax_id',
+                    label: 'NIF',
+                    maxLength: 20
+                ),
             ]);
     }
 

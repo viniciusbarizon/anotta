@@ -11,20 +11,23 @@ use Illuminate\Support\Collection;
 final class ElementPresets
 {
     private static Select|TextInput $element;
-
+    public static ?string $helperText;
     private static bool $isRequired;
 
     private static ?string $label;
 
     /**
-     * Creates a Filament Select element with the specified configuration.
+     * Creates a Filament Select form element with specified configurations.
      *
-     * @param  string  $columnValue  The column name to be used as the value for the select options.
-     * @param  string  $id  The unique identifier for the select element.
-     * @param  string  $label  The label for the select element.
-     * @param  string  $model  The model class to fetch the options from.
-     * @param  bool  $isRequired  Indicates whether the select element is required. Defaults to true.
-     * @return Select The configured Filament Select element.
+     * @param string      $columnValue The column name to be used as the value for the options.
+     * @param string      $id          The unique identifier for the select element.
+     * @param string      $label       The label for the select element.
+     * @param string      $model       The model class to fetch the options from.
+     * @param string|null $default     The default value for the select element (optional).
+     * @param string|null $helperText  The helper text to display below the select element (optional).
+     * @param bool        $isRequired  Whether the select element is required (default: true).
+     *
+     * @return Select The configured Filament Select form element.
      */
     public static function select(
         string $columnValue,
@@ -32,6 +35,7 @@ final class ElementPresets
         string $label,
         string $model,
         ?string $default = null,
+        ?string $helperText = null,
         bool $isRequired = true
     ): Select {
         $options = $model::pluck($columnValue, 'id');
@@ -40,16 +44,18 @@ final class ElementPresets
             ->options($options)
             ->searchable();
 
+        self::$helperText = $helperText;
         self::$isRequired = $isRequired;
         self::$label = $label;
+
+        self::setHelperText();
+        self::setLabel();
+        self::setRequired();
 
         self::setSelectDefault(
             default: $default,
             options: $options
         );
-
-        self::setLabel();
-        self::setRequired();
 
         return self::$element;
     }
@@ -74,21 +80,79 @@ final class ElementPresets
         self::$element = TextInput::make($id)
             ->maxLength($maxLength);
 
-        if (is_string($helperText)) {
-            self::$element->helperText(
-                str('**É um profissional independente?** Indique o seu nome profissional.')
-                    ->inlineMarkdown()
-                    ->toHtmlString()
-            );
-        }
-
+        self::$helperText = $helperText;
         self::$isRequired = $isRequired;
         self::$label = $label;
 
+        self::setHelperText();
         self::setLabel();
         self::setRequired();
 
         return self::$element;
+    }
+
+    /**
+     * Sets the helper text for the current element if it is defined.
+     *
+     * This method checks if the static property `$helperText` is not null.
+     * If it is defined, it applies the helper text to the static property
+     * `$element` using the `helperText` method. The helper text is processed
+     * by translating it, converting it to inline Markdown, and then converting
+     * it to an HTML string.
+     *
+     * @return void
+     */
+    private static function setHelperText(): void
+    {
+        if (is_null(self::$helperText) === true) {
+            return;
+        }
+
+        self::$element->helperText(
+            str(__(self::$helperText))
+                ->inlineMarkdown()
+                ->toHtmlString()
+        );
+    }
+
+    /**
+     * Sets the label for the element.
+     *
+     * If the static property `$label` is null, it calls the `translateLabel` method
+     * on the `$element` to automatically translate the label. Otherwise, it explicitly
+     * sets the label of the `$element` using the value of `$label`.
+     *
+     * @return void
+     */
+    private static function setLabel(): void
+    {
+        if (is_null(self::$label) === true) {
+            self::$element->translateLabel();
+            return;
+        }
+
+        self::$element->label(
+            __(self::$label)
+        );
+    }
+
+    /**
+     * Sets the current element as required if the `$isRequired` property is true.
+     * 
+     * This method checks the static `$isRequired` property. If it is set to `true`,
+     * the `required()` method is called on the static `$element` property to mark
+     * the element as required. If `$isRequired` is `false`, the method exits without
+     * making any changes.
+     *
+     * @return void
+     */
+    private static function setRequired(): void
+    {
+        if (self::$isRequired === false) {
+            return;
+        }
+
+        self::$element->required();
     }
 
     /**
@@ -114,40 +178,5 @@ final class ElementPresets
         self::$element->default(
             $options->keys()->first()
         );
-    }
-
-    /**
-     * Sets the label for the element.
-     *
-     * If the static property `$label` is null, it calls the `translateLabel` method
-     * on the `$element` to automatically translate the label. Otherwise, it explicitly
-     * sets the label of the `$element` using the value of `$label`.
-     */
-    private static function setLabel(): void
-    {
-        if (is_null(self::$label) === true) {
-            self::$element->translateLabel();
-
-            return;
-        }
-
-        self::$element->label(self::$label);
-    }
-
-    /**
-     * Sets the current element as required if the `$isRequired` property is true.
-     *
-     * This method checks the static `$isRequired` property. If it is set to `true`,
-     * the `required()` method is called on the static `$element` property to mark
-     * the element as required. If `$isRequired` is `false`, the method exits without
-     * making any changes.
-     */
-    private static function setRequired(): void
-    {
-        if (self::$isRequired === false) {
-            return;
-        }
-
-        self::$element->required();
     }
 }
