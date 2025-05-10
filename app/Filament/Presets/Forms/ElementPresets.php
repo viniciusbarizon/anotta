@@ -11,18 +11,19 @@ use Illuminate\Support\Collection;
 final class ElementPresets
 {
     private static Select|TextInput $element;
+
     private static bool $isRequired;
+
     private static ?string $label;
 
     /**
      * Creates a Filament Select element with the specified configuration.
      *
-     * @param string $columnValue The column name to be used as the value for the select options.
-     * @param string $id The unique identifier for the select element.
-     * @param string $label The label for the select element.
-     * @param string $model The model class to fetch the options from.
-     * @param bool $isRequired Indicates whether the select element is required. Defaults to true.
-     *
+     * @param  string  $columnValue  The column name to be used as the value for the select options.
+     * @param  string  $id  The unique identifier for the select element.
+     * @param  string  $label  The label for the select element.
+     * @param  string  $model  The model class to fetch the options from.
+     * @param  bool  $isRequired  Indicates whether the select element is required. Defaults to true.
      * @return Select The configured Filament Select element.
      */
     public static function select(
@@ -32,8 +33,7 @@ final class ElementPresets
         string $model,
         ?string $default = null,
         bool $isRequired = true
-    ): Select
-    {
+    ): Select {
         $options = $model::pluck($columnValue, 'id');
 
         self::$element = Select::make($id)
@@ -57,12 +57,11 @@ final class ElementPresets
     /**
      * Creates a configured TextInput element.
      *
-     * @param string $id The unique identifier for the TextInput element.
-     * @param int $maxLength The maximum length of the input value.
-     * @param string|null $helperText Optional helper text to display below the input field.
-     * @param bool $isRequired Whether the input field is required (default: true).
-     * @param string|null $label Optional label for the input field.
-     *
+     * @param  string  $id  The unique identifier for the TextInput element.
+     * @param  int  $maxLength  The maximum length of the input value.
+     * @param  string|null  $helperText  Optional helper text to display below the input field.
+     * @param  bool  $isRequired  Whether the input field is required (default: true).
+     * @param  string|null  $label  Optional label for the input field.
      * @return TextInput The configured TextInput element.
      */
     public static function textInput(
@@ -74,7 +73,7 @@ final class ElementPresets
     ): TextInput {
         self::$element = TextInput::make($id)
             ->maxLength($maxLength);
-    
+
         if (is_string($helperText)) {
             self::$element->helperText(
                 str('**É um profissional independente?** Indique o seu nome profissional.')
@@ -91,14 +90,12 @@ final class ElementPresets
 
         return self::$element;
     }
-    
+
     /**
      * Sets the default value for a select element based on the provided options.
      *
-     * @param string|null $default The default value to set, or null if no default is specified.
-     * @param \Illuminate\Support\Collection $options A collection of options for the select element.
-     *
-     * @return void
+     * @param  string|null  $default  The default value to set, or null if no default is specified.
+     * @param  Collection  $options  A collection of options for the select element.
      */
     private static function setSelectDefault(?string $default, Collection $options): void
     {
@@ -106,6 +103,7 @@ final class ElementPresets
             self::$element->default(
                 $options->search($default)
             );
+
             return;
         }
 
@@ -124,13 +122,12 @@ final class ElementPresets
      * If the static property `$label` is null, it calls the `translateLabel` method
      * on the `$element` to automatically translate the label. Otherwise, it explicitly
      * sets the label of the `$element` using the value of `$label`.
-     *
-     * @return void
      */
     private static function setLabel(): void
     {
         if (is_null(self::$label) === true) {
             self::$element->translateLabel();
+
             return;
         }
 
@@ -139,13 +136,11 @@ final class ElementPresets
 
     /**
      * Sets the current element as required if the `$isRequired` property is true.
-     * 
+     *
      * This method checks the static `$isRequired` property. If it is set to `true`,
      * the `required()` method is called on the static `$element` property to mark
      * the element as required. If `$isRequired` is `false`, the method exits without
      * making any changes.
-     *
-     * @return void
      */
     private static function setRequired(): void
     {

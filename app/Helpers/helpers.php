@@ -10,7 +10,7 @@ if (! function_exists('normalize_name')) {
      * - Converts the string to ASCII format.
      * - Removes any non-word or non-space characters using a regular expression.
      *
-     * @param string $name The input name to be normalized.
+     * @param  string  $name  The input name to be normalized.
      * @return string The normalized name.
      */
     function normalize_name(string $name): string
