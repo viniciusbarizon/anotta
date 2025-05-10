@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Actions\Clinic\HasAnotherWithSameNameAction;
-use App\Filament\Presets\Forms\InputPresets;
+use App\Filament\Presets\Forms\ElementPresets;
 use App\Filament\Presets\Tables\ActionPresets;
 use App\Filament\Presets\Tables\ColumnPresets;
 use App\Filament\Presets\Tables\FilterPresets;
@@ -85,9 +85,9 @@ final class ClinicResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            InputPresets::textInput(
-                name: 'name',
+            ElementPresets::textInput(
                 helperText: '**É um profissional independente?** Indique o seu nome profissional.',
+                id: 'name',
                 maxLength: 100
             )->rule(static function (Get $get, Component $component): Closure {
                 return static function (string $attribute, string $name, Closure $fail) use ($component) {

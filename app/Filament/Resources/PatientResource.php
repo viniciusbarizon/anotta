@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Filament\Presets\Forms\ElementPresets;
 use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Patient;
+use App\Models\Clinic;
+use App\Models\Country;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -26,21 +29,30 @@ final class PatientResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('full_name')
-                    ->required()
-                    ->maxLength(255),
+                ElementPresets::select(
+                    columnValue: 'name',
+                    id: 'clinic_id',
+                    label: 'Clínica',
+                    model: Clinic::class
+                ),
 
-                Forms\Components\TextInput::make('country_code')
-                    ->required()
-                    ->maxLength(2),
+                ElementPresets::textInput(
+                    id: 'full_name',
+                    label: 'Nome Completo',
+                    maxLength: 255
+                ),
+
+                ElementPresets::select(
+                    columnValue: 'name',
+                    default: 'Portugal',
+                    id: 'country_id',
+                    label: 'País',
+                    model: Country::class
+                ),
 
                 Forms\Components\TextInput::make('tax_id')
                     ->required()
                     ->maxLength(20),
-
-                Forms\Components\Select::make('clinic_id')
-                    ->relationship('clinic', 'name')
-                    ->required(),
             ]);
     }
 
