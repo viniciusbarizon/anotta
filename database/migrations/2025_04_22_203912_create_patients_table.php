@@ -30,7 +30,6 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->ulid('id')->primary();
 
-            $table->char('country_code', 2);
             $table->string('full_name', 255);
             $table->string('tax_id', 20);
 
@@ -39,9 +38,9 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreignUlid('clinic_id')->constrained();
+            $table->foreignUlid('country_id')->constrained();
 
-            $table->unique(['clinic_id', 'country_code', 'tax_id']);
-            $table->index('country_code');
+            $table->unique(['clinic_id', 'country_id', 'tax_id']);
             $table->index('full_name');
             $table->index('tax_id');
         });

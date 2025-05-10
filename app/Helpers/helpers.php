@@ -8,6 +8,7 @@ if (! function_exists('normalize_name')) {
         return (string) str($name)
             ->lower()
             ->squish()
-            ->ascii();
+            ->ascii()
+            ->replaceMatches('/[^\w\s]/u', '');
     }
 }

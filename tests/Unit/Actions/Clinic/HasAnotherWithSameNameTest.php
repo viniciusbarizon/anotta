@@ -65,6 +65,17 @@ describe('creating a new clinic', function () {
             ->toBeTrue();
     });
 
+    it('returns true if a duplicate name exists, ignoring punctuations', function () {
+        $name = 'Dr. Vinícius';
+
+        createClinic(name: $name);
+
+        $this->name = (string) str($name)->replaceMatches('/[^\w\s]/u', '');
+
+        expect(hasAnotherWithSameName())
+            ->toBeTrue();
+    });
+
     /**
      * Retrieves a random clinic name associated with a user other than the current test user.
      *

@@ -26,15 +26,18 @@ final class PatientResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('country_code')
-                    ->required()
-                    ->maxLength(2),
                 Forms\Components\TextInput::make('full_name')
                     ->required()
                     ->maxLength(255),
+
+                Forms\Components\TextInput::make('country_code')
+                    ->required()
+                    ->maxLength(2),
+
                 Forms\Components\TextInput::make('tax_id')
                     ->required()
                     ->maxLength(20),
+
                 Forms\Components\Select::make('clinic_id')
                     ->relationship('clinic', 'name')
                     ->required(),
