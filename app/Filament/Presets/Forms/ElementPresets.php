@@ -10,8 +10,10 @@ use Illuminate\Support\Collection;
 
 final class ElementPresets
 {
-    private static Select|TextInput $element;
     public static ?string $helperText;
+
+    private static Select|TextInput $element;
+
     private static bool $isRequired;
 
     private static ?string $label;
@@ -19,14 +21,13 @@ final class ElementPresets
     /**
      * Creates a Filament Select form element with specified configurations.
      *
-     * @param string      $columnValue The column name to be used as the value for the options.
-     * @param string      $id          The unique identifier for the select element.
-     * @param string      $label       The label for the select element.
-     * @param string      $model       The model class to fetch the options from.
-     * @param string|null $default     The default value for the select element (optional).
-     * @param string|null $helperText  The helper text to display below the select element (optional).
-     * @param bool        $isRequired  Whether the select element is required (default: true).
-     *
+     * @param  string  $columnValue  The column name to be used as the value for the options.
+     * @param  string  $id  The unique identifier for the select element.
+     * @param  string  $label  The label for the select element.
+     * @param  string  $model  The model class to fetch the options from.
+     * @param  string|null  $default  The default value for the select element (optional).
+     * @param  string|null  $helperText  The helper text to display below the select element (optional).
+     * @param  bool  $isRequired  Whether the select element is required (default: true).
      * @return Select The configured Filament Select form element.
      */
     public static function select(
@@ -99,8 +100,6 @@ final class ElementPresets
      * `$element` using the `helperText` method. The helper text is processed
      * by translating it, converting it to inline Markdown, and then converting
      * it to an HTML string.
-     *
-     * @return void
      */
     private static function setHelperText(): void
     {
@@ -121,13 +120,12 @@ final class ElementPresets
      * If the static property `$label` is null, it calls the `translateLabel` method
      * on the `$element` to automatically translate the label. Otherwise, it explicitly
      * sets the label of the `$element` using the value of `$label`.
-     *
-     * @return void
      */
     private static function setLabel(): void
     {
         if (is_null(self::$label) === true) {
             self::$element->translateLabel();
+
             return;
         }
 
@@ -138,13 +136,11 @@ final class ElementPresets
 
     /**
      * Sets the current element as required if the `$isRequired` property is true.
-     * 
+     *
      * This method checks the static `$isRequired` property. If it is set to `true`,
      * the `required()` method is called on the static `$element` property to mark
      * the element as required. If `$isRequired` is `false`, the method exits without
      * making any changes.
-     *
-     * @return void
      */
     private static function setRequired(): void
     {
