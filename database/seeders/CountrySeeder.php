@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CountrySeeder extends Seeder
+final class CountrySeeder extends Seeder
 {
     /**
      * Seed the countries table with a list of country names.
@@ -13,8 +15,6 @@ class CountrySeeder extends Seeder
      * This method retrieves a list of country names, generates a unique ULID for each,
      * and inserts them into the 'countries' database table. Each country is stored
      * with an 'id' (ULID) and a 'name'.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -242,7 +242,7 @@ class CountrySeeder extends Seeder
      */
     private function getUlid(): string
     {
-        return strtolower(
+        return mb_strtolower(
             (string) str()->ulid()
         );
     }
