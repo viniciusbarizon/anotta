@@ -166,7 +166,7 @@ final class ElementPresets
      * This method applies additional input attributes to the element if a closure
      * is provided. If the closure is null, no action is taken.
      *
-     * @param Closure|null $extraInputAttributes A closure defining extra input attributes to be applied.
+     * @param  Closure|null  $extraInputAttributes  A closure defining extra input attributes to be applied.
      */
     private static function setExtraInputAttributes(?Closure $extraInputAttributes): void
     {
