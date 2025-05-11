@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\Presets\Forms;
 
+use Closure;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Collection;
-use Closure;
 
 final class ElementPresets
 {
@@ -25,10 +25,9 @@ final class ElementPresets
     /**
      * Creates and configures a DatePicker form element.
      *
-     * @param string $id The unique identifier for the DatePicker element.
-     * @param string $label The label to display for the DatePicker element.
-     * @param bool $isRequired Indicates whether the DatePicker element is required. Defaults to true.
-     * 
+     * @param  string  $id  The unique identifier for the DatePicker element.
+     * @param  string  $label  The label to display for the DatePicker element.
+     * @param  bool  $isRequired  Indicates whether the DatePicker element is required. Defaults to true.
      * @return DatePicker The configured DatePicker instance.
      */
     public static function datePicker(string $id, string $label, bool $isRequired = true): DatePicker
@@ -48,17 +47,16 @@ final class ElementPresets
     /**
      * Creates a configured Select element for a form.
      *
-     * @param string $columnValue The column name to be used as the value for the options.
-     * @param string $id The unique identifier for the Select element.
-     * @param string $label The label for the Select element.
-     * @param string $model The model class used to fetch the options.
-     * @param Closure|null $afterStateUpdated A callback to be executed after the state is updated.
-     * @param string|null $default The default value for the Select element.
-     * @param string|null $helperText The helper text to display below the Select element.
-     * @param bool $isLive Whether the Select element should update live.
-     * @param bool $isRequired Whether the Select element is required.
-     * @param string|null $requiredWith The field that makes this Select element required when filled.
-     *
+     * @param  string  $columnValue  The column name to be used as the value for the options.
+     * @param  string  $id  The unique identifier for the Select element.
+     * @param  string  $label  The label for the Select element.
+     * @param  string  $model  The model class used to fetch the options.
+     * @param  Closure|null  $afterStateUpdated  A callback to be executed after the state is updated.
+     * @param  string|null  $default  The default value for the Select element.
+     * @param  string|null  $helperText  The helper text to display below the Select element.
+     * @param  bool  $isLive  Whether the Select element should update live.
+     * @param  bool  $isRequired  Whether the Select element is required.
+     * @param  string|null  $requiredWith  The field that makes this Select element required when filled.
      * @return Select The configured Select element.
      */
     public static function select(
@@ -102,14 +100,13 @@ final class ElementPresets
     /**
      * Creates and configures a TextInput element with the specified parameters.
      *
-     * @param string $id The unique identifier for the TextInput element.
-     * @param Closure|int $maxLength The maximum length of the input value, or a Closure to dynamically determine it.
-     * @param string|null $helperText Optional helper text to display below the input field.
-     * @param bool|Closure $isDisabled Whether the input field is disabled, or a Closure to dynamically determine it.
-     * @param bool $isRequired Whether the input field is required. Defaults to true.
-     * @param string|null $label Optional label for the input field.
-     * @param string|null $requiredWith Optional field name that makes this input required when the specified field is present.
-     *
+     * @param  string  $id  The unique identifier for the TextInput element.
+     * @param  Closure|int  $maxLength  The maximum length of the input value, or a Closure to dynamically determine it.
+     * @param  string|null  $helperText  Optional helper text to display below the input field.
+     * @param  bool|Closure  $isDisabled  Whether the input field is disabled, or a Closure to dynamically determine it.
+     * @param  bool  $isRequired  Whether the input field is required. Defaults to true.
+     * @param  string|null  $label  Optional label for the input field.
+     * @param  string|null  $requiredWith  Optional field name that makes this input required when the specified field is present.
      * @return TextInput The configured TextInput element.
      */
     public static function textInput(
@@ -145,10 +142,8 @@ final class ElementPresets
      * of the element is updated. If the provided callback is null, the method
      * will return without making any changes.
      *
-     * @param Closure|null $afterStateUpdated The callback to be executed after
-     *                                        the state is updated, or null to skip.
-     *
-     * @return void
+     * @param  Closure|null  $afterStateUpdated  The callback to be executed after
+     *                                           the state is updated, or null to skip.
      */
     private static function setAfterStateUpdated(?Closure $afterStateUpdated): void
     {
@@ -240,10 +235,8 @@ final class ElementPresets
      * Sets the "requiredWith" property on the element if it is enabled.
      *
      * This method checks if the static property `$requiredWith` is not set to `false`.
-     * If it is enabled, it applies the `requiredWith` rule to the static `$element` 
+     * If it is enabled, it applies the `requiredWith` rule to the static `$element`
      * using the value of `$requiredWith`.
-     *
-     * @return void
      */
     private static function setRequiredWith(): void
     {

@@ -10,14 +10,14 @@ use App\Models\Clinic;
 use App\Models\Country;
 use App\Models\Patient;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Notifications\Notification;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 
 final class PatientResource extends Resource
 {
@@ -92,7 +92,7 @@ final class PatientResource extends Resource
                     isDisabled: fn (Get $get): bool => is_null($get('tax_country_id')),
                     isRequired: false,
                     requiredWith: 'tax_country_id'
-                )
+                ),
             ]);
     }
 

@@ -40,7 +40,7 @@ final class CountrySeeder extends Seeder
      */
     private function getCountries(): array
     {
-        return  [
+        return [
             'AF' => 'Afeganistão',
             'ZA' => 'África do Sul',
             'AL' => 'Albânia',
@@ -241,8 +241,8 @@ final class CountrySeeder extends Seeder
     /**
      * Retrieves the tax ID format for a given country name.
      *
-     * @param string $name The name of the country.
-     * @return string|null Returns 'numeric' if the country is Brasil or Portugal, 
+     * @param  string  $name  The name of the country.
+     * @return string|null Returns 'numeric' if the country is Brasil or Portugal,
      *                     otherwise returns null.
      */
     private function getTaxIdFormat(string $name): ?string
@@ -257,7 +257,7 @@ final class CountrySeeder extends Seeder
     /**
      * Get the length of the tax identification number for a given country.
      *
-     * @param string $name The name of the country.
+     * @param  string  $name  The name of the country.
      * @return int|null The length of the tax identification number if defined, or null if not defined.
      */
     private function getTaxIdLength(string $name): ?int

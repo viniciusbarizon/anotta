@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Patient;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 use App\Traits\SuperAdminOverride;
-use App\Models\Clinic;
 
-class PatientPolicy
+final class PatientPolicy
 {
     use SuperAdminOverride;
 
