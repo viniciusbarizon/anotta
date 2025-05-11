@@ -87,6 +87,11 @@ final class PatientResource extends Resource
 
                 ElementPresets::textInput(
                     id: 'tax_id',
+                    extraInputAttributes: fn (Get $get) => [
+                        'oninput' => Country::find($get('tax_country_id'))->tax_id_format === 'numeric' ?
+                            "this.value = this.value.replace(/[^0-9]/g, '')" :
+                            null,
+                    ],
                     label: 'NIF',
                     maxLength: fn (Get $get): int => Country::find($get('tax_country_id'))->tax_id_length ?? 20,
                     isDisabled: fn (Get $get): bool => is_null($get('tax_country_id')),
