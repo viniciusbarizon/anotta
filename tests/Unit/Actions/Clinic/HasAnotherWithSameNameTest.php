@@ -87,7 +87,8 @@ describe('creating a new clinic', function () {
      */
     function getRandomClinicNameFromAnotherUser(): string
     {
-        return Clinic::withoutGlobalScope(UserRelationScope::class)
+        return Clinic::query()
+            ->withoutGlobalScope(UserRelationScope::class)
             ->whereRelation('users', 'id', '!=', test()->user->id)
             ->inRandomOrder()
             ->first()

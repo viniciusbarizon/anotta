@@ -30,15 +30,25 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->ulid('id')->primary();
 
+            $table->dateTime('birth_date')->index();
             $table->text('full_name');
-            $table->text('tax_id');
+            $table->text('tax_id')->nullable();
 
             $table->timestamp('created_at', precision: 0)->useCurrent();
-            $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();
+
+            $table->timestamp('updated_at', precision: 0)->useCurrent()
+                ->useCurrentOnUpdate();
+
             $table->softDeletes();
 
             $table->foreignUlid('clinic_id')->constrained();
-            $table->foreignUlid('country_id')->constrained();
+
+            $table->foreignUlid('tax_country_id')
+                ->nullable()
+                ->constrained(table: 'countries');
+
+            $table->index('clinic_id');
+            $table->index('tax_country_id');
         });
     }
 };

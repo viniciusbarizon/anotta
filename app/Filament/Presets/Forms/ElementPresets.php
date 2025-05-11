@@ -4,41 +4,74 @@ declare(strict_types=1);
 
 namespace App\Filament\Presets\Forms;
 
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Collection;
+use Closure;
 
 final class ElementPresets
 {
     public static ?string $helperText;
 
-    private static Select|TextInput $element;
+    private static DatePicker|Select|TextInput $element;
 
     private static bool $isRequired;
 
     private static ?string $label;
 
+    private static ?string $requiredWith;
+
     /**
-     * Creates a Filament Select form element with specified configurations.
+     * Creates and configures a DatePicker form element.
      *
-     * @param  string  $columnValue  The column name to be used as the value for the options.
-     * @param  string  $id  The unique identifier for the select element.
-     * @param  string  $label  The label for the select element.
-     * @param  string  $model  The model class to fetch the options from.
-     * @param  string|null  $default  The default value for the select element (optional).
-     * @param  string|null  $helperText  The helper text to display below the select element (optional).
-     * @param  bool  $isRequired  Whether the select element is required (default: true).
-     * @return Select The configured Filament Select form element.
+     * @param string $id The unique identifier for the DatePicker element.
+     * @param string $label The label to display for the DatePicker element.
+     * @param bool $isRequired Indicates whether the DatePicker element is required. Defaults to true.
+     * 
+     * @return DatePicker The configured DatePicker instance.
+     */
+    public static function datePicker(string $id, string $label, bool $isRequired = true): DatePicker
+    {
+        self::$element = DatePicker::make($id)
+            ->maxDate(now());
+
+        self::$isRequired = $isRequired;
+        self::$label = $label;
+
+        self::setRequired();
+        self::setLabel();
+
+        return self::$element;
+    }
+
+    /**
+     * Creates a configured Select element for a form.
+     *
+     * @param string $columnValue The column name to be used as the value for the options.
+     * @param string $id The unique identifier for the Select element.
+     * @param string $label The label for the Select element.
+     * @param string $model The model class used to fetch the options.
+     * @param Closure|null $afterStateUpdated A callback to be executed after the state is updated.
+     * @param string|null $default The default value for the Select element.
+     * @param string|null $helperText The helper text to display below the Select element.
+     * @param bool $isLive Whether the Select element should update live.
+     * @param bool $isRequired Whether the Select element is required.
+     * @param string|null $requiredWith The field that makes this Select element required when filled.
+     *
+     * @return Select The configured Select element.
      */
     public static function select(
         string $columnValue,
         string $id,
         string $label,
         string $model,
+        ?Closure $afterStateUpdated = null,
         ?string $default = null,
         ?string $helperText = null,
         bool $isLive = false,
-        bool $isRequired = true
+        bool $isRequired = true,
+        ?string $requiredWith = null
     ): Select {
         $options = $model::pluck($columnValue, 'id');
 
@@ -49,11 +82,14 @@ final class ElementPresets
         self::$helperText = $helperText;
         self::$isRequired = $isRequired;
         self::$label = $label;
+        self::$requiredWith = $requiredWith;
 
+        self::setAfterStateUpdated(afterStateUpdated: $afterStateUpdated);
         self::setHelperText();
         self::setLive(isLive: $isLive);
         self::setLabel();
         self::setRequired();
+        self::setRequiredWith();
 
         self::setSelectDefault(
             default: $default,
@@ -64,34 +100,63 @@ final class ElementPresets
     }
 
     /**
-     * Creates a configured TextInput element.
+     * Creates and configures a TextInput element with the specified parameters.
      *
-     * @param  string  $id  The unique identifier for the TextInput element.
-     * @param  int  $maxLength  The maximum length of the input value.
-     * @param  string|null  $helperText  Optional helper text to display below the input field.
-     * @param  bool  $isRequired  Whether the input field is required (default: true).
-     * @param  string|null  $label  Optional label for the input field.
+     * @param string $id The unique identifier for the TextInput element.
+     * @param Closure|int $maxLength The maximum length of the input value, or a Closure to dynamically determine it.
+     * @param string|null $helperText Optional helper text to display below the input field.
+     * @param bool|Closure $isDisabled Whether the input field is disabled, or a Closure to dynamically determine it.
+     * @param bool $isRequired Whether the input field is required. Defaults to true.
+     * @param string|null $label Optional label for the input field.
+     * @param string|null $requiredWith Optional field name that makes this input required when the specified field is present.
+     *
      * @return TextInput The configured TextInput element.
      */
     public static function textInput(
         string $id,
-        ?int $maxLength = null,
+        Closure|int $maxLength,
         ?string $helperText = null,
+        bool|Closure $isDisabled = false,
         bool $isRequired = true,
         ?string $label = null,
+        ?string $requiredWith = null
     ): TextInput {
         self::$element = TextInput::make($id)
+            ->disabled($isDisabled)
             ->maxLength($maxLength);
 
         self::$helperText = $helperText;
         self::$isRequired = $isRequired;
         self::$label = $label;
+        self::$requiredWith = $requiredWith;
 
         self::setHelperText();
         self::setLabel();
         self::setRequired();
+        self::setRequiredWith();
 
         return self::$element;
+    }
+
+    /**
+     * Sets the "after state updated" callback for the element.
+     *
+     * This method assigns a callback function to be executed after the state
+     * of the element is updated. If the provided callback is null, the method
+     * will return without making any changes.
+     *
+     * @param Closure|null $afterStateUpdated The callback to be executed after
+     *                                        the state is updated, or null to skip.
+     *
+     * @return void
+     */
+    private static function setAfterStateUpdated(?Closure $afterStateUpdated): void
+    {
+        if (is_null($afterStateUpdated) === true) {
+            return;
+        }
+
+        self::$element->afterStateUpdated($afterStateUpdated);
     }
 
     /**
@@ -169,6 +234,24 @@ final class ElementPresets
         }
 
         self::$element->required();
+    }
+
+    /**
+     * Sets the "requiredWith" property on the element if it is enabled.
+     *
+     * This method checks if the static property `$requiredWith` is not set to `false`.
+     * If it is enabled, it applies the `requiredWith` rule to the static `$element` 
+     * using the value of `$requiredWith`.
+     *
+     * @return void
+     */
+    private static function setRequiredWith(): void
+    {
+        if (is_null(self::$requiredWith) === true) {
+            return;
+        }
+
+        self::$element->requiredWith(self::$requiredWith);
     }
 
     /**

@@ -30,7 +30,10 @@ return new class extends Migration
             $table->string('name_normalized', 100)->index();
 
             $table->timestamp('created_at', precision: 0)->useCurrent();
-            $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();
+
+            $table->timestamp('updated_at', precision: 0)->useCurrent()
+                ->useCurrentOnUpdate();
+
             $table->softDeletes();
         });
     }

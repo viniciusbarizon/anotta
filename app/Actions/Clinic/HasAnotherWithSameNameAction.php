@@ -36,7 +36,8 @@ final class HasAnotherWithSameNameAction
      */
     private function has(): bool
     {
-        return Clinic::withTrashed()
+        return Clinic::query()
+            ->withTrashed()
             ->fromUserLogged()
             ->where('name_normalized', $this->name)
             ->where('id', '!=', $this->currentId)

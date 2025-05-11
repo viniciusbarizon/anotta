@@ -31,12 +31,25 @@ return new class extends Migration
             $table->text('clinical_note');
 
             $table->timestamp('created_at', precision: 0)->useCurrent();
-            $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();
+
+            $table->timestamp('updated_at', precision: 0)
+                ->useCurrent()
+                ->useCurrentOnUpdate();
+
             $table->softDeletes();
 
             $table->foreignUlid('clinic_id')->constrained();
-            $table->foreignUlid('clinician_id')->constrained()->nullable();
-            $table->foreignUlid('patient_id')->constrained();
+
+            $table->foreignUlid('clinician_id')
+                ->constrained()
+                ->nullable();
+
+            $table->foreignUlid('patient_id')
+                ->constrained();
+
+            $table->index('clinic_id');
+            $table->index('clinician_id');
+            $table->index('patient_id');
         });
     }
 };

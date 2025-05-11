@@ -10,12 +10,14 @@ use App\Models\Clinic;
 use App\Models\Country;
 use App\Models\Patient;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Notifications\Notification;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 
 final class PatientResource extends Resource
 {
@@ -25,13 +27,37 @@ final class PatientResource extends Resource
 
     protected static ?int $navigationSort = 100;
 
+    /**
+     * Determines if a new patient can be created.
+     *
+     * This method checks if there is at least one clinic registered in the system.
+     * If a clinic exists, it allows the creation of a new patient.
+     * Otherwise, it sends a warning notification to the user indicating that
+     * at least one clinic must be registered before registering patients.
+     *
+     * @return bool Returns true if a patient can be created, false otherwise.
+     */
+    public static function canCreate(): bool
+    {
+        if (Clinic::query()->exists() === true) {
+            return true;
+        }
+
+        Notification::make()
+            ->title(__('Para registar um utente, precisa estar associado a pelo menos uma clínica.'))
+            ->warning()
+            ->send();
+
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 ElementPresets::select(
-                    columnValue: 'name',
                     id: 'clinic_id',
+                    columnValue: 'name',
                     label: 'Clínica',
                     model: Clinic::class
                 ),
@@ -42,20 +68,31 @@ final class PatientResource extends Resource
                     maxLength: 255
                 ),
 
+                ElementPresets::datePicker(
+                    id: 'birth_date',
+                    label: 'Data de Nascimento'
+                ),
+
                 ElementPresets::select(
+                    id: 'tax_country_id',
+                    afterStateUpdated: fn (Set $set) => $set('tax_id', null),
                     columnValue: 'name',
-                    default: 'Portugal',
                     helperText: 'País onde o NIF foi emitido. **Não confundir com nacionalidade.**',
-                    id: 'country_id',
                     label: 'País do NIF',
-                    model: Country::class
+                    model: Country::class,
+                    isLive: true,
+                    isRequired: false,
+                    requiredWith: 'tax_id'
                 ),
 
                 ElementPresets::textInput(
                     id: 'tax_id',
-                    label: 'NIF'
-                ),
-                // ->maxLength(fn (Get $get): int => $get('country_id') === $this->portugalId ? 9 : 20)
+                    label: 'NIF',
+                    maxLength: fn (Get $get): int => Country::find($get('tax_country_id'))->tax_id_length ?? 20,
+                    isDisabled: fn (Get $get): bool => is_null($get('tax_country_id')),
+                    isRequired: false,
+                    requiredWith: 'tax_country_id'
+                )
             ]);
     }
 

@@ -17,10 +17,16 @@ return new class extends Migration
         Schema::create('countries', function (Blueprint $table) {
             $table->ulid('id')->primary();
 
+            $table->char('code', 2)->unique();
             $table->string('name')->unique();
+            $table->enum('tax_id_format', ['numeric', 'alphanumeric'])->nullable();
+            $table->unsignedTinyInteger('tax_id_length')->nullable();
 
             $table->timestamp('created_at', precision: 0)->useCurrent();
-            $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();
+
+            $table->timestamp('updated_at', precision: 0)->useCurrent()
+                ->useCurrentOnUpdate();
+
             $table->softDeletes();
         });
 
