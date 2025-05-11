@@ -114,7 +114,7 @@ final class ElementPresets
         Closure|int $maxLength,
         ?Closure $extraInputAttributes = null,
         ?string $helperText = null,
-        //?bool $isAlphanumeric = false,
+        // ?bool $isAlphanumeric = false,
         bool|Closure $isDisabled = false,
         bool $isRequired = true,
         ?string $label = null,
@@ -123,16 +123,16 @@ final class ElementPresets
         self::$element = TextInput::make($id)
             ->disabled($isDisabled)
             ->maxLength($maxLength);
-            /* ->extraInputAttributes([
-                'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')",
-            ]) */
+        /* ->extraInputAttributes([
+            'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')",
+        ]) */
 
         self::$helperText = $helperText;
         self::$isRequired = $isRequired;
         self::$label = $label;
         self::$requiredWith = $requiredWith;
 
-        //self::setAlphaNum(isAlphanumeric: $isAlphanumeric);
+        // self::setAlphaNum(isAlphanumeric: $isAlphanumeric);
         self::setHelperText();
         self::setLabel();
         self::setRequired();
@@ -163,7 +163,7 @@ final class ElementPresets
     /**
      * Set extra input attributes for this element
      *
-     * @param Closure $extraInputAttributes A closure that will be called to generate HTML attribute(s) for the input field
+     * @param  Closure  $extraInputAttributes  A closure that will be called to generate HTML attribute(s) for the input field
      */
     private static function setExtraInputAttributes(?Closure $extraInputAttributes): void
     {
@@ -177,10 +177,8 @@ final class ElementPresets
     /**
      * Sets the alphanumeric validation rule for the element.
      *
-     * @param bool $isAlphanumeric Determines whether the element should enforce alphanumeric validation.
-     *                             If set to false, no action is taken.
-     *
-     * @return void
+     * @param  bool  $isAlphanumeric  Determines whether the element should enforce alphanumeric validation.
+     *                                If set to false, no action is taken.
      */
     /* private static function setAlphaNum(bool $isAlphanumeric): void
     {
