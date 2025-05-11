@@ -161,9 +161,12 @@ final class ElementPresets
     }
 
     /**
-     * Set extra input attributes for this element
+     * Sets extra input attributes for the element.
      *
-     * @param  Closure  $extraInputAttributes  A closure that will be called to generate HTML attribute(s) for the input field
+     * This method applies additional input attributes to the element if a closure
+     * is provided. If the closure is null, no action is taken.
+     *
+     * @param Closure|null $extraInputAttributes A closure defining extra input attributes to be applied.
      */
     private static function setExtraInputAttributes(?Closure $extraInputAttributes): void
     {
