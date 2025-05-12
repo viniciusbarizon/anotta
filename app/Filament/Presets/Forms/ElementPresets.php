@@ -64,7 +64,7 @@ final class ElementPresets
         self::setLabel();
         self::setValidationAttribute();
         self::setValidationMessages();
-        
+
         return self::$element;
     }
 
