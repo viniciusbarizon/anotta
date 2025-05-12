@@ -19,52 +19,68 @@ final class ElementPresets
 
     private static bool $isRequired;
 
-    private static ?string $label;
+    private static string $label;
 
     private static ?string $requiredWith;
 
+    private static ?array $rules;
+
+    private static ?array $validationMessages;
+
     /**
-     * Creates and configures a DatePicker form element.
+     * Creates a configured DatePicker element for a form.
      *
      * @param  string  $id  The unique identifier for the DatePicker element.
-     * @param  string  $label  The label to display for the DatePicker element.
-     * @param  bool  $isRequired  Indicates whether the DatePicker element is required. Defaults to true.
-     * @return DatePicker The configured DatePicker instance.
+     * @param  string  $afterOrEqual  The date from which the selected date must be after or equal to.
+     * @param  string  $beforeOrEqual  The date until which the selected date must be before or equal to.
+     * @param  string  $label  The label for the DatePicker element.
+     * @param  Carbon  $minDate  The minimum allowed date.
+     * @param  Carbon  $maxDate  The maximum allowed date.
+     * @param  array  $validationMessages  Custom validation error messages.
+     * @param  bool  $isRequired  Whether the DatePicker element is required. Defaults to true.
+     * @return DatePicker The configured DatePicker element.
      */
     public static function datePicker(
         string $id,
+        string $afterOrEqual,
+        string $beforeOrEqual,
         string $label,
         Carbon $minDate,
         Carbon $maxDate,
+        array $validationMessages,
         bool $isRequired = true
     ): DatePicker {
         self::$element = DatePicker::make($id)
-            ->beforeOrEqual('today')
+            ->afterOrEqual($afterOrEqual)
+            ->beforeOrEqual($beforeOrEqual)
             ->minDate($minDate)
             ->maxDate($maxDate);
 
         self::$isRequired = $isRequired;
         self::$label = $label;
+        self::$validationMessages = $validationMessages;
 
         self::setRequired();
         self::setLabel();
-
+        self::setValidationAttribute();
+        self::setValidationMessages();
+        
         return self::$element;
     }
 
     /**
-     * Creates a configured Select element for a form.
+     * Creates and configures a Select element with the specified parameters.
      *
-     * @param  string  $columnValue  The column name to be used as the value for the options.
+     * @param  string  $columnValue  The column to use for the select options' display text.
      * @param  string  $id  The unique identifier for the Select element.
      * @param  string  $label  The label for the Select element.
-     * @param  string  $model  The model class used to fetch the options.
-     * @param  Closure|null  $afterStateUpdated  A callback to be executed after the state is updated.
-     * @param  string|null  $default  The default value for the Select element.
-     * @param  string|null  $helperText  The helper text to display below the Select element.
-     * @param  bool  $isLive  Whether the Select element should update live.
-     * @param  bool  $isRequired  Whether the Select element is required.
-     * @param  string|null  $requiredWith  The field that makes this Select element required when filled.
+     * @param  string  $model  The Eloquent model to fetch options from.
+     * @param  Closure|null  $afterStateUpdated  Optional callback to execute after the select state is updated.
+     * @param  string|null  $default  Optional default value for the select.
+     * @param  string|null  $helperText  Optional helper text to display below the select field.
+     * @param  bool  $isLive  Whether the select should update dynamically. Defaults to false.
+     * @param  bool  $isRequired  Whether the select is required. Defaults to true.
+     * @param  string|null  $requiredWith  Optional field name that makes this select required when the specified field is present.
      * @return Select The configured Select element.
      */
     public static function select(
@@ -96,6 +112,7 @@ final class ElementPresets
         self::setLabel();
         self::setRequired();
         self::setRequiredWith();
+        self::setValidationAttribute();
 
         self::setSelectDefault(
             default: $default,
@@ -106,43 +123,53 @@ final class ElementPresets
     }
 
     /**
-     * Creates and configures a TextInput element with the specified parameters.
+     * Creates a configured TextInput element with various customization options.
      *
-     * @param  string  $id  The unique identifier for the TextInput element.
-     * @param  Closure|int  $maxLength  The maximum length of the input value, or a Closure to dynamically determine it.
-     * @param  string|null  $helperText  Optional helper text to display below the input field.
-     * @param  bool|Closure  $isDisabled  Whether the input field is disabled, or a Closure to dynamically determine it.
-     * @param  bool  $isRequired  Whether the input field is required. Defaults to true.
-     * @param  string|null  $label  Optional label for the input field.
-     * @param  string|null  $requiredWith  Optional field name that makes this input required when the specified field is present.
+     * @param  string  $id  The unique identifier for the TextInput.
+     * @param  string  $label  The label for the TextInput field.
+     * @param  Closure|int  $maxLength  Maximum length constraint for the input.
+     * @param  array  $rules  Validation rules for the input.
+     * @param  Closure|null  $extraInputAttributes  Optional additional input attributes.
+     * @param  string|null  $helperText  Optional helper text to display below the input.
+     * @param  bool  $isAscii  Whether to enforce ASCII-only input. Defaults to false.
+     * @param  bool|Closure  $isDisabled  Whether the input is disabled. Defaults to false.
+     * @param  bool  $isRequired  Whether the input is required. Defaults to true.
+     * @param  string|null  $requiredWith  Optional field name that makes this input required when specified.
      * @return TextInput The configured TextInput element.
      */
     public static function textInput(
         string $id,
+        string $label,
         Closure|int $maxLength,
+        array $rules,
         ?Closure $extraInputAttributes = null,
         ?string $helperText = null,
         ?bool $isAscii = false,
         bool|Closure $isDisabled = false,
         bool $isRequired = true,
-        ?string $label = null,
+
         ?string $requiredWith = null
     ): TextInput {
         self::$element = TextInput::make($id)
             ->disabled($isDisabled)
-            ->maxLength($maxLength);
+            ->maxLength($maxLength)
+            ->string();
 
         self::$helperText = $helperText;
         self::$isRequired = $isRequired;
         self::$label = $label;
         self::$requiredWith = $requiredWith;
+        self::$rules = $rules;
 
         self::setAscii(isAscii: $isAscii);
         self::setExtraInputAttributes(attributes: $extraInputAttributes);
         self::setHelperText();
         self::setLabel();
+        self::setNullable();
         self::setRequired();
         self::setRequiredWith();
+        self::setRules();
+        self::setValidationAttribute();
 
         return self::$element;
     }
@@ -225,20 +252,14 @@ final class ElementPresets
     }
 
     /**
-     * Sets the label for the element.
+     * Sets the label for the current element.
      *
-     * If the static property `$label` is null, it calls the `translateLabel` method
-     * on the `$element` to automatically translate the label. Otherwise, it explicitly
-     * sets the label of the `$element` using the value of `$label`.
+     * This method applies a translated label to the static `$element` property
+     * using the `label()` method. The label is retrieved from the static `$label`
+     * property and passed through the translation function.
      */
     private static function setLabel(): void
     {
-        if (is_null(self::$label) === true) {
-            self::$element->translateLabel();
-
-            return;
-        }
-
         self::$element->label(
             __(self::$label)
         );
@@ -260,6 +281,22 @@ final class ElementPresets
         }
 
         self::$element->live();
+    }
+
+    /**
+     * Sets the element as nullable if it is not required.
+     *
+     * This method checks the static `$isRequired` property. If it is set to `true`,
+     * the method exits without making any changes. Otherwise, it calls the `nullable()`
+     * method on the static `$element` property to mark the element as nullable.
+     */
+    private static function setNullable(): void
+    {
+        if (self::$isRequired === true) {
+            return;
+        }
+
+        self::$element->nullable();
     }
 
     /**
@@ -296,6 +333,21 @@ final class ElementPresets
     }
 
     /**
+     * Sets validation rules for the current form element.
+     *
+     * This method applies custom validation rules to the element if they are defined.
+     * If no validation rules are set (null), the method returns without making any changes.
+     */
+    private static function setRules(): void
+    {
+        if (is_null(self::$rules) === true) {
+            return;
+        }
+
+        self::$element->rules(self::$rules);
+    }
+
+    /**
      * Sets the default value for a select element based on the provided options.
      *
      * @param  string|null  $default  The default value to set, or null if no default is specified.
@@ -317,6 +369,37 @@ final class ElementPresets
 
         self::$element->default(
             $options->keys()->first()
+        );
+    }
+
+    /**
+     * Sets a custom validation attribute label for the current form element.
+     *
+     * This method applies a translated label as the validation attribute,
+     * which is typically used in error messages to provide a more readable
+     * field name during form validation.
+     */
+    private static function setValidationAttribute(): void
+    {
+        self::$element->validationAttribute(
+            __(self::$label)
+        );
+    }
+
+    /**
+     * Sets validation messages for the current form element.
+     *
+     * This method applies custom validation messages to the element if they are defined.
+     * If no validation messages are set (null), the method returns without making any changes.
+     */
+    private static function setValidationMessages(): void
+    {
+        if (is_null(self::$validationMessages) === true) {
+            return;
+        }
+
+        self::$element->validationMessages(
+            self::$validationMessages
         );
     }
 }

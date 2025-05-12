@@ -88,7 +88,9 @@ final class ClinicResource extends Resource
             ElementPresets::textInput(
                 helperText: '**É um profissional independente?** Indique o seu nome profissional.',
                 id: 'name',
-                maxLength: 100
+                label: 'Nome',
+                maxLength: 100,
+                rules: ['max:100']
             )->rule(static function (Get $get, Component $component): Closure {
                 return static function (string $attribute, string $name, Closure $fail) use ($component) {
                     $hasAnotherWithSameNameAction = (new HasAnotherWithSameNameAction)->handle(

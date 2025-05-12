@@ -65,14 +65,21 @@ final class PatientResource extends Resource
                 ElementPresets::textInput(
                     id: 'full_name',
                     label: 'Nome Completo',
-                    maxLength: 255
+                    maxLength: 255,
+                    rules: ['max:255']
                 ),
 
                 ElementPresets::datePicker(
                     id: 'birth_date',
+                    afterOrEqual: now()->subYears(123)->toDateString(),
+                    beforeOrEqual: 'today',
                     label: 'Data de Nascimento',
                     minDate: now()->subYears(123),
-                    maxDate: now()
+                    maxDate: now(),
+                    validationMessages: [
+                        'after_or_equal' => __('O campo "Data de Nascimento" tem de ser uma data superior ou igual a 123 anos atrás.'),
+                        'before_or_equal' => __('O campo "Data de Nascimento" deve ser uma data anterior ou igual a hoje.'),
+                    ]
                 ),
 
                 ElementPresets::select(
@@ -97,7 +104,8 @@ final class PatientResource extends Resource
                     maxLength: fn (Get $get): int => Country::find($get('tax_country_id'))->tax_id_length ?? 20,
                     isDisabled: fn (Get $get): bool => is_null($get('tax_country_id')),
                     isRequired: false,
-                    requiredWith: 'tax_country_id'
+                    requiredWith: 'tax_country_id',
+                    rules: ['max:20']
                 ),
             ]);
     }
