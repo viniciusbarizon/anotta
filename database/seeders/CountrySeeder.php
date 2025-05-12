@@ -237,7 +237,7 @@ final class CountrySeeder extends Seeder
             'ZW' => 'Zimbabué',
         ];
     }
-    
+
     /**
      * Check if the tax identification number for a given country is numeric.
      *

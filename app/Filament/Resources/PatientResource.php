@@ -176,7 +176,7 @@ final class PatientResource extends Resource
     /**
      * Retrieves a Country model instance by its unique identifier.
      *
-     * @param string $countryId The unique identifier of the country to retrieve.
+     * @param  string  $countryId  The unique identifier of the country to retrieve.
      * @return Country The Country model instance corresponding to the given country ID.
      */
     private static function getCountry(string $countryId): Country

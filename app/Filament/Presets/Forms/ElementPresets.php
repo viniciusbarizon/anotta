@@ -8,8 +8,8 @@ use Closure;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 final class ElementPresets
 {
@@ -37,8 +37,7 @@ final class ElementPresets
         Carbon $minDate,
         Carbon $maxDate,
         bool $isRequired = true
-    ): DatePicker
-    {
+    ): DatePicker {
         self::$element = DatePicker::make($id)
             ->beforeOrEqual('today')
             ->minDate($minDate)
