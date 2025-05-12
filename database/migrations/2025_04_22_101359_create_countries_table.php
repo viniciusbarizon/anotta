@@ -18,8 +18,8 @@ return new class extends Migration
             $table->ulid('id')->primary();
 
             $table->char('code', 2)->unique();
+            $table->boolean('is_tax_id_numeric')->default(false);
             $table->string('name')->unique();
-            $table->enum('tax_id_format', ['numeric', 'alphanumeric'])->nullable();
             $table->unsignedTinyInteger('tax_id_length')->nullable();
 
             $table->timestamp('created_at', precision: 0)->useCurrent();

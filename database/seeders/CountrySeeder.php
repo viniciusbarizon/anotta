@@ -24,8 +24,8 @@ final class CountrySeeder extends Seeder
             collect($countries)->map(fn ($name, $code) => [
                 'id' => $this->getUlid(),
                 'code' => $code,
+                'is_tax_id_numeric' => $this->isTaxIdNumeric(name: $name),
                 'name' => $name,
-                'tax_id_format' => $this->getTaxIdFormat(name: $name),
                 'tax_id_length' => $this->getTaxIdLength(name: $name),
             ])->toArray()
         );
@@ -237,21 +237,16 @@ final class CountrySeeder extends Seeder
             'ZW' => 'Zimbabué',
         ];
     }
-
+    
     /**
-     * Retrieves the tax ID format for a given country name.
+     * Check if the tax identification number for a given country is numeric.
      *
      * @param  string  $name  The name of the country.
-     * @return string|null Returns 'numeric' if the country is Brasil or Portugal,
-     *                     otherwise returns null.
+     * @return bool Whether the tax identification number for the country is numeric.
      */
-    private function getTaxIdFormat(string $name): ?string
+    private function isTaxIdNumeric(string $name): bool
     {
-        if (in_array($name, ['Brasil', 'Portugal']) === false) {
-            return null;
-        }
-
-        return 'numeric';
+        return in_array($name, ['Brasil', 'Portugal']);
     }
 
     /**

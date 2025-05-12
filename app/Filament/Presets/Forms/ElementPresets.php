@@ -9,6 +9,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Carbon;
 
 final class ElementPresets
 {
@@ -30,10 +31,18 @@ final class ElementPresets
      * @param  bool  $isRequired  Indicates whether the DatePicker element is required. Defaults to true.
      * @return DatePicker The configured DatePicker instance.
      */
-    public static function datePicker(string $id, string $label, bool $isRequired = true): DatePicker
+    public static function datePicker(
+        string $id,
+        string $label,
+        Carbon $minDate,
+        Carbon $maxDate,
+        bool $isRequired = true
+    ): DatePicker
     {
         self::$element = DatePicker::make($id)
-            ->maxDate(now());
+            ->beforeOrEqual('today')
+            ->minDate($minDate)
+            ->maxDate($maxDate);
 
         self::$isRequired = $isRequired;
         self::$label = $label;
@@ -114,7 +123,7 @@ final class ElementPresets
         Closure|int $maxLength,
         ?Closure $extraInputAttributes = null,
         ?string $helperText = null,
-        // ?bool $isAlphanumeric = false,
+        ?bool $isAscii = false,
         bool|Closure $isDisabled = false,
         bool $isRequired = true,
         ?string $label = null,
@@ -129,6 +138,7 @@ final class ElementPresets
         self::$label = $label;
         self::$requiredWith = $requiredWith;
 
+        self::setAscii(isAscii: $isAscii);
         self::setExtraInputAttributes(attributes: $extraInputAttributes);
         self::setHelperText();
         self::setLabel();
@@ -158,6 +168,23 @@ final class ElementPresets
     }
 
     /**
+     * Sets the ASCII validation for the element.
+     *
+     * This method enables ASCII-only validation for the element if the
+     * provided parameter is true. If false, no action is taken.
+     *
+     * @param  bool  $isAscii  Flag to determine whether to apply ASCII validation.
+     */
+    private static function setAscii(bool $isAscii): void
+    {
+        if ($isAscii === false) {
+            return;
+        }
+
+        self::$element->ascii();
+    }
+
+    /**
      * Sets extra input attributes for the element.
      *
      * This method applies additional input attributes to the element if a closure
@@ -175,21 +202,6 @@ final class ElementPresets
 
         self::$element->extraInputAttributes($attributes);
     }
-
-    /**
-     * Sets the alphanumeric validation rule for the element.
-     *
-     * @param  bool  $isAlphanumeric  Determines whether the element should enforce alphanumeric validation.
-     *                                If set to false, no action is taken.
-     */
-    /* private static function setAlphaNum(bool $isAlphanumeric): void
-    {
-        if ($isAlphanumeric === false) {
-            return;
-        }
-
-        self::$element->ascii();
-    } */
 
     /**
      * Sets the helper text for the current element if it is defined.

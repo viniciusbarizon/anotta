@@ -70,7 +70,9 @@ final class PatientResource extends Resource
 
                 ElementPresets::datePicker(
                     id: 'birth_date',
-                    label: 'Data de Nascimento'
+                    label: 'Data de Nascimento',
+                    minDate: now()->subYears(123),
+                    maxDate: now()
                 ),
 
                 ElementPresets::select(
@@ -90,6 +92,7 @@ final class PatientResource extends Resource
                     extraInputAttributes: fn (Get $get) => [
                         'oninput' => self::getTaxIdOnInput(countryId: $get('tax_country_id')),
                     ],
+                    isAscii: true,
                     label: 'NIF',
                     maxLength: fn (Get $get): int => Country::find($get('tax_country_id'))->tax_id_length ?? 20,
                     isDisabled: fn (Get $get): bool => is_null($get('tax_country_id')),
@@ -171,6 +174,17 @@ final class PatientResource extends Resource
     }
 
     /**
+     * Retrieves a Country model instance by its unique identifier.
+     *
+     * @param string $countryId The unique identifier of the country to retrieve.
+     * @return Country The Country model instance corresponding to the given country ID.
+     */
+    private static function getCountry(string $countryId): Country
+    {
+        return Country::find($countryId);
+    }
+
+    /**
      * Generates a JavaScript input sanitization script based on the tax ID format of a given country.
      *
      * @param  string  $countryId  The identifier of the country to determine tax ID format.
@@ -198,6 +212,6 @@ final class PatientResource extends Resource
             return false;
         }
 
-        return Country::find($countryId)->tax_id_format === 'numeric';
+        return self::getCountry(countryId: $countryId)->is_tax_id_numeric === true;
     }
 }
