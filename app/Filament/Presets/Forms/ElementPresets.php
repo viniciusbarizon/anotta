@@ -123,16 +123,13 @@ final class ElementPresets
         self::$element = TextInput::make($id)
             ->disabled($isDisabled)
             ->maxLength($maxLength);
-        /* ->extraInputAttributes([
-            'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')",
-        ]) */
 
         self::$helperText = $helperText;
         self::$isRequired = $isRequired;
         self::$label = $label;
         self::$requiredWith = $requiredWith;
 
-        // self::setAlphaNum(isAlphanumeric: $isAlphanumeric);
+        self::setExtraInputAttributes(attributes: $extraInputAttributes);
         self::setHelperText();
         self::setLabel();
         self::setRequired();
@@ -164,17 +161,19 @@ final class ElementPresets
      * Sets extra input attributes for the element.
      *
      * This method applies additional input attributes to the element if a closure
-     * is provided. If the closure is null, no action is taken.
+     * providing those attributes is provided. If the attributes closure is null,
+     * no action is taken.
      *
-     * @param  Closure|null  $extraInputAttributes  A closure defining extra input attributes to be applied.
+     * @param  Closure|null  $attributes  A closure that returns an array of extra input attributes,
+     *                                    or null to skip setting attributes.
      */
-    private static function setExtraInputAttributes(?Closure $extraInputAttributes): void
+    private static function setExtraInputAttributes(?Closure $attributes): void
     {
-        if (is_null($extraInputAttributes) === true) {
+        if (is_null($attributes) === true) {
             return;
         }
 
-        self::$element->extraInputAttributes($extraInputAttributes);
+        self::$element->extraInputAttributes($attributes);
     }
 
     /**

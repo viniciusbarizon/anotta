@@ -88,9 +88,7 @@ final class PatientResource extends Resource
                 ElementPresets::textInput(
                     id: 'tax_id',
                     extraInputAttributes: fn (Get $get) => [
-                        'oninput' => Country::find($get('tax_country_id'))->tax_id_format === 'numeric' ?
-                            "this.value = this.value.replace(/[^0-9]/g, '')" :
-                            null,
+                        'oninput' => self::getTaxIdOnInput(countryId: $get('tax_country_id')),
                     ],
                     label: 'NIF',
                     maxLength: fn (Get $get): int => Country::find($get('tax_country_id'))->tax_id_length ?? 20,
@@ -170,5 +168,36 @@ final class PatientResource extends Resource
     public static function getModelLabel(): string
     {
         return __('Utente');
+    }
+
+    /**
+     * Generates a JavaScript input sanitization script based on the tax ID format of a given country.
+     *
+     * @param  string  $countryId  The identifier of the country to determine tax ID format.
+     * @return string A JavaScript snippet that sanitizes input to match the country's tax ID format.
+     *                Returns a regex replacement script that allows only numeric or alphanumeric characters.
+     */
+    private static function getTaxIdOnInput(?string $countryId): string
+    {
+        if (self::isTaxIdFormatNumeric(countryId: $countryId) === true) {
+            return 'this.value = this.value.replace(/[^0-9]/g, "")';
+        }
+
+        return 'this.value = this.value.replace(/[^a-zA-Z0-9]/g, "")';
+    }
+
+    /**
+     * Determines if the tax ID format for a specific country is numeric.
+     *
+     * @param  string  $countryId  The unique identifier of the country.
+     * @return bool True if the country's tax ID format is numeric, false otherwise.
+     */
+    private static function isTaxIdFormatNumeric(?string $countryId): bool
+    {
+        if (is_null($countryId) === true) {
+            return false;
+        }
+
+        return Country::find($countryId)->tax_id_format === 'numeric';
     }
 }
