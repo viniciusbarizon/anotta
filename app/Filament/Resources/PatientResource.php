@@ -65,8 +65,7 @@ final class PatientResource extends Resource
                 ElementPresets::textInput(
                     id: 'full_name',
                     label: 'Nome Completo',
-                    maxLength: 255,
-                    rules: ['max:255']
+                    maxLength: 255
                 ),
 
                 ElementPresets::datePicker(
@@ -98,8 +97,7 @@ final class PatientResource extends Resource
                     maxLength: fn (Get $get): int => Country::find($get('tax_country_id'))->tax_id_length ?? 20,
                     isDisabled: fn (Get $get): bool => is_null($get('tax_country_id')),
                     isRequired: false,
-                    requiredWith: 'tax_country_id',
-                    rules: ['max:20']
+                    requiredWith: 'tax_country_id'
                 ),
             ]);
     }

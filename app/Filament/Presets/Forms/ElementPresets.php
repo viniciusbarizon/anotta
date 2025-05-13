@@ -23,10 +23,6 @@ final class ElementPresets
 
     private static ?string $requiredWith;
 
-    private static ?array $rules;
-
-    private static ?array $validationMessages;
-
     /**
      * Creates a configured DatePicker element for a form.
      *
@@ -134,13 +130,11 @@ final class ElementPresets
         string $id,
         string $label,
         Closure|int $maxLength,
-        array $rules,
         ?Closure $extraInputAttributes = null,
         ?string $helperText = null,
         ?bool $isAscii = false,
         bool|Closure $isDisabled = false,
         bool $isRequired = true,
-
         ?string $requiredWith = null
     ): TextInput {
         self::$element = TextInput::make($id)
@@ -152,7 +146,6 @@ final class ElementPresets
         self::$isRequired = $isRequired;
         self::$label = $label;
         self::$requiredWith = $requiredWith;
-        self::$rules = $rules;
 
         self::setAscii(isAscii: $isAscii);
         self::setExtraInputAttributes(attributes: $extraInputAttributes);
@@ -161,7 +154,6 @@ final class ElementPresets
         self::setNullable();
         self::setRequired();
         self::setRequiredWith();
-        self::setRules();
         self::setValidationAttribute();
 
         return self::$element;
@@ -323,21 +315,6 @@ final class ElementPresets
         }
 
         self::$element->requiredWith(self::$requiredWith);
-    }
-
-    /**
-     * Sets validation rules for the current form element.
-     *
-     * This method applies custom validation rules to the element if they are defined.
-     * If no validation rules are set (null), the method returns without making any changes.
-     */
-    private static function setRules(): void
-    {
-        if (is_null(self::$rules) === true) {
-            return;
-        }
-
-        self::$element->rules(self::$rules);
     }
 
     /**
