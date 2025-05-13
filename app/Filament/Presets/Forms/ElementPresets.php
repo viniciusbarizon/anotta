@@ -42,28 +42,21 @@ final class ElementPresets
      */
     public static function datePicker(
         string $id,
-        string $afterOrEqual,
-        string $beforeOrEqual,
         string $label,
-        Carbon $minDate,
-        Carbon $maxDate,
-        array $validationMessages,
+        string $minDate,
+        string $maxDate,
         bool $isRequired = true
     ): DatePicker {
         self::$element = DatePicker::make($id)
-            ->afterOrEqual($afterOrEqual)
-            ->beforeOrEqual($beforeOrEqual)
             ->minDate($minDate)
             ->maxDate($maxDate);
 
         self::$isRequired = $isRequired;
         self::$label = $label;
-        self::$validationMessages = $validationMessages;
 
         self::setRequired();
         self::setLabel();
         self::setValidationAttribute();
-        self::setValidationMessages();
 
         return self::$element;
     }
@@ -383,23 +376,6 @@ final class ElementPresets
     {
         self::$element->validationAttribute(
             __(self::$label)
-        );
-    }
-
-    /**
-     * Sets validation messages for the current form element.
-     *
-     * This method applies custom validation messages to the element if they are defined.
-     * If no validation messages are set (null), the method returns without making any changes.
-     */
-    private static function setValidationMessages(): void
-    {
-        if (is_null(self::$validationMessages) === true) {
-            return;
-        }
-
-        self::$element->validationMessages(
-            self::$validationMessages
         );
     }
 }
