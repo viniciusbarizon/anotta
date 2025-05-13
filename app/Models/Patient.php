@@ -29,7 +29,7 @@ final class Patient extends Base implements CipherSweetEncrypted
         $encryptedRow
             ->addField('full_name')
             ->addBlindIndex('full_name', new BlindIndex('full_name_index'))
-            ->addField('tax_id')
+            ->addOptionalTextField('tax_id')
             ->addBlindIndex('tax_id', new BlindIndex('tax_id_index'));
     }
 

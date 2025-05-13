@@ -94,10 +94,12 @@ final class PatientResource extends Resource
                     ],
                     isAscii: true,
                     label: 'NIF',
-                    maxLength: fn (Get $get): int => Country::find($get('tax_country_id'))->tax_id_length ?? 20,
+                    maxLength: fn (Get $get): int => self::getTaxIdMaxLength($get('tax_country_id')),
                     isDisabled: fn (Get $get): bool => is_null($get('tax_country_id')),
                     isRequired: false,
-                    requiredWith: 'tax_country_id'
+                    requiredWith: 'tax_country_id',
+                    rules: fn (Get $get): array => self::isTaxIdFormatNumeric($get('tax_country_id')) === true ?
+                        ['regex:/^\d+$/'] : []
                 ),
             ]);
     }
@@ -174,14 +176,29 @@ final class PatientResource extends Resource
     }
 
     /**
-     * Retrieves a Country model instance by its unique identifier.
+     * Retrieves a Country model instance by its ID.
      *
-     * @param  string  $countryId  The unique identifier of the country to retrieve.
-     * @return Country The Country model instance corresponding to the given country ID.
+     * @param  string|null  $countryId  The unique identifier of the country.
+     * @return Country|null The Country model instance if found, or null if the country ID is null or not found.
      */
-    private static function getCountry(string $countryId): Country
+    private static function getCountry(?string $countryId): ?Country
     {
+        if (is_null($countryId)) {
+            return null;
+        }
+
         return Country::find($countryId);
+    }
+
+    /**
+     * Retrieves the maximum length for a tax ID based on the specified country.
+     *
+     * @param  string|null  $countryId  The unique identifier of the country.
+     * @return int The maximum allowed length for the tax ID, defaulting to 20 if no country-specific length is found.
+     */
+    private static function getTaxIdMaxLength(?string $countryId): int
+    {
+        return self::getCountry($countryId)?->tax_id_length ?? 20;
     }
 
     /**
@@ -208,10 +225,6 @@ final class PatientResource extends Resource
      */
     private static function isTaxIdFormatNumeric(?string $countryId): bool
     {
-        if (is_null($countryId) === true) {
-            return false;
-        }
-
-        return self::getCountry(countryId: $countryId)->is_tax_id_numeric === true;
+        return self::getCountry(countryId: $countryId)?->is_tax_id_numeric === true;
     }
 }

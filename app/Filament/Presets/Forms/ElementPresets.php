@@ -115,32 +115,34 @@ final class ElementPresets
      * Creates a configured TextInput element with various customization options.
      *
      * @param  string  $id  The unique identifier for the TextInput.
-     * @param  string  $label  The label for the TextInput field.
-     * @param  Closure|int  $maxLength  Maximum length constraint for the input.
-     * @param  array  $rules  Validation rules for the input.
-     * @param  Closure|null  $extraInputAttributes  Optional additional input attributes.
+     * @param  string  $label  The label for the TextInput.
+     * @param  Closure|int  $maxLength  The maximum length constraint for the input.
+     * @param  array|Closure  $extraInputAttributes  Additional HTML attributes for the input.
      * @param  string|null  $helperText  Optional helper text to display below the input.
-     * @param  bool  $isAscii  Whether to enforce ASCII-only input. Defaults to false.
+     * @param  bool|null  $isAscii  Whether to enforce ASCII-only input. Defaults to false.
      * @param  bool|Closure  $isDisabled  Whether the input is disabled. Defaults to false.
      * @param  bool  $isRequired  Whether the input is required. Defaults to true.
-     * @param  string|null  $requiredWith  Optional field name that makes this input required when specified.
+     * @param  string|null  $requiredWith  Optional field name that makes this input required when the specified field is present.
+     * @param  array|Closure  $rules  Additional validation rules for the input.
      * @return TextInput The configured TextInput element.
      */
     public static function textInput(
         string $id,
         string $label,
         Closure|int $maxLength,
-        ?Closure $extraInputAttributes = null,
+        array|Closure $extraInputAttributes = [],
         ?string $helperText = null,
         ?bool $isAscii = false,
         bool|Closure $isDisabled = false,
         bool $isRequired = true,
-        ?string $requiredWith = null
+        ?string $requiredWith = null,
+        array|Closure $rules = []
     ): TextInput {
         self::$element = TextInput::make($id)
             ->disabled($isDisabled)
+            ->extraInputAttributes($extraInputAttributes)
             ->maxLength($maxLength)
-            ->string();
+            ->rules($rules);
 
         self::$helperText = $helperText;
         self::$isRequired = $isRequired;
@@ -148,7 +150,6 @@ final class ElementPresets
         self::$requiredWith = $requiredWith;
 
         self::setAscii(isAscii: $isAscii);
-        self::setExtraInputAttributes(attributes: $extraInputAttributes);
         self::setHelperText();
         self::setLabel();
         self::setNullable();
@@ -193,25 +194,6 @@ final class ElementPresets
         }
 
         self::$element->ascii();
-    }
-
-    /**
-     * Sets extra input attributes for the element.
-     *
-     * This method applies additional input attributes to the element if a closure
-     * providing those attributes is provided. If the attributes closure is null,
-     * no action is taken.
-     *
-     * @param  Closure|null  $attributes  A closure that returns an array of extra input attributes,
-     *                                    or null to skip setting attributes.
-     */
-    private static function setExtraInputAttributes(?Closure $attributes): void
-    {
-        if (is_null($attributes) === true) {
-            return;
-        }
-
-        self::$element->extraInputAttributes($attributes);
     }
 
     /**
