@@ -68,7 +68,7 @@ final class PatientResource extends Resource
                     maxLength: 255,
                     rules: ['regex:/^\s*\S+\s+\S+.*$/'],
                     validationMessages: [
-                        'regex' => __('O campo ":attribute" deve conter o primeiro nome e o apelido do utente.'),
+                        'regex' => 'O campo ":attribute" deve conter o primeiro nome e o apelido do utente.',
                     ]
                 ),
 
@@ -102,7 +102,7 @@ final class PatientResource extends Resource
                     maxLength: fn (Get $get): int => self::getTaxIdMaxLength($get('tax_country_id')),
                     isRequired: false,
                     requiredWith: 'tax_country_id',
-                    rules: fn (Get $get): array => self::isTaxIdFormatNumeric($get('tax_country_id')) === true ?
+                    rules: fn (Get $get): array => self::isTaxIdNumeric($get('tax_country_id')) === true ?
                         ['regex:/^\d+$/'] : []
                 ),
             ]);
@@ -154,6 +154,11 @@ final class PatientResource extends Resource
             ]);
     }
 
+    /**
+     * Defines the available pages for the Patient resource.
+     *
+     * @return array An array mapping page identifiers to their respective routes.
+     */
     public static function getPages(): array
     {
         return [
@@ -206,15 +211,14 @@ final class PatientResource extends Resource
     }
 
     /**
-     * Generates a JavaScript input sanitization script based on the tax ID format of a given country.
+     * Generates a JavaScript input validation script for tax ID based on country-specific rules.
      *
-     * @param  string  $countryId  The identifier of the country to determine tax ID format.
-     * @return string A JavaScript snippet that sanitizes input to match the country's tax ID format.
-     *                Returns a regex replacement script that allows only numeric or alphanumeric characters.
+     * @param  string|null  $countryId  The unique identifier of the country.
+     * @return string A JavaScript snippet that sanitizes tax ID input according to the country's tax ID format.
      */
     private static function getTaxIdOnInput(?string $countryId): string
     {
-        if (self::isTaxIdFormatNumeric(countryId: $countryId) === true) {
+        if (self::isTaxIdNumeric(countryId: $countryId) === true) {
             return 'this.value = this.value.replace(/[^0-9]/g, "")';
         }
 
@@ -222,12 +226,12 @@ final class PatientResource extends Resource
     }
 
     /**
-     * Determines if the tax ID format for a specific country is numeric.
+     * Determines if the tax ID for a given country is numeric.
      *
-     * @param  string  $countryId  The unique identifier of the country.
-     * @return bool True if the country's tax ID format is numeric, false otherwise.
+     * @param  string|null  $countryId  The unique identifier of the country.
+     * @return bool True if the tax ID for the specified country is numeric, false otherwise.
      */
-    private static function isTaxIdFormatNumeric(?string $countryId): bool
+    private static function isTaxIdNumeric(?string $countryId): bool
     {
         return self::getCountry(countryId: $countryId)?->is_tax_id_numeric === true;
     }

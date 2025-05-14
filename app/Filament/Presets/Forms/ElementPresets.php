@@ -400,11 +400,10 @@ final class ElementPresets
     /**
      * Sets custom validation messages for the current form element.
      *
-     * This method applies custom validation messages to the form element
-     * if any are provided, allowing for personalized error messaging
-     * during form validation.
+     * This method translates and applies custom validation messages
+     * to the form element if any messages are provided.
      *
-     * @param  array|null  $messages  An array of custom validation messages, or null if no custom messages are specified.
+     * @param  array|null  $messages  An array of custom validation messages to be translated.
      */
     private static function setValidationMessages(?array $messages): void
     {
@@ -412,6 +411,10 @@ final class ElementPresets
             return;
         }
 
-        self::$element->validationMessages($messages);
+        $translated = collect($messages)->map(function (string $message) {
+            return __($message);
+        })->toArray();
+
+        self::$element->validationMessages($translated);
     }
 }

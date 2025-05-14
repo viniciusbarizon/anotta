@@ -8,9 +8,9 @@ use App\Models\Clinic;
 
 final class HasAnotherWithSameNameAction
 {
-    private ?string $currentId;
+    private readonly ?string $currentId;
 
-    private string $name;
+    private readonly string $name;
 
     /**
      * Handles the check for a duplicated clinic name.
