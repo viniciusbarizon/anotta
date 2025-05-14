@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Presets\Forms\ElementPresets;
@@ -16,7 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PatientResource extends Resource
+final class PatientResource extends Resource
 {
     protected static ?string $model = Patient::class;
 
@@ -145,7 +147,7 @@ class PatientResource extends Resource
             ]);
     }
 
-     /**
+    /**
      * Get the label for the model associated with this resource.
      *
      * @return string The localized label for the model.

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\PatientResource\Pages;
 
 use App\Filament\Resources\PatientResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditPatient extends EditRecord
+final class EditPatient extends EditRecord
 {
     protected static string $resource = PatientResource::class;
 
