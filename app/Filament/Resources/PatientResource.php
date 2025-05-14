@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources;
 
 use App\Filament\Presets\Forms\ElementPresets;
@@ -12,44 +10,19 @@ use App\Models\Patient;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-final class PatientResource extends Resource
+class PatientResource extends Resource
 {
     protected static ?string $model = Patient::class;
 
     protected static ?string $navigationIcon = 'healthicons-f-neutral';
 
     protected static ?int $navigationSort = 100;
-
-    /**
-     * Determines if a new patient can be created.
-     *
-     * This method checks if there is at least one clinic registered in the system.
-     * If a clinic exists, it allows the creation of a new patient.
-     * Otherwise, it sends a warning notification to the user indicating that
-     * at least one clinic must be registered before registering patients.
-     *
-     * @return bool Returns true if a patient can be created, false otherwise.
-     */
-    public static function canCreate(): bool
-    {
-        if (Clinic::query()->exists() === true) {
-            return true;
-        }
-
-        Notification::make()
-            ->title(__('Para registar um utente, precisa estar associado a pelo menos uma clínica.'))
-            ->warning()
-            ->send();
-
-        return false;
-    }
 
     public static function form(Form $form): Form
     {
@@ -115,12 +88,9 @@ final class PatientResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('country_code')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('full_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('tax_id')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('birth_date')
+                    ->dateTime()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -135,15 +105,14 @@ final class PatientResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('clinic.name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('tax_country_id')
+                    ->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -155,14 +124,16 @@ final class PatientResource extends Resource
     }
 
     /**
-     * Defines the available pages for the Patient resource.
+     * Defines the pages for the Patient resource in the Filament admin panel.
      *
-     * @return array An array mapping page identifiers to their respective routes.
+     * @return array An associative array mapping page types to their respective route configurations.
      */
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePatients::route('/'),
+            'index' => Pages\ListPatients::route('/'),
+            'create' => Pages\CreatePatient::route('/create'),
+            'edit' => Pages\EditPatient::route('/{record}/edit'),
         ];
     }
 
@@ -174,7 +145,7 @@ final class PatientResource extends Resource
             ]);
     }
 
-    /**
+     /**
      * Get the label for the model associated with this resource.
      *
      * @return string The localized label for the model.
