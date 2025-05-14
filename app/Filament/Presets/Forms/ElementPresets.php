@@ -116,33 +116,32 @@ final class ElementPresets
      *
      * @param  string  $id  The unique identifier for the TextInput.
      * @param  string  $label  The label for the TextInput.
-     * @param  Closure|int  $maxLength  The maximum length constraint for the input.
-     * @param  array|Closure  $extraInputAttributes  Additional HTML attributes for the input.
+     * @param  Closure|int  $maxLength  Maximum length constraint for the input.
+     * @param  Closure|null  $extraInputAttributes  Optional additional input attributes.
      * @param  string|null  $helperText  Optional helper text to display below the input.
-     * @param  bool|null  $isAscii  Whether to enforce ASCII-only input. Defaults to false.
-     * @param  bool|Closure  $isDisabled  Whether the input is disabled. Defaults to false.
+     * @param  bool  $isAscii  Whether to enforce ASCII-only input. Defaults to false.
+     * @param  bool|Closure  $disabled  Whether the input is disabled. Defaults to false.
      * @param  bool  $isRequired  Whether the input is required. Defaults to true.
-     * @param  string|null  $requiredWith  Optional field name that makes this input required when the specified field is present.
-     * @param  array|Closure  $rules  Additional validation rules for the input.
+     * @param  string|null  $requiredWith  Optional field name that makes this input required.
+     * @param  array|Closure|null  $rules  Optional validation rules.
+     * @param  array|null  $validationMessages  Optional custom validation messages.
      * @return TextInput The configured TextInput element.
      */
     public static function textInput(
         string $id,
         string $label,
         Closure|int $maxLength,
-        array|Closure $extraInputAttributes = [],
+        ?Closure $extraInputAttributes = null,
         ?string $helperText = null,
-        ?bool $isAscii = false,
-        bool|Closure $isDisabled = false,
+        bool $isAscii = false,
+        bool|Closure $disabled = false,
         bool $isRequired = true,
         ?string $requiredWith = null,
-        array|Closure $rules = []
+        array|Closure|null $rules = null,
+        ?array $validationMessages = null
     ): TextInput {
         self::$element = TextInput::make($id)
-            ->disabled($isDisabled)
-            ->extraInputAttributes($extraInputAttributes)
-            ->maxLength($maxLength)
-            ->rules($rules);
+            ->maxLength($maxLength);
 
         self::$helperText = $helperText;
         self::$isRequired = $isRequired;
@@ -150,12 +149,16 @@ final class ElementPresets
         self::$requiredWith = $requiredWith;
 
         self::setAscii(isAscii: $isAscii);
+        self::setDisabled(disabled: $disabled);
+        self::setExtraInputAttributes(attributes: $extraInputAttributes);
         self::setHelperText();
         self::setLabel();
         self::setNullable();
         self::setRequired();
         self::setRequiredWith();
+        self::setRules(rules: $rules);
         self::setValidationAttribute();
+        self::setValidationMessages(messages: $validationMessages);
 
         return self::$element;
     }
@@ -194,6 +197,44 @@ final class ElementPresets
         }
 
         self::$element->ascii();
+    }
+
+    /**
+     * Sets the disabled state for the current element.
+     *
+     * This method disables the static `$element` property if the provided
+     * parameter is true or a closure that evaluates to true. If the parameter
+     * is false, no action is taken.
+     *
+     * @param  bool|Closure  $disabled  Flag or closure to determine whether
+     *                                  the element should be disabled.
+     */
+    private static function setDisabled(bool|Closure $disabled): void
+    {
+        if ($disabled === false) {
+            return;
+        }
+
+        self::$element->disabled($disabled);
+    }
+
+    /**
+     * Sets extra input attributes for the current element.
+     *
+     * This method applies additional input attributes to the static `$element` property
+     * using the `extraInputAttributes()` method. If the provided closure is null,
+     * the method will return early without making any changes.
+     *
+     * @param  Closure|null  $attributes  A closure that returns an array of extra input attributes,
+     *                                    or null to skip setting additional attributes.
+     */
+    private static function setExtraInputAttributes(?Closure $attributes): void
+    {
+        if (is_null($attributes) === true) {
+            return;
+        }
+
+        self::$element->extraInputAttributes($attributes);
     }
 
     /**
@@ -300,6 +341,24 @@ final class ElementPresets
     }
 
     /**
+     * Sets custom validation rules for the current form element.
+     *
+     * This method applies custom validation rules to the form element
+     * if any rules are provided. If no rules are specified, the
+     * method returns without modifying the element.
+     *
+     * @param  array|Closure|null  $rules  An optional array or Closure of custom validation rules.
+     */
+    private static function setRules(array|Closure|null $rules): void
+    {
+        if (is_null($rules) === true) {
+            return;
+        }
+
+        self::$element->rules($rules);
+    }
+
+    /**
      * Sets the default value for a select element based on the provided options.
      *
      * @param  string|null  $default  The default value to set, or null if no default is specified.
@@ -336,5 +395,23 @@ final class ElementPresets
         self::$element->validationAttribute(
             __(self::$label)
         );
+    }
+
+    /**
+     * Sets custom validation messages for the current form element.
+     *
+     * This method applies custom validation messages to the form element
+     * if any are provided, allowing for personalized error messaging
+     * during form validation.
+     *
+     * @param  array|null  $messages  An array of custom validation messages, or null if no custom messages are specified.
+     */
+    private static function setValidationMessages(?array $messages): void
+    {
+        if (is_null($messages) === true) {
+            return;
+        }
+
+        self::$element->validationMessages($messages);
     }
 }

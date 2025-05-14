@@ -65,7 +65,11 @@ final class PatientResource extends Resource
                 ElementPresets::textInput(
                     id: 'full_name',
                     label: 'Nome Completo',
-                    maxLength: 255
+                    maxLength: 255,
+                    rules: ['regex:/^\s*\S+\s+\S+.*$/'],
+                    validationMessages: [
+                        'regex' => __('O campo ":attribute" deve conter o primeiro nome e o apelido do utente.'),
+                    ]
                 ),
 
                 ElementPresets::datePicker(
@@ -89,13 +93,13 @@ final class PatientResource extends Resource
 
                 ElementPresets::textInput(
                     id: 'tax_id',
+                    disabled: fn (Get $get): bool => is_null($get('tax_country_id')),
                     extraInputAttributes: fn (Get $get) => [
                         'oninput' => self::getTaxIdOnInput(countryId: $get('tax_country_id')),
                     ],
                     isAscii: true,
                     label: 'NIF',
                     maxLength: fn (Get $get): int => self::getTaxIdMaxLength($get('tax_country_id')),
-                    isDisabled: fn (Get $get): bool => is_null($get('tax_country_id')),
                     isRequired: false,
                     requiredWith: 'tax_country_id',
                     rules: fn (Get $get): array => self::isTaxIdFormatNumeric($get('tax_country_id')) === true ?
