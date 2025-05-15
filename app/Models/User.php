@@ -14,9 +14,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Filament\Panel;
+use Filament\Models\Contracts\FilamentUser;
 
 #[ObservedBy([UserObserver::class])]
-final class User extends Authenticatable implements MustVerifyEmail
+final class User extends Authenticatable implements MustVerifyEmail, FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -102,5 +104,16 @@ final class User extends Authenticatable implements MustVerifyEmail
     protected function belongsToClinic(Builder $query, string $clinicId): void
     {
         $query->whereRelation('clinics', 'id', $clinicId);
+    }
+
+    /**
+     * Determine if the user can access a specific panel.
+     *
+     * @param Panel $panel The panel being accessed
+     * @return bool Whether the user is allowed to access the panel
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasVerifiedEmail();
     }
 }
