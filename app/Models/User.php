@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Observers\UserObserver;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -14,11 +16,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Filament\Panel;
-use Filament\Models\Contracts\FilamentUser;
 
 #[ObservedBy([UserObserver::class])]
-final class User extends Authenticatable implements MustVerifyEmail, FilamentUser
+final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -64,6 +64,17 @@ final class User extends Authenticatable implements MustVerifyEmail, FilamentUse
     }
 
     /**
+     * Determine if the user can access a specific panel.
+     *
+     * @param  Panel  $panel  The panel being accessed
+     * @return bool Whether the user is allowed to access the panel
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasVerifiedEmail();
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -104,16 +115,5 @@ final class User extends Authenticatable implements MustVerifyEmail, FilamentUse
     protected function belongsToClinic(Builder $query, string $clinicId): void
     {
         $query->whereRelation('clinics', 'id', $clinicId);
-    }
-
-    /**
-     * Determine if the user can access a specific panel.
-     *
-     * @param Panel $panel The panel being accessed
-     * @return bool Whether the user is allowed to access the panel
-     */
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->hasVerifiedEmail();
     }
 }
