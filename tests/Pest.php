@@ -53,7 +53,7 @@ expect()->extend('toBeOne', function () {
 
 /**
  * Logs in a random email verified user for testing purposes.
- * 
+ *
  * This helper function selects a random email verified user from the database
  * and sets them as the authenticated user for the current test context.
  */

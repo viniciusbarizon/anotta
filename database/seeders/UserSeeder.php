@@ -33,7 +33,7 @@ final class UserSeeder extends Seeder
             ->unverified()
             ->create();
     }
-    
+
     /**
      * Create verified users using the User factory.
      *

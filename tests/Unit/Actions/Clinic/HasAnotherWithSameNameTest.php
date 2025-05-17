@@ -6,7 +6,6 @@ use App\Actions\Clinic\HasAnotherWithSameNameAction;
 use App\Models\Clinic;
 use App\Models\Scopes\UserRelationScope;
 
-
 beforeEach(function () {
     login();
 });
