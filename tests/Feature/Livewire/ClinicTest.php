@@ -44,7 +44,7 @@ describe('user not super admin', function () {
     it('sorts by deleted_at', function () {
         delete();
 
-        assertSortDates(column: 'deleted_at');
+        assertSortWithNull(column: 'deleted_at');
     });
 
     it('searches by name', function () {
@@ -110,31 +110,36 @@ describe('user not super admin', function () {
     });
 
     /**
-     * Assert sorting functionality for a given column in the table.
+     * Assert sorting behavior for a table column.
      *
-     * This method tests both ascending and descending sorting of table records
-     * by verifying the order of records matches the sorted collection.
+     * This method tests table sorting functionality by:
+     * - Sorting the table by the specified column in ascending order
+     * - Verifying the table records match the ascending sorted collection
+     * - Sorting the table by the specified column in descending order
+     * - Verifying the table records match the descending sorted collection
      *
-     * @param  string  $column  The name of the column to test sorting on
+     * @param string $column The column to test sorting on
      */
     function assertSort(string $column): void
     {
         test()->manageClinics
             ->sortTable($column)
-            ->assertCanSeeTableRecords(test()->clinics->sortBy($column), inOrder: true)
+            ->assertCanSeeTableRecords(test()->clinics->sortBy($column, SORT_LOCALE_STRING), inOrder: true)
             ->sortTable($column, 'desc')
-            ->assertCanSeeTableRecords(test()->clinics->sortByDesc($column), inOrder: true);
+            ->assertCanSeeTableRecords(test()->clinics->sortByDesc($column, SORT_LOCALE_STRING), inOrder: true);
     }
 
     /**
-     * Assert sorting functionality for date columns in the table.
+     * Assert sorting behavior for a given column, including null value handling.
      *
-     * This method tests both ascending and descending sorting of table records
-     * by verifying the order of records matches the sorted collection for date-based columns.
+     * This method tests table sorting functionality by:
+     * - Retrieving clinics ordered by the specified column in ascending and descending order
+     * - Sorting the table by the column in both directions
+     * - Verifying that the table records match the expected sorted order
      *
-     * @param  string  $column  The name of the date column to test sorting on
+     * @param string $column The column to test sorting on
      */
-    function assertSortDates(string $column)
+    function assertSortWithNull(string $column): void
     {
         $asc = getClinicsOrderedBy(column: $column);
         $desc = getClinicsOrderedBy(column: $column, orderBy: 'desc');
