@@ -118,7 +118,7 @@ describe('user not super admin', function () {
      * - Sorting the table by the specified column in descending order
      * - Verifying the table records match the descending sorted collection
      *
-     * @param string $column The column to test sorting on
+     * @param  string  $column  The column to test sorting on
      */
     function assertSort(string $column): void
     {
@@ -137,7 +137,7 @@ describe('user not super admin', function () {
      * - Sorting the table by the column in both directions
      * - Verifying that the table records match the expected sorted order
      *
-     * @param string $column The column to test sorting on
+     * @param  string  $column  The column to test sorting on
      */
     function assertSortWithNull(string $column): void
     {
