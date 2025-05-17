@@ -37,8 +37,6 @@ final class UserFactory extends Factory
 
     /**
      * Indicate that the model's user is a super admin.
-     *
-     * @return static
      */
     public function superAdmin(): static
     {

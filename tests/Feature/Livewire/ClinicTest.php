@@ -62,7 +62,7 @@ describe('user not super admin', function () {
      * This method tests both ascending and descending sorting of table records
      * by verifying the order of records matches the sorted collection.
      *
-     * @param string $column The name of the column to test sorting on
+     * @param  string  $column  The name of the column to test sorting on
      */
     function assertSort(string $column): void
     {
