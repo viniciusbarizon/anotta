@@ -175,7 +175,7 @@ describe('user not super admin', function () {
      * are displayed after applying a trashed filter.
      *
      * @param  Collection  $canSee  Collection of records expected to be visible after filtering
-     * @param  int|string  $value   The trashed filter value (e.g., 0 for non-trashed, 1 for trashed)
+     * @param  int|string  $value  The trashed filter value (e.g., 0 for non-trashed, 1 for trashed)
      * @param  Collection|null  $canNotSee  Optional collection of records not expected to be visible
      */
     function filterTrashed(Collection $canSee, int|string $value, ?Collection $canNotSee = null): void
@@ -197,8 +197,8 @@ describe('user not super admin', function () {
      * This method fetches all clinics, including trashed records, and orders them
      * by the specified column in the given sort direction.
      *
-     * @param string $column The column to order the clinics by
-     * @param string $orderBy The sort direction ('asc' or 'desc'), defaults to 'asc'
+     * @param  string  $column  The column to order the clinics by
+     * @param  string  $orderBy  The sort direction ('asc' or 'desc'), defaults to 'asc'
      * @return Collection A collection of clinics ordered by the specified column
      */
     function getClinicsOrderedBy(string $column, string $orderBy = 'asc'): Collection
