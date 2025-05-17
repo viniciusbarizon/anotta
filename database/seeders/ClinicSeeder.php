@@ -23,8 +23,21 @@ final class ClinicSeeder extends Seeder
         foreach ($this->getUsersWithEmailVerified() as $user) {
             Auth::login($user);
 
-            Clinic::factory()->create();
+            $this->createClinics();
         }
+    }
+
+    /**
+     * Create clinics using the Clinic factory.
+     *
+     * This method generates 10 clinic instances using the Clinic model's factory
+     * and persists them to the database.
+     */
+    private function createClinics(): void
+    {
+        Clinic::factory()
+            ->count(10)
+            ->create();
     }
 
     /**

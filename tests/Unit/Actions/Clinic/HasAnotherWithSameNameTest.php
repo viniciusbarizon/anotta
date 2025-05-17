@@ -5,13 +5,10 @@ declare(strict_types=1);
 use App\Actions\Clinic\HasAnotherWithSameNameAction;
 use App\Models\Clinic;
 use App\Models\Scopes\UserRelationScope;
-use App\Models\User;
 
-use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
-    $this->user = getRandomUser();
-    actingAs($this->user);
+    login();
 });
 
 describe('creating a new clinic', function () {
@@ -89,7 +86,7 @@ describe('creating a new clinic', function () {
     {
         return Clinic::query()
             ->withoutGlobalScope(UserRelationScope::class)
-            ->whereRelation('users', 'id', '!=', test()->user->id)
+            ->whereRelation('users', 'id', '!=', auth()->user()->id)
             ->inRandomOrder()
             ->first()
             ->name;
@@ -122,21 +119,6 @@ describe('editing clinic', function () {
 });
 
 /**
- * Retrieve a random user who has a verified email.
- *
- * This method queries the database for users with a verified email address,
- * orders them randomly, and returns the first result.
- *
- * @return User A randomly selected user with a verified email.
- */
-function getRandomUser(): User
-{
-    return User::emailVerified()
-        ->inRandomOrder()
-        ->first();
-}
-
-/**
  * Determines if there is another entity with the same name.
  *
  * This function utilizes the `HasAnotherWithSameNameAction` to check
@@ -160,7 +142,7 @@ function hasAnotherWithSameName(): bool
  */
 function getRandomClinic(): Clinic
 {
-    return test()->user
+    return auth()->user()
         ->clinics()
         ->inRandomOrder()
         ->first();

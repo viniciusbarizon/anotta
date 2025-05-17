@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Models\User;
+
+use function Pest\Laravel\actingAs;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -47,7 +51,17 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * Logs in a random email verified user for testing purposes.
+ * 
+ * This helper function selects a random email verified user from the database
+ * and sets them as the authenticated user for the current test context.
+ */
+function login(): void
 {
-    // ..
+    $user = User::emailVerified()
+        ->inRandomOrder()
+        ->first();
+
+    actingAs($user);
 }
