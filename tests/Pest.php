@@ -57,9 +57,10 @@ expect()->extend('toBeOne', function () {
  * This helper function selects a random email verified user from the database
  * and sets them as the authenticated user for the current test context.
  */
-function login(): void
+function login(bool $isSuperAdmin = false): void
 {
     $user = User::emailVerified()
+        ->where('is_super_admin', $isSuperAdmin)
         ->inRandomOrder()
         ->first();
 

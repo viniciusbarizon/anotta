@@ -10,15 +10,29 @@ use Illuminate\Database\Seeder;
 final class UserSeeder extends Seeder
 {
     /**
-     * Seed the database with verified and unverified users.
+     * Seed the database with different types of users.
      *
-     * This method creates two verified users and one unverified user
-     * using the User model's factory methods.
+     * This method creates a super admin, verified users, and an unverified user
+     * by calling private methods that utilize the User model's factory methods.
      */
     public function run(): void
     {
+        $this->createSuperAdmin();
         $this->createVerified();
         $this->createUnverified();
+    }
+
+    /**
+     * Create a super admin user using the User factory.
+     *
+     * This method generates a super admin user
+     * by utilizing the User model's factory method with the `superAdmin` state.
+     */
+    private function createSuperAdmin(): void
+    {
+        User::factory()
+            ->superAdmin()
+            ->create();
     }
 
     /**
