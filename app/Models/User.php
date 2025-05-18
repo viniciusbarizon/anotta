@@ -75,11 +75,11 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
         return $this->belongsToMany(Clinic::class)
             ->withTrashed();
     }
-    
+
     /**
      * Determine if the user can access a specific panel.
      *
-     * @param Panel $panel The panel being accessed
+     * @param  Panel  $panel  The panel being accessed
      * @return bool Whether the user is allowed to access the panel
      */
     public function canAccessPanel(Panel $panel): bool

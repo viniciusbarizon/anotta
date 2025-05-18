@@ -27,7 +27,6 @@ final class HasAnotherWithSameNameAction
         return $this->has();
     }
 
-    
     /**
      * Checks if another clinic with the same normalized name exists.
      *

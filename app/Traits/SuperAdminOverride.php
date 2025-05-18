@@ -15,8 +15,8 @@ trait SuperAdminOverride
      * permissions for super administrators. It allows or prevents certain actions
      * based on the user's super admin status and the specific ability being checked.
      *
-     * @param User $user The user attempting to perform the action
-     * @param string $ability The action or ability being checked
+     * @param  User  $user  The user attempting to perform the action
+     * @param  string  $ability  The action or ability being checked
      * @return bool|null Returns true for super admins, null otherwise, allowing fallback to other authorization checks
      */
     public function before(User $user, string $ability): ?bool
