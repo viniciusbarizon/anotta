@@ -6,6 +6,7 @@ use App\Filament\Resources\ClinicResource\Pages\ManageClinics;
 use App\Models\Clinic;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\RestoreAction;
 use Illuminate\Support\Collection;
 
 use function Pest\Livewire\livewire;
@@ -14,7 +15,7 @@ describe('user not super admin', function () {
     beforeEach(function () {
         login();
 
-        $this->clinics = Clinic::all();
+        $this->clinics = Clinic::withTrashed()->get();
         $this->manageClinics = livewire(ManageClinics::class);
     });
 
@@ -38,7 +39,9 @@ describe('user not super admin', function () {
     });
 
     it('sorts by updated_at', function () {
-        assertSort(column: 'updated_at');
+        edit();
+
+        assertSortWithNull(column: 'updated_at');
     });
 
     it('sorts by deleted_at', function () {
@@ -62,9 +65,11 @@ describe('user not super admin', function () {
     });
 
     it('deletes', function () {
-        $clinic = delete();
+        $id = delete();
 
-        $this->assertSoftDeleted($clinic);
+        $this->assertSoftDeleted(
+            test()->clinics->find($id)
+        );
     });
 
     it('filters by only active', function () {
@@ -97,16 +102,23 @@ describe('user not super admin', function () {
     });
 
     it('edits', function () {
-        $clinic = getClinic();
+        $edit = edit();
 
-        test()->manageClinics
-            ->callTableAction(EditAction::class, $clinic, data: [
-                'name' => $name = fake()->company(),
-            ])
-            ->assertHasNoTableActionErrors();
+        expect($edit['clinic'])
+            ->name->toBe($edit['name']);
+    });
 
-        expect($clinic->refresh())
-            ->name->toBe($name);
+    it('restores', function () {
+        $id = delete();
+
+        $clinic = test()->clinics->find($id);
+
+        $this->assertSoftDeleted($clinic);
+
+        livewire(ManageClinics::class)
+            ->callTableAction(RestoreAction::class, $id);
+
+        $this->assertNotSoftDeleted($clinic->fresh());
     });
 
     /**
@@ -152,24 +164,49 @@ describe('user not super admin', function () {
     }
 
     /**
-     * Delete a clinic and update the clinics collection with trashed records.
+     * Delete a clinic and return its ID.
      *
-     * This method performs a soft delete on the first clinic in the collection,
-     * calls the delete table action, and refreshes the clinics collection to include
-     * trashed records.
+     * This method performs a delete table action on a clinic,
+     * refreshes the clinics collection, and returns the deleted clinic's ID.
      *
-     * @return Clinic The deleted clinic
+     * @return string The ID of the deleted clinic
      */
-    function delete(): Clinic
+    function delete(): string
     {
         $clinic = getClinic();
 
         test()->manageClinics
             ->callTableAction(DeleteAction::class, $clinic);
 
-        test()->clinics = Clinic::withTrashed()->get();
+        test()->clinics = test()->clinics->fresh();
 
-        return $clinic;
+        return $clinic->id;
+    }
+
+    /**
+     * Edit a clinic and return the updated clinic and new name.
+     *
+     * This method performs an edit table action on the first clinic in the collection,
+     * updates the clinic's name with a fake company name, and verifies no table action errors.
+     *
+     * @return array An array containing the original clinic and the new name
+     */
+    function edit(): array
+    {
+        $clinic = getClinic();
+
+        test()->manageClinics
+            ->callTableAction(EditAction::class, $clinic, data: [
+                'name' => $name = fake()->company(),
+            ])
+            ->assertHasNoTableActionErrors();
+
+        test()->clinics = test()->clinics->fresh();
+
+        return [
+            'clinic' => $clinic->fresh(),
+            'name' => $name,
+        ];
     }
 
     /**

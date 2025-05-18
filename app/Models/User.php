@@ -56,11 +56,24 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     }
 
     /**
-     * Define a many-to-many relationship between the User model and the Clinic model.
+     * Get the clinics associated with the user.
+     *
+     * @return BelongsToMany A relationship to clinics
      */
     public function clinics(): BelongsToMany
     {
         return $this->belongsToMany(Clinic::class);
+    }
+
+    /**
+     * Get the clinics associated with the user, including soft-deleted clinics.
+     *
+     * @return BelongsToMany A relationship to clinics, including soft-deleted ones
+     */
+    public function clinicsWithTrashed(): BelongsToMany
+    {
+        return $this->belongsToMany(Clinic::class)
+            ->withTrashed();
     }
 
     /**
@@ -115,5 +128,17 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     protected function belongsToClinic(Builder $query, string $clinicId): void
     {
         $query->whereRelation('clinics', 'id', $clinicId);
+    }
+
+    #[Scope]
+    /**
+     * Scope a query to filter users that belong to a specific clinic, including soft-deleted clinics.
+     *
+     * @param  Builder  $query  The query builder instance.
+     * @param  string  $clinicId  The ID of the clinic to filter by.
+     */
+    protected function belongsToClinicWithTrashed(Builder $query, string $clinicId): void
+    {
+        $query->whereRelation('clinicsWithTrashed', 'id', $clinicId);
     }
 }

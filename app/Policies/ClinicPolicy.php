@@ -80,18 +80,16 @@ final class ClinicPolicy
     }
 
     /**
-     * Determine whether the user can restore the given clinic.
+     * Determine whether the user can restore the soft-deleted clinic.
      *
-     * @param  User  $user  The user making the request.
-     * @param  Clinic  $clinic  The clinic instance to be restored.
-     * @return bool True if the user belongs to the clinic, false otherwise.
+     * @param  User  $user  The user attempting to restore the clinic.
+     * @param  Clinic  $clinic  The clinic instance being restored.
+     * @return bool True if the user belongs to the clinic (including soft-deleted clinics), false otherwise.
      */
     public function restore(User $user, Clinic $clinic): bool
     {
-        return $this->belongsToClinic(
-            clinicId: $clinic->id,
-            user: $user
-        );
+        return $user->belongsToClinicWithTrashed($clinic->id)
+            ->exists();
     }
 
     /**

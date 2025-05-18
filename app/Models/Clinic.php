@@ -18,11 +18,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ScopedBy([UserRelationScope::class])]
 final class Clinic extends Base
 {
-    /* protected $cascadeDeletes = [
+    protected $cascadeDeletes = [
         'patientRecords',
         'patients',
         'users',
-    ]; */
+    ];
 
     /**
      * Get the patient records associated with the clinic.
