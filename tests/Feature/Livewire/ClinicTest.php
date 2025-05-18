@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Filament\Resources\ClinicResource\Pages\ManageClinics;
 use App\Models\Clinic;
+use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
@@ -193,6 +194,13 @@ describe('user not super admin', function () {
             ->get();
     }
 
+    it('has all actions in expected order', function () {
+        $this->manageClinics
+            ->assertTableActionsExistInOrder(['edit', 'delete', 'restore'])
+            ->assertTableActionDoesNotExist('forceDelete')
+            ->assertTableBulkActionsExistInOrder(['delete', 'restore']);
+    });
+
     it('lists', function () {
         $this->manageClinics
             ->assertCanSeeTableRecords($this->clinics)
@@ -267,12 +275,36 @@ describe('user not super admin', function () {
         );
     });
 
-    it('deletes', function () {
-        $id = delete();
+    it('validates name as required when creating', function () {
+        $this->manageClinics
+            ->callAction('create', data: [
+                'name' => null,
+            ])
+            ->assertHasActionErrors(['name' => ['required']]);
+    });
 
-        $this->assertSoftDeleted(
-            test()->clinics->find($id)
-        );
+    it('creates', function () {
+        $name = fake()->company();
+
+        $this->manageClinics
+            ->callAction('create', data: [
+                'name' => $name,
+            ])
+            ->assertHasNoActionErrors();
+
+        $this->assertDatabaseHas(Clinic::class, [
+            'name' => $name,
+        ]);
+    });
+
+    it('validates name as required when editing', function () {
+        $clinic = getClinic();
+
+        $this->manageClinics
+            ->callTableAction(EditAction::class, $clinic, data: [
+                'name' => null,
+            ])
+            ->assertHasTableActionErrors(['name' => ['required']]);
     });
 
     it('edits', function () {
@@ -280,6 +312,14 @@ describe('user not super admin', function () {
 
         expect($edit['clinic'])
             ->name->toBe($edit['name']);
+    });
+
+    it('deletes', function () {
+        $id = delete();
+
+        $this->assertSoftDeleted(
+            test()->clinics->find($id)
+        );
     });
 
     it('restores', function () {
