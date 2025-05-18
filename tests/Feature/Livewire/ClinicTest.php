@@ -10,134 +10,46 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Illuminate\Support\Collection;
+use Livewire\Features\SupportTesting\Testable;
 
 use function Pest\Livewire\livewire;
+
+/**
+ * Retrieve the first clinic from the current test's clinics collection.
+ *
+ * @return Clinic The first clinic in the collection
+ */
+function getClinic(): Clinic
+{
+    return test()->clinics->first();
+}
+
+/**
+ * Retrieve all clinics, including soft-deleted records.
+ *
+ * @return Collection A collection of all clinic records, including trashed clinics
+ */
+function getClinics(): Collection
+{
+    return Clinic::withTrashed()->get();
+}
+
+/**
+ * Create a Livewire testable instance for the ManageClinics resource.
+ *
+ * @return Testable A Livewire testable component for the ManageClinics page
+ */
+function getResource(): Testable
+{
+    return livewire(ManageClinics::class);
+}
 
 describe('user not super admin', function () {
     beforeEach(function () {
         login();
 
-        $this->clinics = Clinic::withTrashed()->get();
-        $this->manageClinics = livewire(ManageClinics::class);
-    });
-
-    it('lists', function () {
-        test()->manageClinics
-            ->assertCanSeeTableRecords(test()->clinics)
-            ->assertCanRenderTableColumn('name')
-            ->assertCanRenderTableColumn('created_at')
-            ->assertCanRenderTableColumn('updated_at')
-            ->assertCanRenderTableColumn('deleted_at')
-            ->assertCountTableRecords(test()->clinics->count())
-            ->assertTableColumnHidden('id');
-    });
-
-    it('sorts by name', function () {
-        assertSort(column: 'name');
-    });
-
-    it('sorts by created_at', function () {
-        assertSort(column: 'created_at');
-    });
-
-    it('sorts by updated_at', function () {
-        edit();
-
-        assertSortWithNull(column: 'updated_at');
-    });
-
-    it('sorts by deleted_at', function () {
-        delete();
-
-        assertSortWithNull(column: 'deleted_at');
-    });
-
-    it('searches by name', function () {
-        $name = getClinic()->name;
-
-        test()->manageClinics
-            ->searchTable($name)
-            ->assertCanSeeTableRecords(test()->clinics->where('name', $name))
-            ->assertCanNotSeeTableRecords(test()->clinics->where('name', '!=', $name));
-    });
-
-    it('has an deleted filter', function () {
-        test()->manageClinics
-            ->assertTableFilterExists('trashed');
-    });
-
-    it('deletes', function () {
-        $id = delete();
-
-        $this->assertSoftDeleted(
-            test()->clinics->find($id)
-        );
-    });
-
-    it('filters by only active', function () {
-        delete();
-
-        filterTrashed(
-            canNotSee: test()->clinics->whereNotNull('deleted_at'),
-            canSee: test()->clinics->whereNull('deleted_at'),
-            value: ''
-        );
-    });
-
-    it('filters by only deleted', function () {
-        delete();
-
-        filterTrashed(
-            canNotSee: test()->clinics->whereNull('deleted_at'),
-            canSee: test()->clinics->whereNotNull('deleted_at'),
-            value: 0
-        );
-    });
-
-    it('filters by active and deleted', function () {
-        delete();
-
-        filterTrashed(
-            canSee: test()->clinics,
-            value: 1
-        );
-    });
-
-    it('edits', function () {
-        $edit = edit();
-
-        expect($edit['clinic'])
-            ->name->toBe($edit['name']);
-    });
-
-    it('restores', function () {
-        $id = delete();
-
-        $clinic = test()->clinics->find($id);
-
-        test()->manageClinics
-            ->callTableAction(RestoreAction::class, $id);
-
-        $this->assertNotSoftDeleted($clinic->fresh());
-    });
-
-    it('deletes in bulk', function () {
-        $clinics = deleteInBulk();
-
-        foreach ($clinics as $clinic) {
-            $this->assertSoftDeleted($clinic);
-        }
-    });
-
-    it('restores in bulk', function () {
-        $clinics = deleteInBulk();
-
-        test()->manageClinics
-            ->callTableBulkAction(RestoreBulkAction::class, $clinics);
-
-        foreach ($clinics as $clinic) {
-            $this->assertNotSoftDeleted($clinic);
-        }
+        $this->clinics = getClinics();
+        $this->manageClinics = getResource();
     });
 
     /**
@@ -259,7 +171,8 @@ describe('user not super admin', function () {
             return;
         }
 
-        test()->manageClinics->assertCanNotSeeTableRecords($canNotSee);
+        test()->manageClinics
+            ->assertCanNotSeeTableRecords($canNotSee);
     }
 
     /**
@@ -280,22 +193,145 @@ describe('user not super admin', function () {
             ->get();
     }
 
-    /**
-     * Retrieve the first clinic from the current test's clinics collection.
-     *
-     * @return Clinic The first clinic in the collection
-     */
-    function getClinic(): Clinic
-    {
-        return test()->clinics->first();
-    }
+    it('lists', function () {
+        $this->manageClinics
+            ->assertCanSeeTableRecords($this->clinics)
+            ->assertCanRenderTableColumn('name')
+            ->assertCanRenderTableColumn('created_at')
+            ->assertCanRenderTableColumn('updated_at')
+            ->assertCanRenderTableColumn('deleted_at')
+            ->assertCountTableRecords($this->clinics->count())
+            ->assertTableColumnHidden('id');
+    });
+
+    it('sorts by name', function () {
+        assertSort(column: 'name');
+    });
+
+    it('sorts by created_at', function () {
+        assertSort(column: 'created_at');
+    });
+
+    it('sorts by updated_at', function () {
+        edit();
+
+        assertSortWithNull(column: 'updated_at');
+    });
+
+    it('sorts by deleted_at', function () {
+        delete();
+
+        assertSortWithNull(column: 'deleted_at');
+    });
+
+    it('searches by name', function () {
+        $name = getClinic()->name;
+
+        $this->manageClinics
+            ->searchTable($name)
+            ->assertCanSeeTableRecords(test()->clinics->where('name', $name))
+            ->assertCanNotSeeTableRecords(test()->clinics->where('name', '!=', $name));
+    });
+
+    it('has an deleted filter', function () {
+        $this->manageClinics
+            ->assertTableFilterExists('trashed');
+    });
+
+    it('filters by only active', function () {
+        delete();
+
+        filterTrashed(
+            canNotSee: test()->clinics->whereNotNull('deleted_at'),
+            canSee: test()->clinics->whereNull('deleted_at'),
+            value: ''
+        );
+    });
+
+    it('filters by only deleted', function () {
+        delete();
+
+        filterTrashed(
+            canNotSee: test()->clinics->whereNull('deleted_at'),
+            canSee: test()->clinics->whereNotNull('deleted_at'),
+            value: 0
+        );
+    });
+
+    it('filters by active and deleted', function () {
+        delete();
+
+        filterTrashed(
+            canSee: test()->clinics,
+            value: 1
+        );
+    });
+
+    it('deletes', function () {
+        $id = delete();
+
+        $this->assertSoftDeleted(
+            test()->clinics->find($id)
+        );
+    });
+
+    it('edits', function () {
+        $edit = edit();
+
+        expect($edit['clinic'])
+            ->name->toBe($edit['name']);
+    });
+
+    it('restores', function () {
+        $id = delete();
+
+        $clinic = test()->clinics->find($id);
+
+        $this->manageClinics
+            ->callTableAction(RestoreAction::class, $id);
+
+        $this->assertNotSoftDeleted($clinic->fresh());
+    });
+
+    it('deletes in bulk', function () {
+        $clinics = deleteInBulk();
+
+        foreach ($clinics as $clinic) {
+            $this->assertSoftDeleted($clinic);
+        }
+    });
+
+    it('restores in bulk', function () {
+        $clinics = deleteInBulk();
+
+        $this->manageClinics
+            ->callTableBulkAction(RestoreBulkAction::class, $clinics);
+
+        foreach ($clinics as $clinic) {
+            $this->assertNotSoftDeleted($clinic);
+        }
+    });
 });
 
 describe('user super admin', function () {
-    it('shows the ID column', function () {
+    beforeEach(function () {
         login(isSuperAdmin: true);
 
-        livewire(ManageClinics::class)
+        $this->clinics = getClinics();
+        $this->manageClinics = getResource();
+    });
+
+    it('shows the id column', function () {
+        $this->manageClinics
             ->assertTableColumnVisible('id');
+    });
+
+    it('searches by id', function () {
+        $id = getClinic()->id;
+
+        $this->manageClinics
+            ->searchTable($id)
+            ->assertCanSeeTableRecords(test()->clinics->where('id', $id))
+            ->assertCanNotSeeTableRecords(test()->clinics->where('id', '!=', $id));
     });
 });

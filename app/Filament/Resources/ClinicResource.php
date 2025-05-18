@@ -132,6 +132,7 @@ final class ClinicResource extends Resource
             ->columns([
                 ColumnPresets::text(
                     isCopyable: true,
+                    isSortable: false,
                     isVisible: auth()->user()->is_super_admin,
                     name: 'id',
                     label: 'ID'

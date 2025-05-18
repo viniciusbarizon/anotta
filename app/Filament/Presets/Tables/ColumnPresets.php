@@ -20,19 +20,23 @@ final class ColumnPresets
     public static function text(
         string $name,
         bool $isCopyable = false,
+        bool $isSortable = true,
         bool $isVisible = true,
         ?string $label = null
     ): TextColumn {
         $column = TextColumn::make($name)
             ->searchable()
-            ->sortable()
             ->visible($isVisible);
 
-        if ($isCopyable) {
+        if ($isCopyable === true) {
             $column->copyable();
         }
 
-        if (is_null($label)) {
+        if ($isSortable === true) {
+            $column->sortable();
+        }
+
+        if (is_null($label) === true) {
             return $column->translateLabel();
         }
 
