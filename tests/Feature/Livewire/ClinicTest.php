@@ -5,8 +5,10 @@ declare(strict_types=1);
 use App\Filament\Resources\ClinicResource\Pages\ManageClinics;
 use App\Models\Clinic;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\RestoreBulkAction;
 use Illuminate\Support\Collection;
 
 use function Pest\Livewire\livewire;
@@ -113,12 +115,29 @@ describe('user not super admin', function () {
 
         $clinic = test()->clinics->find($id);
 
-        $this->assertSoftDeleted($clinic);
-
-        livewire(ManageClinics::class)
+        test()->manageClinics
             ->callTableAction(RestoreAction::class, $id);
 
         $this->assertNotSoftDeleted($clinic->fresh());
+    });
+
+    it('deletes in bulk', function () {
+        $clinics = deleteInBulk();
+
+        foreach ($clinics as $clinic) {
+            $this->assertSoftDeleted($clinic);
+        }
+    });
+
+    it('restores in bulk', function () {
+        $clinics = deleteInBulk();
+
+        test()->manageClinics
+            ->callTableBulkAction(RestoreBulkAction::class, $clinics);
+
+        foreach ($clinics as $clinic) {
+            $this->assertNotSoftDeleted($clinic);
+        }
     });
 
     /**
@@ -181,6 +200,16 @@ describe('user not super admin', function () {
         test()->clinics = test()->clinics->fresh();
 
         return $clinic->id;
+    }
+
+    function deleteInBulk(): Collection
+    {
+        $clinics = test()->clinics->take(2);
+
+        test()->manageClinics
+            ->callTableBulkAction(DeleteBulkAction::class, $clinics);
+
+        return $clinics;
     }
 
     /**

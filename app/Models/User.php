@@ -117,28 +117,4 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     {
         $query->whereNotNull('email_verified_at');
     }
-
-    #[Scope]
-    /**
-     * Scope a query to filter users that belong to a specific clinic.
-     *
-     * @param  Builder  $query  The query builder instance.
-     * @param  string  $clinicId  The ID of the clinic to filter by.
-     */
-    protected function belongsToClinic(Builder $query, string $clinicId): void
-    {
-        $query->whereRelation('clinics', 'id', $clinicId);
-    }
-
-    #[Scope]
-    /**
-     * Scope a query to filter users that belong to a specific clinic, including soft-deleted clinics.
-     *
-     * @param  Builder  $query  The query builder instance.
-     * @param  string  $clinicId  The ID of the clinic to filter by.
-     */
-    protected function belongsToClinicWithTrashed(Builder $query, string $clinicId): void
-    {
-        $query->whereRelation('clinicsWithTrashed', 'id', $clinicId);
-    }
 }
