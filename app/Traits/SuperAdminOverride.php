@@ -9,21 +9,19 @@ use App\Models\User;
 trait SuperAdminOverride
 {
     /**
-     * Determine if the given ability should be overridden for the user.
+     * Determines authorization for specific abilities based on user's super admin status.
      *
-     * This method is executed before any other authorization checks. It allows
-     * for overriding the authorization logic based on the user's role or the
-     * specific ability being checked.
+     * This method is typically used in policy authorization checks to provide special
+     * permissions for super administrators. It allows or prevents certain actions
+     * based on the user's super admin status and the specific ability being checked.
      *
-     * @param  User  $user  The user instance being checked.
-     * @param  string  $ability  The ability being checked (e.g., 'view', 'update', etc.).
-     * @return bool|null Returns `true` if the user is a super admin and the ability
-     *                   is not 'forceDelete', allowing the action. Returns `null`
-     *                   if no override is applied, allowing further checks.
+     * @param User $user The user attempting to perform the action
+     * @param string $ability The action or ability being checked
+     * @return bool|null Returns true for super admins, null otherwise, allowing fallback to other authorization checks
      */
     public function before(User $user, string $ability): ?bool
     {
-        if ($ability === 'forceDelete') {
+        if (in_array($ability, ['forceDelete', 'update']) === true) {
             return null;
         }
 

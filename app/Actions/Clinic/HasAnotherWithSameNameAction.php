@@ -27,18 +27,16 @@ final class HasAnotherWithSameNameAction
         return $this->has();
     }
 
+    
     /**
-     * Checks if there is another clinic with the same normalized name
-     * associated with the current authenticated user, excluding the clinic
-     * with the specified current ID.
+     * Checks if another clinic with the same normalized name exists.
      *
-     * @return bool True if another clinic with the same name exists, false otherwise.
+     * @return bool Returns true if a clinic with the same normalized name exists (excluding the current clinic), false otherwise.
      */
     private function has(): bool
     {
         return Clinic::query()
             ->withTrashed()
-            ->fromUserLogged()
             ->where('name_normalized', $this->name)
             ->where('id', '!=', $this->currentId)
             ->exists();

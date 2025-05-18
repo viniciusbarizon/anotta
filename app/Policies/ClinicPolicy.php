@@ -25,15 +25,15 @@ final class ClinicPolicy
      *
      * Authorization is based on whether the user is associated with the clinic.
      *
-     * @param  User  $user  The authenticated user.
+     * @param  User  $user  The user attempting to view the clinic.
      * @param  Clinic  $clinic  The clinic being accessed.
-     * @return bool True if the user belongs to the clinic.
+     * @return bool True if the user belongs to the clinic, false otherwise.
      */
     public function view(User $user, Clinic $clinic): bool
     {
-        return $this->belongsToClinic(
-            clinicId: $clinic->id,
-            user: $user
+        return $this->doesTheUserContainTheClinic(
+            clinic: $clinic,
+            user: $user,
         );
     }
 
@@ -50,32 +50,36 @@ final class ClinicPolicy
     }
 
     /**
-     * Determine if the given clinic can be updated by the user.
+     * Determine whether the given user can update the specified clinic.
      *
-     * @param  User  $user  The user attempting to perform the update.
+     * Authorization is based on whether the user is associated with the clinic.
+     *
+     * @param  User  $user  The user attempting to update the clinic.
      * @param  Clinic  $clinic  The clinic being updated.
-     * @return bool True if the user belongs to the clinic and can update it, false otherwise.
+     * @return bool True if the user belongs to the clinic, false otherwise.
      */
     public function update(User $user, Clinic $clinic): bool
     {
-        return $this->belongsToClinic(
-            clinicId: $clinic->id,
-            user: $user
+        return $this->doesTheUserContainTheClinic(
+            clinic: $clinic,
+            user: $user,
         );
     }
 
     /**
-     * Determine whether the given clinic can be deleted by the user.
+     * Determine whether the given user can delete the specified clinic.
+     *
+     * Authorization is based on whether the user is associated with the clinic.
      *
      * @param  User  $user  The user attempting to delete the clinic.
-     * @param  Clinic  $clinic  The clinic instance to be deleted.
-     * @return bool True if the user is authorized to delete the clinic, false otherwise.
+     * @param  Clinic  $clinic  The clinic being deleted.
+     * @return bool True if the user belongs to the clinic, false otherwise.
      */
     public function delete(User $user, Clinic $clinic): bool
     {
-        return $this->belongsToClinic(
-            clinicId: $clinic->id,
-            user: $user
+        return $this->doesTheUserContainTheClinic(
+            clinic: $clinic,
+            user: $user,
         );
     }
 
@@ -88,8 +92,10 @@ final class ClinicPolicy
      */
     public function restore(User $user, Clinic $clinic): bool
     {
-        return $user->belongsToClinicWithTrashed($clinic->id)
-            ->exists();
+        return $this->doesTheUserContainTheClinic(
+            clinic: $clinic,
+            user: $user,
+        );
     }
 
     /**
@@ -105,15 +111,14 @@ final class ClinicPolicy
     }
 
     /**
-     * Determine if the given clinic ID belongs to the user's associated clinics.
+     * Check if the user belongs to the specified clinic.
      *
-     * @param  int  $clinicId  The ID of the clinic to check.
-     * @param  User  $user  The user instance to verify against.
+     * @param  Clinic  $clinic  The clinic to check membership for.
+     * @param  User  $user  The user to verify clinic membership.
      * @return bool True if the user belongs to the clinic, false otherwise.
      */
-    private function belongsToClinic(string $clinicId, User $user): bool
+    private function doesTheUserContainTheClinic(Clinic $clinic, User $user): bool
     {
-        return $user->belongsToClinic($clinicId)
-            ->exists();
+        return $user->clinics->contains($clinic);
     }
 }
