@@ -25,9 +25,7 @@ final class Patient extends Base implements CipherSweetEncrypted
      * - 'mobile_phone': Encrypted and indexed with 'mobile_phone_index' for blind searching.
      * - 'tax_id': Optionally encrypted and indexed with 'tax_id_index' for blind searching.
      *
-     * @param EncryptedRow $encryptedRow The CipherSweet EncryptedRow instance to configure.
-     *
-     * @return void
+     * @param  EncryptedRow  $encryptedRow  The CipherSweet EncryptedRow instance to configure.
      */
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
     {
