@@ -17,18 +17,25 @@ final class Patient extends Base implements CipherSweetEncrypted
     use UsesCipherSweet;
 
     /**
-     * Configures the CipherSweet encryption for the Patient model.
+     * Configures the CipherSweet encrypted row for the Patient model.
      *
-     * This method sets up encryption for the 'full_name' field and adds a blind index
-     * for efficient lookups without exposing the actual data.
+     * This method defines which fields should be encrypted and which blind indexes should be created
+     * for searchable encrypted fields. The following fields are configured:
+     * - 'full_name': Encrypted and indexed with 'full_name_index' for blind searching.
+     * - 'mobile_phone': Encrypted and indexed with 'mobile_phone_index' for blind searching.
+     * - 'tax_id': Optionally encrypted and indexed with 'tax_id_index' for blind searching.
      *
-     * @param  EncryptedRow  $encryptedRow  The CipherSweet EncryptedRow instance to configure.
+     * @param EncryptedRow $encryptedRow The CipherSweet EncryptedRow instance to configure.
+     *
+     * @return void
      */
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
     {
         $encryptedRow
             ->addField('full_name')
             ->addBlindIndex('full_name', new BlindIndex('full_name_index'))
+            ->addField('mobile_phone')
+            ->addBlindIndex('mobile_phone', new BlindIndex('mobile_phone_index'))
             ->addOptionalTextField('tax_id')
             ->addBlindIndex('tax_id', new BlindIndex('tax_id_index'));
     }

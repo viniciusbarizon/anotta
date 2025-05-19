@@ -9,21 +9,23 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations to create the `patients` table.
+     * Run the migrations to create the 'patients' table.
      *
-     * The `patients` table includes the following columns:
-     * - `id`: A primary key using ULID.
-     * - `country_code`: A 2-character country code.
-     * - `full_name`: The full name of the patient, up to 255 characters.
-     * - `tax_id`: A tax identification number, up to 20 characters.
-     * - `created_at`: A timestamp for when the record was created, with default value as the current timestamp.
-     * - `updated_at`: A timestamp for when the record was last updated, with default value as the current timestamp and updated automatically on changes.
-     * - `deleted_at`: A nullable timestamp for soft deletes.
-     * - `clinic_id`: A foreign key referencing the `id` column in the `clinics` table.
+     * The table includes the following columns:
+     * - id: Primary key, ULID.
+     * - birth_date: Date and time of birth, indexed.
+     * - full_name: Full name of the patient.
+     * - mobile_phone: Patient's mobile phone number.
+     * - tax_id: Tax identification number, nullable.
+     * - created_at: Timestamp when the record was created.
+     * - updated_at: Timestamp when the record was last updated.
+     * - deleted_at: Soft delete timestamp.
+     * - clinic_id: Foreign ULID referencing the associated clinic, indexed.
+     * - tax_country_id: Foreign ULID referencing the country for tax purposes, nullable and indexed.
      *
-     * Constraints and indexes:
-     * - A unique constraint on the combination of `clinic_id`, `country_code`, and `tax_id`.
-     * - Indexes on `country_code`, `full_name`, and `tax_id` for optimized querying.
+     * Foreign key constraints:
+     * - clinic_id references the clinics table.
+     * - tax_country_id references the countries table.
      */
     public function up(): void
     {
@@ -32,6 +34,7 @@ return new class extends Migration
 
             $table->dateTime('birth_date')->index();
             $table->text('full_name');
+            $table->text('mobile_phone');
             $table->text('tax_id')->nullable();
 
             $table->timestamp('created_at', precision: 0)->useCurrent();

@@ -56,7 +56,10 @@ final class PatientResource extends Resource
                 ),
 
                 PhoneInput::make('phone')
-                    ->label(__('Telemóvel')),
+                    ->label(__('Telemóvel'))
+                    ->locale('pt')
+                    ->required()
+                    ->strictMode(),
 
                 ElementPresets::select(
                     id: 'tax_country_id',
