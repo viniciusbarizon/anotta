@@ -20,7 +20,8 @@
         "spatie/laravel-ciphersweet": "^1.6",
         "square-bit/laravel-pt-localization": "^12.0",
         "square-bit/laravel-pt-rules": "^1.4",
-        "troccoli/blade-health-icons": "^5.0"
+        "troccoli/blade-health-icons": "^5.0",
+        "ysfkaya/filament-phone-input": "^3.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",
