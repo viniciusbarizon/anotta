@@ -17,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 final class PatientResource extends Resource
 {
@@ -53,6 +54,9 @@ final class PatientResource extends Resource
                     minDate: now()->subYears(123)->toDateString(),
                     maxDate: now()->toDateString()
                 ),
+
+                PhoneInput::make('phone')
+                    ->label(__('Telemóvel')),
 
                 ElementPresets::select(
                     id: 'tax_country_id',
