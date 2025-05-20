@@ -32,6 +32,8 @@ final class Patient extends Base implements CipherSweetEncrypted
         $encryptedRow
             ->addField('full_name')
             ->addBlindIndex('full_name', new BlindIndex('full_name_index'))
+            ->addField('full_name_normalized')
+            ->addBlindIndex('full_name_normalized', new BlindIndex('full_name_normalized_index'))
             ->addField('mobile_phone')
             ->addBlindIndex('mobile_phone', new BlindIndex('mobile_phone_index'))
             ->addOptionalTextField('tax_id')

@@ -13,6 +13,7 @@
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^12.0",
         "laravel/pail": "^1.2",
+        "laravel/telescope": "^5.7",
         "laravel/tinker": "^2.10.1",
         "owenvoke/blade-fontawesome": "^2.9",
         "prevailexcel/laravel-action-service-trait": "^1.0",

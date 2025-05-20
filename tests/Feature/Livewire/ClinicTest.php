@@ -282,6 +282,16 @@ describe('user not super admin', function () {
             ->assertHasActionErrors(['name' => ['required']]);
     });
 
+    it('validates name as unique when creating', function () {
+        $name = getClinic()->name;
+
+        $this->manageClinics
+            ->callAction('create', data: [
+                'name' => $name,
+            ])
+            ->assertHasActionErrors(['name' => 'Este nome de clínica já está associado à tua conta.']);
+    });
+
     it('creates', function () {
         $name = fake()->company();
 

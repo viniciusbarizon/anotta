@@ -18,6 +18,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use Closure;
+use Filament\Notifications\Notification;
 
 final class PatientResource extends Resource
 {
@@ -26,6 +28,30 @@ final class PatientResource extends Resource
     protected static ?string $navigationIcon = 'healthicons-f-neutral';
 
     protected static ?int $navigationSort = 100;
+
+    /**
+     * Determines if a new patient can be created.
+     *
+     * This method checks if there is at least one clinic registered in the system.
+     * If a clinic exists, it allows the creation of a new patient.
+     * Otherwise, it sends a warning notification to the user indicating that
+     * at least one clinic must be registered before registering patients.
+     *
+     * @return bool Returns true if a patient can be created, false otherwise.
+     */
+    public static function canCreate(): bool
+    {
+        if (Clinic::query()->exists() === true) {
+            return true;
+        }
+
+        Notification::make()
+            ->title(__('Para registar um utente, precisa estar associado a pelo menos uma clínica.'))
+            ->warning()
+            ->send();
+
+        return false;
+    }
 
     public static function form(Form $form): Form
     {
@@ -46,7 +72,22 @@ final class PatientResource extends Resource
                     validationMessages: [
                         'regex' => 'O campo ":attribute" deve conter o primeiro nome e o apelido do utente.',
                     ]
-                ),
+                )
+                ->rules([
+                    fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                        $exists = Patient::query()
+                            ->where('birth_date', $get('birth_date'))
+                            ->whereBlind('full_name_normalized', 'full_name_normalized_index', normalize_name($value))
+                            ->whereBlind('mobile_phone', 'mobile_phone_index', $get('mobile_phone'))
+                            ->exists();
+
+                        if ($exists === false) {
+                            return;
+                        }
+
+                        $fail(__('Já existe um utente com o mesmo nome, data de nascimento e número de telemóvel.'));
+                    },
+                ]),
 
                 ElementPresets::datePicker(
                     id: 'birth_date',
@@ -55,7 +96,7 @@ final class PatientResource extends Resource
                     maxDate: now()->toDateString()
                 ),
 
-                PhoneInput::make('phone')
+                PhoneInput::make('mobile_phone')
                     ->label(__('Telemóvel'))
                     ->locale('pt')
                     ->required()
