@@ -17,7 +17,7 @@ final class CreatePatient extends CreateRecord
      * This method normalizes the 'full_name' field using the `normalize_name` function
      * and stores the result in the 'full_name_normalized' key of the data array.
      *
-     * @param array $data The form data submitted for patient creation.
+     * @param  array  $data  The form data submitted for patient creation.
      * @return array The mutated form data with the normalized full name.
      */
     protected function mutateFormDataBeforeCreate(array $data): array

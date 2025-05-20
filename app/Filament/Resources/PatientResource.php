@@ -9,17 +9,17 @@ use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Clinic;
 use App\Models\Country;
 use App\Models\Patient;
+use Closure;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
-use Closure;
-use Filament\Notifications\Notification;
 
 final class PatientResource extends Resource
 {
@@ -73,21 +73,21 @@ final class PatientResource extends Resource
                         'regex' => 'O campo ":attribute" deve conter o primeiro nome e o apelido do utente.',
                     ]
                 )
-                ->rules([
-                    fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
-                        $exists = Patient::query()
-                            ->where('birth_date', $get('birth_date'))
-                            ->whereBlind('full_name_normalized', 'full_name_normalized_index', normalize_name($value))
-                            ->whereBlind('mobile_phone', 'mobile_phone_index', $get('mobile_phone'))
-                            ->exists();
+                    ->rules([
+                        fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                            $exists = Patient::query()
+                                ->where('birth_date', $get('birth_date'))
+                                ->whereBlind('full_name_normalized', 'full_name_normalized_index', normalize_name($value))
+                                ->whereBlind('mobile_phone', 'mobile_phone_index', $get('mobile_phone'))
+                                ->exists();
 
-                        if ($exists === false) {
-                            return;
-                        }
+                            if ($exists === false) {
+                                return;
+                            }
 
-                        $fail(__('Já existe um utente com o mesmo nome, data de nascimento e número de telemóvel.'));
-                    },
-                ]),
+                            $fail(__('Já existe um utente com o mesmo nome, data de nascimento e número de telemóvel.'));
+                        },
+                    ]),
 
                 ElementPresets::datePicker(
                     id: 'birth_date',
