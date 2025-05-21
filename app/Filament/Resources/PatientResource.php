@@ -20,6 +20,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use Filament\Forms\Components\Component;
 
 final class PatientResource extends Resource
 {
@@ -73,11 +74,13 @@ final class PatientResource extends Resource
                         'regex' => 'O campo ":attribute" deve conter o primeiro nome e o apelido do utente.',
                     ]
                 )
-                    ->rules([
-                        fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                    ->rule(static function (Get $get, Component $component): Closure {
+                        return static function (string $attribute, string $fullName, Closure $fail) use ($component, $get) {
                             $exists = Patient::query()
+                                ->withTrashed()
+                                ->where('clinic_id', $get('clinic_id'))
                                 ->where('birth_date', $get('birth_date'))
-                                ->whereBlind('full_name_normalized', 'full_name_normalized_index', normalize_name($value))
+                                ->whereBlind('full_name_normalized', 'full_name_normalized_index', normalize_name($fullName))
                                 ->whereBlind('mobile_phone', 'mobile_phone_index', $get('mobile_phone'))
                                 ->exists();
 
@@ -85,9 +88,10 @@ final class PatientResource extends Resource
                                 return;
                             }
 
-                            $fail(__('Já existe um utente com o mesmo nome, data de nascimento e número de telemóvel.'));
-                        },
-                    ]),
+                            $fail(__('Já existe um utente com o mesmo nome, data de nascimento e número de telemóvel
+                                nesta clínica.'));
+                        };
+                    }),
 
                 ElementPresets::datePicker(
                     id: 'birth_date',
