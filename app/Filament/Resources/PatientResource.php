@@ -10,6 +10,7 @@ use App\Models\Clinic;
 use App\Models\Country;
 use App\Models\Patient;
 use Closure;
+use Filament\Forms\Components\Component;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -20,7 +21,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
-use Filament\Forms\Components\Component;
 
 final class PatientResource extends Resource
 {
@@ -75,7 +75,7 @@ final class PatientResource extends Resource
                     ]
                 )
                     ->rule(static function (Get $get, Component $component): Closure {
-                        return static function (string $attribute, string $fullName, Closure $fail) use ($component, $get) {
+                        return static function (string $attribute, string $fullName, Closure $fail) use ($get) {
                             $exists = Patient::query()
                                 ->withTrashed()
                                 ->where('clinic_id', $get('clinic_id'))
