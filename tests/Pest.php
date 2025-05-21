@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
 use App\Models\Clinic;
 use App\Models\Scopes\UserRelationScope;
+use App\Models\User;
 
 use function Pest\Laravel\actingAs;
 

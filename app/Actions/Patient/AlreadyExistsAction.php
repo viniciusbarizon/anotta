@@ -11,11 +11,11 @@ final class AlreadyExistsAction
     /**
      * Constructor for the AlreadyExistsAction class.
      *
-     * @param string      $birthDate   The patient's birth date.
-     * @param string      $clinicId    The unique identifier of the clinic.
-     * @param string|null $currentId   The current patient ID, or null if not applicable.
-     * @param string      $fullName    The full name of the patient.
-     * @param string      $mobilePhone The patient's mobile phone number.
+     * @param  string  $birthDate  The patient's birth date.
+     * @param  string  $clinicId  The unique identifier of the clinic.
+     * @param  string|null  $currentId  The current patient ID, or null if not applicable.
+     * @param  string  $fullName  The full name of the patient.
+     * @param  string  $mobilePhone  The patient's mobile phone number.
      */
     public function __construct(
         private readonly string $birthDate,
