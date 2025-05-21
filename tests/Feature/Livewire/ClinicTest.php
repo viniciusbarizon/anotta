@@ -15,16 +15,6 @@ use Livewire\Features\SupportTesting\Testable;
 use function Pest\Livewire\livewire;
 
 /**
- * Retrieve the first clinic from the current test's clinics collection.
- *
- * @return Clinic The first clinic in the collection
- */
-function getClinic(): Clinic
-{
-    return test()->clinics->first();
-}
-
-/**
  * Retrieve all clinics, including soft-deleted records.
  *
  * @return Collection A collection of all clinic records, including trashed clinics

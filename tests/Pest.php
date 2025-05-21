@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use App\Models\Clinic;
+use App\Models\Scopes\UserRelationScope;
 
 use function Pest\Laravel\actingAs;
 
@@ -65,4 +67,29 @@ function login(bool $isSuperAdmin = false): void
         ->first();
 
     actingAs($user);
+}
+
+/**
+ * Retrieves the first clinic associated with the currently authenticated user.
+ *
+ * @return Clinic The first clinic instance belonging to the authenticated user.
+ */
+function getClinic(): Clinic
+{
+    return auth()->user()
+        ->clinics()
+        ->first();
+}
+
+/**
+ * Retrieves the first clinic associated with a user other than the currently authenticated user.
+ *
+ * @return Clinic The first clinic instance belonging to another user.
+ */
+function getClinicFromAnotherUser(): Clinic
+{
+    return Clinic::query()
+        ->withoutGlobalScope(UserRelationScope::class)
+        ->whereRelation('users', 'id', '!=', auth()->user()->id)
+        ->first();
 }

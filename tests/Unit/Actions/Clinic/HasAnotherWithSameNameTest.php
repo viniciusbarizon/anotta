@@ -30,21 +30,21 @@ describe('creating a new clinic', function () {
     });
 
     it('returns true if the name already exists', function () {
-        $this->name = getRandomClinic()->name;
+        $this->name = getClinic()->name;
 
         expect(hasAnotherWithSameName())
             ->toBeTrue();
     });
 
     it('returns true if a name match is found regardless of whitespace', function () {
-        $this->name = getRandomClinic()->name.' ';
+        $this->name = getClinic()->name.' ';
 
         expect(hasAnotherWithSameName())
             ->toBeTrue();
     });
 
     it('returns true if a duplicate name exists, ignoring case', function () {
-        $this->name = mb_strtoupper(getRandomClinic()->name);
+        $this->name = mb_strtoupper(getClinic()->name);
 
         expect(hasAnotherWithSameName())
             ->toBeTrue();
@@ -107,7 +107,7 @@ describe('creating a new clinic', function () {
 
 describe('editing clinic', function () {
     it('returns false if the name is the same but belongs to the current record', function () {
-        $clinic = getRandomClinic();
+        $clinic = getClinic();
 
         $this->currentId = $clinic->id;
         $this->name = $clinic->name;
@@ -132,17 +132,4 @@ function hasAnotherWithSameName(): bool
         currentId: test()->currentId,
         name: test()->name
     );
-}
-
-/**
- * Retrieves a random Clinic instance associated with the current test user.
- *
- * @return Clinic A randomly selected Clinic instance.
- */
-function getRandomClinic(): Clinic
-{
-    return auth()->user()
-        ->clinics()
-        ->inRandomOrder()
-        ->first();
 }
