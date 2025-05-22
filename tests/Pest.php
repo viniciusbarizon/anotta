@@ -86,14 +86,28 @@ function getClinicFromAnotherUser(): Clinic
  */
 function login(bool $isSuperAdmin = false): void
 {
-    /* $user = User::emailVerified()
-        ->where('is_super_admin', $isSuperAdmin)
-        ->inRandomOrder()
-        ->firstOrFail();
-
-    actingAs($user); */
     $user = User::factory()->create();
 
     /** @var Illuminate\Contracts\Auth\Authenticatable $user */
     actingAs($user);
+}
+
+
+/**
+ * Creates a new User instance using the factory.
+ *
+ * Optionally marks the user as unverified if the $unverified parameter is true.
+ *
+ * @param bool $unverified Whether to create the user as unverified. Defaults to false.
+ * @return User The created User instance.
+ */
+function createUser(bool $unverified = false): User
+{
+    $user = User::factory();
+
+    if ($unverified === true) {
+        $user->unverified();
+    }
+
+    return $user->create();
 }
