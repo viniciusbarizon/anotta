@@ -77,7 +77,7 @@ function createClinic(?string $name = null): Clinic
  * Optionally marks the user as a super admin or unverified.
  *
  * @param  bool  $isSuperAdmin  Whether to create the user as a super admin. Defaults to false.
- * @param  bool  $unverified    Whether to create the user as unverified. Defaults to false.
+ * @param  bool  $unverified  Whether to create the user as unverified. Defaults to false.
  * @return User The created User instance.
  */
 function createUser(bool $isSuperAdmin = false, bool $unverified = false): User
@@ -101,7 +101,6 @@ function createUser(bool $isSuperAdmin = false, bool $unverified = false): User
  * Optionally marks the user as a super admin if the $isSuperAdmin parameter is true.
  *
  * @param  bool  $isSuperAdmin  Whether to create the user as a super admin. Defaults to false.
- * @return void
  */
 function login(bool $isSuperAdmin = false): void
 {

@@ -17,7 +17,7 @@ use function Pest\Livewire\livewire;
 /**
  * Create and persist a collection of Clinic models using the factory.
  *
- * @return \Illuminate\Support\Collection A collection containing 10 Clinic instances.
+ * @return Collection A collection containing 10 Clinic instances.
  */
 function createClinics(): Collection
 {
@@ -112,7 +112,7 @@ describe('user not super admin', function () {
      * Retrieves the first two clinics from the test context, performs a bulk delete action
      * on them via the manageClinics component, and returns the collection of clinics that were targeted.
      *
-     * @return \Illuminate\Support\Collection The collection of clinics that were selected for deletion.
+     * @return Collection The collection of clinics that were selected for deletion.
      */
     function deleteInBulk(): Collection
     {
