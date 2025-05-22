@@ -54,22 +54,6 @@ expect()->extend('toBeOne', function () {
 */
 
 /**
- * Logs in a random email verified user for testing purposes.
- *
- * This helper function selects a random email verified user from the database
- * and sets them as the authenticated user for the current test context.
- */
-function login(bool $isSuperAdmin = false): void
-{
-    $user = User::emailVerified()
-        ->where('is_super_admin', $isSuperAdmin)
-        ->inRandomOrder()
-        ->first();
-
-    actingAs($user);
-}
-
-/**
  * Retrieves the first clinic associated with the currently authenticated user.
  *
  * @return Clinic The first clinic instance belonging to the authenticated user.
@@ -92,4 +76,24 @@ function getClinicFromAnotherUser(): Clinic
         ->withoutGlobalScope(UserRelationScope::class)
         ->whereRelation('users', 'id', '!=', auth()->user()->id)
         ->first();
+}
+
+/**
+ * Logs in a random email verified user for testing purposes.
+ *
+ * This helper function selects a random email verified user from the database
+ * and sets them as the authenticated user for the current test context.
+ */
+function login(bool $isSuperAdmin = false): void
+{
+    /* $user = User::emailVerified()
+        ->where('is_super_admin', $isSuperAdmin)
+        ->inRandomOrder()
+        ->firstOrFail();
+
+    actingAs($user); */
+    $user = User::factory()->create();
+
+    /** @var \Illuminate\Contracts\Auth\Authenticatable $user */
+    actingAs($user);
 }
