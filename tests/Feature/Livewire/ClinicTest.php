@@ -15,13 +15,15 @@ use Livewire\Features\SupportTesting\Testable;
 use function Pest\Livewire\livewire;
 
 /**
- * Retrieve all clinics, including soft-deleted records.
+ * Create and persist a collection of Clinic models using the factory.
  *
- * @return Collection A collection of all clinic records, including trashed clinics
+ * @return \Illuminate\Support\Collection A collection containing 10 Clinic instances.
  */
-function getClinics(): Collection
+function createClinics(): Collection
 {
-    return Clinic::withTrashed()->get();
+    return Clinic::factory()
+        ->count(10)
+        ->create();
 }
 
 /**
@@ -38,7 +40,7 @@ describe('user not super admin', function () {
     beforeEach(function () {
         login();
 
-        $this->clinics = getClinics();
+        $this->clinics = createClinics();
         $this->manageClinics = getResource();
     });
 
@@ -104,6 +106,14 @@ describe('user not super admin', function () {
         return $clinic->id;
     }
 
+    /**
+     * Deletes a bulk of clinics (specifically the first two) using the DeleteBulkAction.
+     *
+     * Retrieves the first two clinics from the test context, performs a bulk delete action
+     * on them via the manageClinics component, and returns the collection of clinics that were targeted.
+     *
+     * @return \Illuminate\Support\Collection The collection of clinics that were selected for deletion.
+     */
     function deleteInBulk(): Collection
     {
         $clinics = test()->clinics->take(2);
@@ -166,6 +176,16 @@ describe('user not super admin', function () {
     }
 
     /**
+     * Retrieves the first Clinic instance from the test clinics collection.
+     *
+     * @return Clinic The first Clinic object from the test clinics.
+     */
+    function getClinic(): Clinic
+    {
+        return test()->clinics->first();
+    }
+
+    /**
      * Retrieve clinics ordered by a specific column and sort direction.
      *
      * This method fetches all clinics, including trashed records, and orders them
@@ -197,7 +217,7 @@ describe('user not super admin', function () {
             ->assertCanRenderTableColumn('created_at')
             ->assertCanRenderTableColumn('updated_at')
             ->assertCanRenderTableColumn('deleted_at')
-            ->assertCountTableRecords($this->clinics->count())
+            ->assertCountTableRecords(10)
             ->assertTableColumnHidden('id');
     });
 
@@ -356,7 +376,7 @@ describe('user super admin', function () {
     beforeEach(function () {
         login(isSuperAdmin: true);
 
-        $this->clinics = getClinics();
+        $this->clinics = createClinics();
         $this->manageClinics = getResource();
     });
 

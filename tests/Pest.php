@@ -74,31 +74,38 @@ function createClinic(?string $name = null): Clinic
 /**
  * Creates a new User instance using the factory.
  *
- * Optionally marks the user as unverified if the $unverified parameter is true.
+ * Optionally marks the user as a super admin or unverified.
  *
- * @param  bool  $unverified  Whether to create the user as unverified. Defaults to false.
+ * @param  bool  $isSuperAdmin  Whether to create the user as a super admin. Defaults to false.
+ * @param  bool  $unverified    Whether to create the user as unverified. Defaults to false.
  * @return User The created User instance.
  */
-function createUser(bool $unverified = false): User
+function createUser(bool $isSuperAdmin = false, bool $unverified = false): User
 {
     $user = User::factory();
 
+    if ($isSuperAdmin === true) {
+        $user = $user->superAdmin();
+    }
+
     if ($unverified === true) {
-        $user->unverified();
+        $user = $user->unverified();
     }
 
     return $user->create();
 }
 
 /**
- * Logs in a random email verified user for testing purposes.
+ * Creates a new User instance using the factory and logs in the user.
  *
- * This helper function selects a random email verified user from the database
- * and sets them as the authenticated user for the current test context.
+ * Optionally marks the user as a super admin if the $isSuperAdmin parameter is true.
+ *
+ * @param  bool  $isSuperAdmin  Whether to create the user as a super admin. Defaults to false.
+ * @return void
  */
 function login(bool $isSuperAdmin = false): void
 {
-    $user = User::factory()->create();
+    $user = createUser(isSuperAdmin: $isSuperAdmin);
 
     /** @var Illuminate\Contracts\Auth\Authenticatable $user */
     actingAs($user);
