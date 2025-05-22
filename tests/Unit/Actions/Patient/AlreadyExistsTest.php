@@ -35,7 +35,7 @@ describe('creating a new patient', function () {
 
     it('returns false if no duplicate exists', function () {
         $this->birthDate = fake()->date();
-        $this->clinicId = getClinic()->id;
+        $this->clinicId = createClinic()->id;
         $this->fullName = fake()->name();
         $this->mobilePhone = fake()->e164PhoneNumber();
 

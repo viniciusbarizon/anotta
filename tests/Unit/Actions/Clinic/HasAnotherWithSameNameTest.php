@@ -10,27 +10,6 @@ beforeEach(function () {
 });
 
 /**
- * Creates a new clinic instance with an optional name.
- *
- * This method generates a new clinic using the `Clinic` factory.
- * If a name is provided, it will be used as the clinic's name.
- * Otherwise, a random name will be generated.
- *
- * @param  string|null  $name  The name of the clinic (optional).
- * @return Clinic The created clinic instance.
- */
-function createClinic(?string $name = null): Clinic
-{
-    if (is_null($name) === false) {
-        return Clinic::factory()->create([
-            'name' => $name,
-        ]);
-    }
-
-    return Clinic::factory()->create();
-}
-
-/**
  * Determines if there is another entity with the same name.
  *
  * This function utilizes the `HasAnotherWithSameNameAction` to check

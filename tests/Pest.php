@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Clinic;
-use App\Models\Scopes\UserRelationScope;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
@@ -54,42 +53,22 @@ expect()->extend('toBeOne', function () {
 */
 
 /**
- * Retrieves the first clinic associated with the currently authenticated user.
+ * Creates a new Clinic instance using the factory.
  *
- * @return Clinic The first clinic instance belonging to the authenticated user.
- */
-function getClinic(): Clinic
-{
-    return auth()->user()
-        ->clinics()
-        ->first();
-}
-
-/**
- * Retrieves the first clinic associated with a user other than the currently authenticated user.
+ * Optionally allows specifying a name for the clinic.
  *
- * @return Clinic The first clinic instance belonging to another user.
+ * @param  string|null  $name  The name of the clinic. Defaults to null.
+ * @return Clinic The created Clinic instance.
  */
-function getClinicFromAnotherUser(): Clinic
+function createClinic(?string $name = null): Clinic
 {
-    return Clinic::query()
-        ->withoutGlobalScope(UserRelationScope::class)
-        ->whereRelation('users', 'id', '!=', auth()->user()->id)
-        ->first();
-}
+    if (is_null($name) === true) {
+        return Clinic::factory()->create();
+    }
 
-/**
- * Logs in a random email verified user for testing purposes.
- *
- * This helper function selects a random email verified user from the database
- * and sets them as the authenticated user for the current test context.
- */
-function login(bool $isSuperAdmin = false): void
-{
-    $user = User::factory()->create();
-
-    /** @var Illuminate\Contracts\Auth\Authenticatable $user */
-    actingAs($user);
+    return Clinic::factory()->create([
+        'name' => $name,
+    ]);
 }
 
 /**
@@ -109,4 +88,18 @@ function createUser(bool $unverified = false): User
     }
 
     return $user->create();
+}
+
+/**
+ * Logs in a random email verified user for testing purposes.
+ *
+ * This helper function selects a random email verified user from the database
+ * and sets them as the authenticated user for the current test context.
+ */
+function login(bool $isSuperAdmin = false): void
+{
+    $user = User::factory()->create();
+
+    /** @var Illuminate\Contracts\Auth\Authenticatable $user */
+    actingAs($user);
 }
