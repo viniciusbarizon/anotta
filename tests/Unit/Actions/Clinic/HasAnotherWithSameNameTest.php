@@ -16,7 +16,7 @@ beforeEach(function () {
  * If a name is provided, it will be used as the clinic's name.
  * Otherwise, a random name will be generated.
  *
- * @param string|null $name The name of the clinic (optional).
+ * @param  string|null  $name  The name of the clinic (optional).
  * @return Clinic The created clinic instance.
  */
 function createClinic(?string $name = null): Clinic

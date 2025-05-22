@@ -94,6 +94,6 @@ function login(bool $isSuperAdmin = false): void
     actingAs($user); */
     $user = User::factory()->create();
 
-    /** @var \Illuminate\Contracts\Auth\Authenticatable $user */
+    /** @var Illuminate\Contracts\Auth\Authenticatable $user */
     actingAs($user);
 }
