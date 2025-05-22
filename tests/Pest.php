@@ -92,13 +92,12 @@ function login(bool $isSuperAdmin = false): void
     actingAs($user);
 }
 
-
 /**
  * Creates a new User instance using the factory.
  *
  * Optionally marks the user as unverified if the $unverified parameter is true.
  *
- * @param bool $unverified Whether to create the user as unverified. Defaults to false.
+ * @param  bool  $unverified  Whether to create the user as unverified. Defaults to false.
  * @return User The created User instance.
  */
 function createUser(bool $unverified = false): User
