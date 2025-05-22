@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Actions\Clinic\HasAnotherWithSameNameAction;
-use App\Models\Clinic;
 
 beforeEach(function () {
     login();
