@@ -25,7 +25,7 @@ function hasAnotherWithSameName(): bool
     );
 }
 
-describe('creating a new clinic', function () {
+describe('creating a clinic', function () {
     beforeEach(function () {
         $this->currentId = null;
     });
@@ -88,7 +88,7 @@ describe('creating a new clinic', function () {
     });
 });
 
-describe('editing clinic', function () {
+describe('editing a clinic', function () {
     it('returns false if the name is the same but belongs to the current record', function () {
         $clinic = createClinic();
 
