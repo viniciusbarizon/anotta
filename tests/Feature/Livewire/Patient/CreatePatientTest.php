@@ -111,7 +111,7 @@ describe('user not super admin', function () {
             );
         });
 
-        //it('validates clinic as')
+        // it('validates clinic as')
     });
 });
 
