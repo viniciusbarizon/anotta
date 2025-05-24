@@ -15,6 +15,13 @@ it('trims', function () {
     $normalizedName = normalize_name($name);
 
     expect($normalizedName)
+        ->toBe(trim($normalizedName));
+});
+
+it('removes spaces in the middle of the name', function () {
+    $normalizedName = normalize_name(fake()->firstName().'  '.fake()->lastName());
+
+    expect($normalizedName)
         ->toBe((string) str($normalizedName)->squish());
 });
 
