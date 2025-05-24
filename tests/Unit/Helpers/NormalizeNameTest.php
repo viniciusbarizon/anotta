@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 it('converts to lower case', function () {
-    $name = strtoupper(fake()->name());
+    $name = mb_strtoupper(fake()->name());
 
     expect(normalize_name($name))
-        ->toBe(strtolower($name));
+        ->toBe(mb_strtolower($name));
 });
 
 it('trims', function () {
     $name = normalize_name(fake()->name());
 
-    expect(normalize_name($name . ' '))
+    expect(normalize_name($name.' '))
         ->toBe($name);
 });
 
