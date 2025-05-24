@@ -47,7 +47,7 @@ describe('creating a patient', function () {
     it('returns false if no duplicate exists', function () {
         $this->birthDate = fake()->date();
         $this->clinicId = createClinic()->id;
-        $this->fullName = fake()->name();
+        $this->fullName = get_fake_full_name();
         $this->mobilePhone = fake()->e164PhoneNumber();
 
         expect(alreadyExists())
@@ -83,7 +83,7 @@ describe('creating a patient', function () {
 
         $this->birthDate = $patient->birth_date;
         $this->clinicId = $patient->clinic_id;
-        $this->fullName = fake()->name();
+        $this->fullName = get_fake_full_name();
         $this->mobilePhone = $patient->mobile_phone;
 
         expect(alreadyExists())

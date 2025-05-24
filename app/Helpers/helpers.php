@@ -22,3 +22,15 @@ if (! function_exists('normalize_name')) {
             ->replaceMatches('/[^\w\s]/u', '');
     }
 }
+
+if (! function_exists('get_fake_full_name')) {
+    /**
+     * Generates and returns a normalized full name using fake first and last names.
+     *
+     * @return string A string containing a randomly generated first and last name.
+     */
+    function get_fake_full_name(): string
+    {
+        return fake()->firstName() . ' ' . fake()->lastName();
+    }
+}

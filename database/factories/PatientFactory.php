@@ -19,7 +19,7 @@ final class PatientFactory extends Factory
      */
     public function definition(): array
     {
-        $fullName = fake()->name();
+        $fullName = get_fake_full_name();
 
         return [
             'birth_date' => fake()->date(),

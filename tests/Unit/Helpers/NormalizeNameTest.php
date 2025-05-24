@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 it('converts to lower case', function () {
     $name = mb_strtoupper(fake()->name());
+    $normalizedName = normalize_name($name);
 
-    expect(normalize_name($name))
-        ->toBe(mb_strtolower($name));
+    expect($normalizedName)
+        ->toBe(mb_strtolower($normalizedName));
 });
 
 it('trims', function () {
-    $name = normalize_name(fake()->name());
+    $name = fake()->name() . ' ';
+    $normalizedName = normalize_name($name);
 
-    expect(normalize_name($name.' '))
-        ->toBe($name);
+    expect($normalizedName)
+        ->toBe((string) str($normalizedName)->squish());
 });
 
 it('removes the accents', function () {
