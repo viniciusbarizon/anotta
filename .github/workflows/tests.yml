@@ -44,6 +44,7 @@ jobs:
           echo "DB_DATABASE=testing" >> .env.testing
           echo "DB_USERNAME=test_user" >> .env.testing
           echo "DB_PASSWORD=test_pass" >> .env.testing
+          echo "CIPHERSWEET_KEY=base64:NnW/H4kGhLaFg1+g9cbCV0p9aA0FQ3aNRD9SGgmOBzA=" >> .env.testing
 
     - name: Tests
       run: ./vendor/bin/pest --ci
