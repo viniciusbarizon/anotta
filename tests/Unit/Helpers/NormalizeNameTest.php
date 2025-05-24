@@ -11,7 +11,7 @@ it('converts to lower case', function () {
 });
 
 it('trims', function () {
-    $name = fake()->name() . ' ';
+    $name = fake()->name().' ';
     $normalizedName = normalize_name($name);
 
     expect($normalizedName)

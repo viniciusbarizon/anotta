@@ -31,6 +31,6 @@ if (! function_exists('get_fake_full_name')) {
      */
     function get_fake_full_name(): string
     {
-        return fake()->firstName() . ' ' . fake()->lastName();
+        return fake()->firstName().' '.fake()->lastName();
     }
 }
