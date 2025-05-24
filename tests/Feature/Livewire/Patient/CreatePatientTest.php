@@ -103,6 +103,15 @@ describe('user not super admin', function () {
                 patient: getPatient(['birth_date' => null])
             );
         });
+
+        it('validates mobile phone as required', function () {
+            assertHasFormErrors(
+                errors: ['mobile_phone' => 'required'],
+                patient: getPatient(['mobile_phone' => null])
+            );
+        });
+
+        //it('validates clinic as')
     });
 });
 

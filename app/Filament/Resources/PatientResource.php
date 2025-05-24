@@ -86,7 +86,11 @@ final class PatientResource extends Resource
                         'regex' => 'O campo ":attribute" deve conter o primeiro nome e o apelido do utente.',
                     ]
                 )
-                    ->rule(static function (Get $get, Component $component): Closure {
+                    ->rule(static function (Get $get, Component $component): Closure|null {
+                        if (empty($get('birth_date')) || empty($get('mobile_phone'))) {
+                            return null;
+                        }
+
                         return static function (string $attribute, string $fullName, Closure $fail) use ($get) {
                             $exists = Patient::query()
                                 ->withTrashed()
