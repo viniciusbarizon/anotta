@@ -17,8 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 final class Clinic extends Base
 {
     protected $cascadeDeletes = [
-        // 'patientRecords',
-        // 'patients',
+        'patientRecords',
+        'patients',
         'users',
     ];
 

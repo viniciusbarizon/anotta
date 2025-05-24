@@ -21,6 +21,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use Illuminate\Validation\Rule;
 
 final class PatientResource extends Resource
 {
@@ -47,7 +48,7 @@ final class PatientResource extends Resource
         }
 
         Notification::make()
-            ->title(__('Para registar um utente, precisa estar associado a pelo menos uma clínica.'))
+            ->body(__('Para registar um utente, precisa estar associado a pelo menos uma clínica.'))
             ->warning()
             ->send();
 
@@ -62,8 +63,19 @@ final class PatientResource extends Resource
                     id: 'clinic_id',
                     columnValue: 'name',
                     label: 'Clínica',
-                    model: Clinic::class
-                ),
+                    model: Clinic::class,
+                    rules: [
+                        function () {
+                            $user = auth()->user();
+
+                            if ($user->is_super_admin === true) {
+                                return Rule::exists('clinics', 'id');
+                            }
+
+                            return Rule::exists('clinics', 'id')
+                                ->whereIn('id', $user->clinics->pluck('id')->toArray());
+                        },
+                    ]),
 
                 ElementPresets::textInput(
                     id: 'full_name',

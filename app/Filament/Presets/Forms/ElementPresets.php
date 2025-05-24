@@ -23,6 +23,8 @@ final class ElementPresets
 
     private static ?string $requiredWith;
 
+    private static array|Closure|null $rules;
+
     /**
      * Creates a configured DatePicker element for a form.
      *
@@ -82,7 +84,8 @@ final class ElementPresets
         ?string $helperText = null,
         bool $isLive = false,
         bool $isRequired = true,
-        ?string $requiredWith = null
+        ?string $requiredWith = null,
+        array|null $rules = null,
     ): Select {
         $options = $model::pluck($columnValue, 'id');
 
@@ -94,6 +97,7 @@ final class ElementPresets
         self::$isRequired = $isRequired;
         self::$label = $label;
         self::$requiredWith = $requiredWith;
+        self::$rules = $rules;
 
         self::setAfterStateUpdated(afterStateUpdated: $afterStateUpdated);
         self::setHelperText();
@@ -101,6 +105,7 @@ final class ElementPresets
         self::setLabel();
         self::setRequired();
         self::setRequiredWith();
+        self::setRules();
         self::setValidationAttribute();
 
         self::setSelectDefault(
@@ -147,6 +152,7 @@ final class ElementPresets
         self::$isRequired = $isRequired;
         self::$label = $label;
         self::$requiredWith = $requiredWith;
+        self::$rules = $rules;
 
         self::setAscii(isAscii: $isAscii);
         self::setDisabled(disabled: $disabled);
@@ -156,7 +162,7 @@ final class ElementPresets
         self::setNullable();
         self::setRequired();
         self::setRequiredWith();
-        self::setRules(rules: $rules);
+        self::setRules();
         self::setValidationAttribute();
         self::setValidationMessages(messages: $validationMessages);
 
@@ -341,21 +347,19 @@ final class ElementPresets
     }
 
     /**
-     * Sets custom validation rules for the current form element.
+     * Sets the validation rules for the current element.
      *
-     * This method applies custom validation rules to the form element
-     * if any rules are provided. If no rules are specified, the
-     * method returns without modifying the element.
-     *
-     * @param  array|Closure|null  $rules  An optional array or Closure of custom validation rules.
+     * This method applies the static `$rules` property to the static `$element`
+     * using the `rules()` method. If `$rules` is null, the method will return
+     * early without making any changes.
      */
-    private static function setRules(array|Closure|null $rules): void
+    private static function setRules(): void
     {
-        if (is_null($rules) === true) {
+        if (is_null(self::$rules) === true) {
             return;
         }
 
-        self::$element->rules($rules);
+        self::$element->rules(self::$rules);
     }
 
     /**
