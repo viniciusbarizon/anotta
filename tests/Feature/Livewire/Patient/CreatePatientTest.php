@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Filament\Resources\PatientResource\Pages\CreatePatient;
 use App\Models\Patient;
 use Filament\Notifications\Notification;
@@ -14,8 +16,7 @@ beforeEach(function () {
  * Asserts that the CreatePatient Livewire component has no form validation errors
  * when the form is filled with the given patient's data.
  *
- * @param Patient $patient The patient instance whose data will be used to fill the form.
- * @return void
+ * @param  Patient  $patient  The patient instance whose data will be used to fill the form.
  */
 function assertHasNoFormErrors(Patient $patient): void
 {
@@ -27,7 +28,7 @@ function assertHasNoFormErrors(Patient $patient): void
 /**
  * Returns an associative array representing the form data for a given Patient.
  *
- * @param Patient $patient The patient instance from which to extract form data.
+ * @param  Patient  $patient  The patient instance from which to extract form data.
  * @return array An array containing the patient's birth date, clinic ID, full name, and mobile phone.
  */
 function getFormArray(Patient $patient): array
@@ -43,7 +44,7 @@ function getFormArray(Patient $patient): array
 /**
  * Creates a new Patient instance using a factory.
  *
- * @param array|null $data Optional data to override default factory attributes.
+ * @param  array|null  $data  Optional data to override default factory attributes.
  * @return Patient The newly created Patient instance.
  */
 function getPatient(?array $data = null): Patient
@@ -64,10 +65,8 @@ describe('user not super admin', function () {
     /**
      * Asserts that the given form submission for creating a patient results in the specified validation errors.
      *
-     * @param array $errors  An array of expected validation error keys.
-     * @param Patient $patient  The Patient instance containing form data to be submitted.
-     *
-     * @return void
+     * @param  array  $errors  An array of expected validation error keys.
+     * @param  Patient  $patient  The Patient instance containing form data to be submitted.
      */
     function assertHasFormErrors(array $errors, Patient $patient): void
     {

@@ -85,7 +85,7 @@ final class ElementPresets
         bool $isLive = false,
         bool $isRequired = true,
         ?string $requiredWith = null,
-        array|null $rules = null,
+        ?array $rules = null,
     ): Select {
         $options = $model::pluck($columnValue, 'id');
 

@@ -20,8 +20,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 use Illuminate\Validation\Rule;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 final class PatientResource extends Resource
 {
