@@ -15,7 +15,7 @@ it('trims', function () {
     $normalizedName = normalize_name($name);
 
     expect($normalizedName)
-        ->toBe(trim($normalizedName));
+        ->toBe(mb_trim($normalizedName));
 });
 
 it('removes spaces in the middle of the name', function () {
