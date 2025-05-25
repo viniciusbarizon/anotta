@@ -34,6 +34,7 @@ final class ClinicResource extends Resource
      *
      * @return string The localized label for the model.
      */
+    #[\Override]
     public static function getModelLabel(): string
     {
         return __('Clínica');
@@ -48,6 +49,7 @@ final class ClinicResource extends Resource
      *
      * @return array<string, PageRegistration> An associative array of page identifiers and their routes.
      */
+    #[\Override]
     public static function getPages(): array
     {
         return [
@@ -64,6 +66,7 @@ final class ClinicResource extends Resource
      *
      * @return Builder<Clinic> The modified query builder instance.
      */
+    #[\Override]
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -85,6 +88,7 @@ final class ClinicResource extends Resource
      *     - The rule checks if a clinic with the same name (case-insensitive) already exists for the user.
      *     - If the clinic exists and is not the current record being edited, a validation error is triggered.
      */
+    #[\Override]
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -94,18 +98,16 @@ final class ClinicResource extends Resource
                 label: 'Nome',
                 maxLength: 100,
                 rules: ['max:100']
-            )->rule(static function (Get $get, Component $component): Closure {
-                return static function (string $attribute, string $name, Closure $fail) use ($component): void {
-                    $hasAnotherWithSameNameAction = new HasAnotherWithSameNameAction(
-                        currentId: $component->getRecord()?->getKey()
-                    )->handle(name: $name);
+            )->rule(static fn(Get $get, Component $component): Closure => static function (string $attribute, string $name, Closure $fail) use ($component): void {
+                $hasAnotherWithSameNameAction = new HasAnotherWithSameNameAction(
+                    currentId: $component->getRecord()?->getKey()
+                )->handle(name: $name);
 
-                    if ($hasAnotherWithSameNameAction === false) {
-                        return;
-                    }
+                if ($hasAnotherWithSameNameAction === false) {
+                    return;
+                }
 
-                    $fail(__('Este nome de clínica já está associado à tua conta.'));
-                };
+                $fail(__('Este nome de clínica já está associado à tua conta.'));
             }),
         ]);
     }
@@ -127,6 +129,7 @@ final class ClinicResource extends Resource
      * - Actions defined by `ActionPresets::actions()`.
      * - Bulk actions defined by `ActionPresets::bulkActions()`.
      */
+    #[\Override]
     public static function table(Table $table): Table
     {
         return $table

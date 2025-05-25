@@ -42,6 +42,7 @@ final class PatientResource extends Resource
      *
      * @return bool Returns true if a patient can be created, false otherwise.
      */
+    #[\Override]
     public static function canCreate(): bool
     {
         if (Clinic::query()->exists() === true) {
@@ -56,6 +57,7 @@ final class PatientResource extends Resource
         return false;
     }
 
+    #[\Override]
     public static function form(Form $form): Form
     {
         return $form
@@ -152,6 +154,7 @@ final class PatientResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -199,6 +202,7 @@ final class PatientResource extends Resource
      *
      * @return array<string, PageRegistration>
      */
+    #[\Override]
     public static function getPages(): array
     {
         return [
@@ -215,6 +219,7 @@ final class PatientResource extends Resource
      *
      * @return Builder<Patient> The modified Eloquent query builder instance.
      */
+    #[\Override]
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -228,6 +233,7 @@ final class PatientResource extends Resource
      *
      * @return string The localized label for the model.
      */
+    #[\Override]
     public static function getModelLabel(): string
     {
         return __('Utente');

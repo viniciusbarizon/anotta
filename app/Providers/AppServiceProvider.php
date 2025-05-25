@@ -14,6 +14,7 @@ final class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         //
@@ -75,13 +76,11 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function setDefaultsForPasswords(): void
     {
-        Password::defaults(function () {
-            return Password::min(12)
-                ->letters()
-                ->mixedCase()
-                ->numbers()
-                ->symbols()
-                ->uncompromised();
-        });
+        Password::defaults(fn() => Password::min(12)
+            ->letters()
+            ->mixedCase()
+            ->numbers()
+            ->symbols()
+            ->uncompromised());
     }
 }

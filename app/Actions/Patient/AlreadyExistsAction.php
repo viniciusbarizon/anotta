@@ -6,7 +6,7 @@ namespace App\Actions\Patient;
 
 use App\Models\Patient;
 
-final class AlreadyExistsAction
+final readonly class AlreadyExistsAction
 {
     /**
      * Constructor for the AlreadyExistsAction class.
@@ -18,11 +18,11 @@ final class AlreadyExistsAction
      * @param  string  $mobilePhone  The patient's mobile phone number.
      */
     public function __construct(
-        private readonly string $birthDate,
-        private readonly string $clinicId,
-        private readonly ?string $currentId,
-        private readonly string $fullName,
-        private readonly string $mobilePhone
+        private string $birthDate,
+        private string $clinicId,
+        private ?string $currentId,
+        private string $fullName,
+        private string $mobilePhone
     ) {}
 
     /**

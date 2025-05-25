@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 
 final class ElementPresets
 {
-    public static ?string $helperText;
+    public static ?string $helperText = null;
 
     private static DatePicker|Select|TextInput $element;
 
@@ -20,7 +20,7 @@ final class ElementPresets
 
     private static string $label;
 
-    private static ?string $requiredWith;
+    private static ?string $requiredWith = null;
 
     /**
      * The validation rules for the form element.
@@ -29,7 +29,7 @@ final class ElementPresets
      *
      * @var array<string>|Closure|null
      */
-    private static array|Closure|null $rules;
+    private static array|Closure|null $rules = null;
 
     /**
      * Creates and configures a DatePicker element with the specified parameters.
@@ -419,9 +419,7 @@ final class ElementPresets
             return;
         }
 
-        $translated = collect($messages)->map(function (string $message) {
-            return __($message);
-        })->toArray();
+        $translated = collect($messages)->map(fn(string $message) => __($message))->toArray();
 
         self::$element->validationMessages($translated);
     }

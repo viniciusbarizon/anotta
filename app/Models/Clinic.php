@@ -73,6 +73,7 @@ final class Clinic extends Base
      * "normalize_name" helper function before the model is persisted to the
      * database.
      */
+    #[\Override]
     protected static function booted(): void
     {
         self::saving(function ($clinic): void {
