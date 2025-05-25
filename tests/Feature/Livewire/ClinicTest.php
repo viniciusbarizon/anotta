@@ -51,10 +51,8 @@ describe('user not super admin', function (): void {
      * and asserting that the records are displayed in the correct order. It then sorts by the same column in descending
      * order and asserts the records are displayed accordingly.
      *
-     * @param string $column The name of the column to sort by.
-     * @param int $flag Optional. The sorting flag to use (default is SORT_REGULAR).
-     *
-     * @return void
+     * @param  string  $column  The name of the column to sort by.
+     * @param  int  $flag  Optional. The sorting flag to use (default is SORT_REGULAR).
      */
     function assertSort(string $column, int $flag = SORT_REGULAR): void
     {
