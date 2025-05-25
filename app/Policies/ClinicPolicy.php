@@ -93,10 +93,7 @@ final class ClinicPolicy
      */
     public function restore(User $user, Clinic $clinic): bool
     {
-        return $this->doesTheUserContainTheClinic(
-            clinic: $clinic,
-            user: $user,
-        );
+        return $user->clinicsWithTrashed->contains($clinic);
     }
 
     /**
