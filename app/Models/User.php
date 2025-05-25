@@ -20,7 +20,9 @@ use Illuminate\Notifications\Notifiable;
 final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
+
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.

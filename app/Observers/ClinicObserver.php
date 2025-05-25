@@ -22,36 +22,4 @@ final class ClinicObserver
             auth()->user()->id
         );
     }
-
-    /**
-     * Handle the Clinic "updated" event.
-     */
-    public function updated(Clinic $clinic): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Clinic "deleted" event.
-     */
-    public function deleted(Clinic $clinic): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Clinic "restored" event.
-     */
-    public function restored(Clinic $clinic): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Clinic "force deleted" event.
-     */
-    public function forceDeleted(Clinic $clinic): void
-    {
-        //
-    }
 }
