@@ -226,6 +226,8 @@ describe('user not super admin', function (): void {
     });
 
     it('sorts by created_at', function (): void {
+        createClinic();
+
         assertSort(column: 'created_at');
     });
 
