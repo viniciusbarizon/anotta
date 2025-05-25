@@ -19,10 +19,9 @@ beforeEach(function () {
  */
 function hasAnotherWithSameName(): bool
 {
-    return (new HasAnotherWithSameNameAction)->handle(
+    return new HasAnotherWithSameNameAction(
         currentId: test()->currentId,
-        name: test()->name
-    );
+    )->handle(name: test()->name);
 }
 
 describe('creating a clinic', function () {

@@ -8,29 +8,28 @@ use App\Models\Clinic;
 
 final class HasAnotherWithSameNameAction
 {
-    private readonly ?string $currentId;
+    private string $name;
 
-    private readonly string $name;
+    public function __construct(private readonly ?string $currentId) {}
 
     /**
-     * Handles the check for a duplicated clinic name.
+     * Handles the action of checking if another clinic with the same name exists.
      *
-     * @param  string|null  $currentId  The ID of the current clinic, or null if not applicable.
-     * @param  string  $name  The name of the clinic to check for duplication.
-     * @return bool Returns true if a clinic with the same name already exists, false otherwise.
+     * @param string $name The name of the clinic to check.
+     * @return bool True if another clinic with the same normalized name exists, false otherwise.
      */
-    public function handle(?string $currentId, string $name): bool
+    public function handle(string $name): bool
     {
-        $this->currentId = $currentId;
         $this->name = normalize_name(name: $name);
 
         return $this->has();
     }
 
     /**
-     * Checks if another clinic with the same normalized name exists.
+     * Checks if there is another Clinic record (including soft-deleted ones) 
+     * with the same normalized name but a different ID.
      *
-     * @return bool Returns true if a clinic with the same normalized name exists (excluding the current clinic), false otherwise.
+     * @return bool True if another clinic with the same normalized name exists, false otherwise.
      */
     private function has(): bool
     {
