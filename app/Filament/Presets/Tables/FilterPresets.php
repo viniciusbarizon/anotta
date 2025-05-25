@@ -12,7 +12,7 @@ final class FilterPresets
      * Defines the filters to be applied to the table.
      *
      * @return TrashedFilter[] An array of filters to be used in the table.
-     *               By default, it includes a `TrashedFilter` with the 'with_trashed' option set as default.
+     *                         By default, it includes a `TrashedFilter` with the 'with_trashed' option set as default.
      */
     public static function filters(): array
     {

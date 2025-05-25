@@ -14,11 +14,11 @@ use Closure;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Resources\Pages\PageRegistration;
 
 final class ClinicResource extends Resource
 {

@@ -18,9 +18,9 @@ final class ActionPresets
      * Defines a list of actions for the table.
      *
      * @return array<int, Action> An array of actions, including:
-     *               - EditAction: Allows editing of the table entry.
-     *               - deleteCascade: Deletes the entry and its related data.
-     *               - restoreCascade: Restores the entry and its related data.
+     *                            - EditAction: Allows editing of the table entry.
+     *                            - deleteCascade: Deletes the entry and its related data.
+     *                            - restoreCascade: Restores the entry and its related data.
      */
     public static function actions(): array
     {
