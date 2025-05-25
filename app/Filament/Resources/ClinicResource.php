@@ -10,6 +10,7 @@ use App\Filament\Presets\Tables\ActionPresets;
 use App\Filament\Presets\Tables\ColumnPresets;
 use App\Filament\Presets\Tables\FilterPresets;
 use App\Filament\Resources\ClinicResource\Pages;
+use App\Models\Clinic;
 use Closure;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Form;
@@ -61,7 +62,7 @@ final class ClinicResource extends Resource
      * and filters the results based on the authenticated user's ID.
      * It ensures that only records related to the current user are retrieved.
      *
-     * @return Builder<\App\Models\Clinic> The modified query builder instance.
+     * @return Builder<Clinic> The modified query builder instance.
      */
     public static function getEloquentQuery(): Builder
     {

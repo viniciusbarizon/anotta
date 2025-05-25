@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rule;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use Filament\Resources\Pages\PageRegistration;
 
 final class PatientResource extends Resource
 {
@@ -196,7 +197,7 @@ final class PatientResource extends Resource
     /**
      * Defines the pages for the Patient resource in the Filament admin panel.
      *
-     * @return array An associative array mapping page types to their respective route configurations.
+     * @return array<string, PageRegistration>
      */
     public static function getPages(): array
     {
@@ -207,6 +208,13 @@ final class PatientResource extends Resource
         ];
     }
 
+    /**
+     * Overrides the default Eloquent query for the resource.
+     *
+     * This method removes the SoftDeletingScope from the query, allowing retrieval of both soft-deleted and non-deleted records.
+     *
+     * @return Builder<Patient> The modified Eloquent query builder instance.
+     */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
