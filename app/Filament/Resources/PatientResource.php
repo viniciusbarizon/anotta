@@ -92,7 +92,7 @@ final class PatientResource extends Resource
                             return null;
                         }
 
-                        return static function (string $attribute, string $fullName, Closure $fail) use ($get) {
+                        return static function (string $attribute, string $fullName, Closure $fail) use ($get): void {
                             $exists = Patient::query()
                                 ->withTrashed()
                                 ->where('clinic_id', $get('clinic_id'))

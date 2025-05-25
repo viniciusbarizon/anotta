@@ -95,7 +95,7 @@ final class ClinicResource extends Resource
                 maxLength: 100,
                 rules: ['max:100']
             )->rule(static function (Get $get, Component $component): Closure {
-                return static function (string $attribute, string $name, Closure $fail) use ($component) {
+                return static function (string $attribute, string $name, Closure $fail) use ($component): void {
                     $hasAnotherWithSameNameAction = new HasAnotherWithSameNameAction(
                         currentId: $component->getRecord()?->getKey()
                     )->handle(name: $name);

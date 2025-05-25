@@ -26,7 +26,7 @@ abstract class Base extends Model
      */
     protected function notCurrentId(Builder $query, ?string $id): void
     {
-        $query->when(is_null($id) === false, function (Builder $query) use ($id) {
+        $query->when(is_null($id) === false, function (Builder $query) use ($id): void {
             $query->where('id', '!=', $id);
         });
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Actions\Clinic\HasAnotherWithSameNameAction;
 
-beforeEach(function () {
+beforeEach(function (): void {
     login();
 });
 
@@ -24,19 +24,19 @@ function hasAnotherWithSameName(): bool
     )->handle(name: test()->name);
 }
 
-describe('creating a clinic', function () {
-    beforeEach(function () {
+describe('creating a clinic', function (): void {
+    beforeEach(function (): void {
         $this->currentId = null;
     });
 
-    it('returns false if no duplicate name exists', function () {
+    it('returns false if no duplicate name exists', function (): void {
         $this->name = fake()->company();
 
         expect(hasAnotherWithSameName())
             ->toBeFalse();
     });
 
-    it('returns false if the name exists for another user', function () {
+    it('returns false if the name exists for another user', function (): void {
         $this->name = createClinic()->name;
 
         login();
@@ -45,28 +45,28 @@ describe('creating a clinic', function () {
             ->toBeFalse();
     });
 
-    it('returns true if the name already exists', function () {
+    it('returns true if the name already exists', function (): void {
         $this->name = createClinic()->name;
 
         expect(hasAnotherWithSameName())
             ->toBeTrue();
     });
 
-    it('returns true if a name match is found regardless of whitespace', function () {
+    it('returns true if a name match is found regardless of whitespace', function (): void {
         $this->name = createClinic()->name.' ';
 
         expect(hasAnotherWithSameName())
             ->toBeTrue();
     });
 
-    it('returns true if a duplicate name exists, ignoring case', function () {
+    it('returns true if a duplicate name exists, ignoring case', function (): void {
         $this->name = mb_strtoupper(createClinic()->name);
 
         expect(hasAnotherWithSameName())
             ->toBeTrue();
     });
 
-    it('returns true if a duplicate name exists, ignoring accents', function () {
+    it('returns true if a duplicate name exists, ignoring accents', function (): void {
         $name = 'Dr. Vinícius';
         createClinic(name: $name);
 
@@ -76,7 +76,7 @@ describe('creating a clinic', function () {
             ->toBeTrue();
     });
 
-    it('returns true if a duplicate name exists, ignoring punctuations', function () {
+    it('returns true if a duplicate name exists, ignoring punctuations', function (): void {
         $name = 'Dr. Vinícius';
         createClinic(name: $name);
 
@@ -87,8 +87,8 @@ describe('creating a clinic', function () {
     });
 });
 
-describe('editing a clinic', function () {
-    it('returns false if the name is the same but belongs to the current record', function () {
+describe('editing a clinic', function (): void {
+    it('returns false if the name is the same but belongs to the current record', function (): void {
         $clinic = createClinic();
 
         $this->currentId = $clinic->id;

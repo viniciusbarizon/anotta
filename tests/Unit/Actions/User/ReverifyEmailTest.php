@@ -19,7 +19,7 @@ function reverifyEmail(): void
     );
 }
 
-it('does not reverify if email is not verified', function () {
+it('does not reverify if email is not verified', function (): void {
     $this->user = createUser(unverified: true);
 
     reverifyEmail();
@@ -33,7 +33,7 @@ it('does not reverify if email is not verified', function () {
     ]);
 });
 
-it('does not reverify if email has not been changed', function () {
+it('does not reverify if email has not been changed', function (): void {
     $this->user = createUser();
 
     reverifyEmail();
@@ -44,7 +44,7 @@ it('does not reverify if email has not been changed', function () {
     ]);
 });
 
-it('does reverify the e-mail', function () {
+it('does reverify the e-mail', function (): void {
     $this->user = createUser();
     $this->user->email = fake()->email();
     $this->user->save();

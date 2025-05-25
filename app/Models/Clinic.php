@@ -75,7 +75,7 @@ final class Clinic extends Base
      */
     protected static function booted(): void
     {
-        self::saving(function ($clinic) {
+        self::saving(function ($clinic): void {
             $clinic->name_normalized = normalize_name($clinic->name);
         });
     }

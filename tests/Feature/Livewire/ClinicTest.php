@@ -36,8 +36,8 @@ function getResource(): Testable
     return livewire(ManageClinics::class);
 }
 
-describe('user not super admin', function () {
-    beforeEach(function () {
+describe('user not super admin', function (): void {
+    beforeEach(function (): void {
         login();
 
         $this->clinics = createClinics();
@@ -203,14 +203,14 @@ describe('user not super admin', function () {
             ->get();
     }
 
-    it('has all actions in expected order', function () {
+    it('has all actions in expected order', function (): void {
         $this->manageClinics
             ->assertTableActionsExistInOrder(['edit', 'delete', 'restore'])
             ->assertTableActionDoesNotExist('forceDelete')
             ->assertTableBulkActionsExistInOrder(['delete', 'restore']);
     });
 
-    it('lists', function () {
+    it('lists', function (): void {
         $this->manageClinics
             ->assertCanSeeTableRecords($this->clinics)
             ->assertCanRenderTableColumn('name')
@@ -221,27 +221,27 @@ describe('user not super admin', function () {
             ->assertTableColumnHidden('id');
     });
 
-    it('sorts by name', function () {
+    it('sorts by name', function (): void {
         assertSort(column: 'name');
     });
 
-    it('sorts by created_at', function () {
+    it('sorts by created_at', function (): void {
         assertSort(column: 'created_at');
     });
 
-    it('sorts by updated_at', function () {
+    it('sorts by updated_at', function (): void {
         edit();
 
         assertSortWithNull(column: 'updated_at');
     });
 
-    it('sorts by deleted_at', function () {
+    it('sorts by deleted_at', function (): void {
         delete();
 
         assertSortWithNull(column: 'deleted_at');
     });
 
-    it('searches by name', function () {
+    it('searches by name', function (): void {
         $name = getClinic()->name;
 
         $this->manageClinics
@@ -250,12 +250,12 @@ describe('user not super admin', function () {
             ->assertCanNotSeeTableRecords(test()->clinics->where('name', '!=', $name));
     });
 
-    it('has an deleted filter', function () {
+    it('has an deleted filter', function (): void {
         $this->manageClinics
             ->assertTableFilterExists('trashed');
     });
 
-    it('filters by only active', function () {
+    it('filters by only active', function (): void {
         delete();
 
         filterTrashed(
@@ -265,7 +265,7 @@ describe('user not super admin', function () {
         );
     });
 
-    it('filters by only deleted', function () {
+    it('filters by only deleted', function (): void {
         delete();
 
         filterTrashed(
@@ -275,7 +275,7 @@ describe('user not super admin', function () {
         );
     });
 
-    it('filters by active and deleted', function () {
+    it('filters by active and deleted', function (): void {
         delete();
 
         filterTrashed(
@@ -284,7 +284,7 @@ describe('user not super admin', function () {
         );
     });
 
-    it('validates name as required when creating', function () {
+    it('validates name as required when creating', function (): void {
         $this->manageClinics
             ->callAction('create', data: [
                 'name' => null,
@@ -292,7 +292,7 @@ describe('user not super admin', function () {
             ->assertHasActionErrors(['name' => ['required']]);
     });
 
-    it('validates name as unique when creating', function () {
+    it('validates name as unique when creating', function (): void {
         $name = getClinic()->name;
 
         $this->manageClinics
@@ -302,7 +302,7 @@ describe('user not super admin', function () {
             ->assertHasActionErrors(['name' => 'Este nome de clínica já está associado à tua conta.']);
     });
 
-    it('creates', function () {
+    it('creates', function (): void {
         $name = fake()->company();
 
         $this->manageClinics
@@ -316,7 +316,7 @@ describe('user not super admin', function () {
         ]);
     });
 
-    it('validates name as required when editing', function () {
+    it('validates name as required when editing', function (): void {
         $clinic = getClinic();
 
         $this->manageClinics
@@ -326,14 +326,14 @@ describe('user not super admin', function () {
             ->assertHasTableActionErrors(['name' => ['required']]);
     });
 
-    it('edits', function () {
+    it('edits', function (): void {
         $edit = edit();
 
         expect($edit['clinic'])
             ->name->toBe($edit['name']);
     });
 
-    it('deletes', function () {
+    it('deletes', function (): void {
         $id = delete();
 
         $this->assertSoftDeleted(
@@ -341,7 +341,7 @@ describe('user not super admin', function () {
         );
     });
 
-    it('restores', function () {
+    it('restores', function (): void {
         $id = delete();
 
         $clinic = test()->clinics->find($id);
@@ -352,7 +352,7 @@ describe('user not super admin', function () {
         $this->assertNotSoftDeleted($clinic->fresh());
     });
 
-    it('deletes in bulk', function () {
+    it('deletes in bulk', function (): void {
         $clinics = deleteInBulk();
 
         foreach ($clinics as $clinic) {
@@ -360,7 +360,7 @@ describe('user not super admin', function () {
         }
     });
 
-    it('restores in bulk', function () {
+    it('restores in bulk', function (): void {
         $clinics = deleteInBulk();
 
         $this->manageClinics
@@ -372,20 +372,20 @@ describe('user not super admin', function () {
     });
 });
 
-describe('user super admin', function () {
-    beforeEach(function () {
+describe('user super admin', function (): void {
+    beforeEach(function (): void {
         login(isSuperAdmin: true);
 
         $this->clinics = createClinics();
         $this->manageClinics = getResource();
     });
 
-    it('shows the id column', function () {
+    it('shows the id column', function (): void {
         $this->manageClinics
             ->assertTableColumnVisible('id');
     });
 
-    it('searches by id', function () {
+    it('searches by id', function (): void {
         $id = getClinic()->id;
 
         $this->manageClinics

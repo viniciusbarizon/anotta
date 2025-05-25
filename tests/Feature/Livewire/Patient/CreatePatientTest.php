@@ -8,7 +8,7 @@ use Filament\Notifications\Notification;
 
 use function Pest\Livewire\livewire;
 
-beforeEach(function () {
+beforeEach(function (): void {
     login();
 });
 
@@ -52,8 +52,8 @@ function getPatient(?array $data = null): Patient
     return Patient::factory($data)->make();
 }
 
-describe('user not super admin', function () {
-    it('receives a notification if no clinic exists', function () {
+describe('user not super admin', function (): void {
+    it('receives a notification if no clinic exists', function (): void {
         livewire(CreatePatient::class)
             ->assertNotified(
                 Notification::make()
@@ -76,35 +76,35 @@ describe('user not super admin', function () {
             ->assertHasFormErrors($errors);
     }
 
-    describe('creating', function () {
-        it('creates', function () {
+    describe('creating', function (): void {
+        it('creates', function (): void {
             assertHasNoFormErrors(
                 patient: getPatient()
             );
         });
 
-        it('validates clinic as required', function () {
+        it('validates clinic as required', function (): void {
             assertHasFormErrors(
                 errors: ['clinic_id' => 'required'],
                 patient: getPatient(['clinic_id' => null])
             );
         });
 
-        it('validates full name as required', function () {
+        it('validates full name as required', function (): void {
             assertHasFormErrors(
                 errors: ['full_name' => 'required'],
                 patient: getPatient(['full_name' => null])
             );
         });
 
-        it('validates birth date as required', function () {
+        it('validates birth date as required', function (): void {
             assertHasFormErrors(
                 errors: ['birth_date' => 'required'],
                 patient: getPatient(['birth_date' => null])
             );
         });
 
-        it('validates mobile phone as required', function () {
+        it('validates mobile phone as required', function (): void {
             assertHasFormErrors(
                 errors: ['mobile_phone' => 'required'],
                 patient: getPatient(['mobile_phone' => null])
@@ -115,8 +115,8 @@ describe('user not super admin', function () {
     });
 });
 
-describe('user super admin', function () {
-    it('creates', function () {
+describe('user super admin', function (): void {
+    it('creates', function (): void {
         $patient = getPatient();
 
         login(isSuperAdmin: true);
