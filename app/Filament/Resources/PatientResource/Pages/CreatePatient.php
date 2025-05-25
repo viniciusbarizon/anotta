@@ -6,6 +6,7 @@ namespace App\Filament\Resources\PatientResource\Pages;
 
 use App\Filament\Resources\PatientResource;
 use Filament\Resources\Pages\CreateRecord;
+use Override;
 
 final class CreatePatient extends CreateRecord
 {
@@ -20,7 +21,7 @@ final class CreatePatient extends CreateRecord
      * @param  array<string,string>  $data  The form data submitted for patient creation.
      * @return array<string,string> The mutated form data with the normalized full name.
      */
-    #[\Override]
+    #[Override]
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['full_name_normalized'] = normalize_name($data['full_name']);

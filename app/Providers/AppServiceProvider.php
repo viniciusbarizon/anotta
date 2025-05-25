@@ -8,13 +8,14 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Override;
 
 final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    #[\Override]
+    #[Override]
     public function register(): void
     {
         //
@@ -76,7 +77,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function setDefaultsForPasswords(): void
     {
-        Password::defaults(fn() => Password::min(12)
+        Password::defaults(fn () => Password::min(12)
             ->letters()
             ->mixedCase()
             ->numbers()

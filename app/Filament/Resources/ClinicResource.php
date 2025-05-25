@@ -20,6 +20,7 @@ use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Override;
 
 final class ClinicResource extends Resource
 {
@@ -34,7 +35,7 @@ final class ClinicResource extends Resource
      *
      * @return string The localized label for the model.
      */
-    #[\Override]
+    #[Override]
     public static function getModelLabel(): string
     {
         return __('Clínica');
@@ -49,7 +50,7 @@ final class ClinicResource extends Resource
      *
      * @return array<string, PageRegistration> An associative array of page identifiers and their routes.
      */
-    #[\Override]
+    #[Override]
     public static function getPages(): array
     {
         return [
@@ -66,7 +67,7 @@ final class ClinicResource extends Resource
      *
      * @return Builder<Clinic> The modified query builder instance.
      */
-    #[\Override]
+    #[Override]
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -88,7 +89,7 @@ final class ClinicResource extends Resource
      *     - The rule checks if a clinic with the same name (case-insensitive) already exists for the user.
      *     - If the clinic exists and is not the current record being edited, a validation error is triggered.
      */
-    #[\Override]
+    #[Override]
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -98,7 +99,7 @@ final class ClinicResource extends Resource
                 label: 'Nome',
                 maxLength: 100,
                 rules: ['max:100']
-            )->rule(static fn(Get $get, Component $component): Closure => static function (string $attribute, string $name, Closure $fail) use ($component): void {
+            )->rule(static fn (Get $get, Component $component): Closure => static function (string $attribute, string $name, Closure $fail) use ($component): void {
                 $hasAnotherWithSameNameAction = new HasAnotherWithSameNameAction(
                     currentId: $component->getRecord()?->getKey()
                 )->handle(name: $name);
@@ -129,7 +130,7 @@ final class ClinicResource extends Resource
      * - Actions defined by `ActionPresets::actions()`.
      * - Bulk actions defined by `ActionPresets::bulkActions()`.
      */
-    #[\Override]
+    #[Override]
     public static function table(Table $table): Table
     {
         return $table

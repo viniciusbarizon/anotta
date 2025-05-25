@@ -22,6 +22,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rule;
+use Override;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 final class PatientResource extends Resource
@@ -42,7 +43,7 @@ final class PatientResource extends Resource
      *
      * @return bool Returns true if a patient can be created, false otherwise.
      */
-    #[\Override]
+    #[Override]
     public static function canCreate(): bool
     {
         if (Clinic::query()->exists() === true) {
@@ -57,7 +58,7 @@ final class PatientResource extends Resource
         return false;
     }
 
-    #[\Override]
+    #[Override]
     public static function form(Form $form): Form
     {
         return $form
@@ -154,7 +155,7 @@ final class PatientResource extends Resource
             ]);
     }
 
-    #[\Override]
+    #[Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -202,7 +203,7 @@ final class PatientResource extends Resource
      *
      * @return array<string, PageRegistration>
      */
-    #[\Override]
+    #[Override]
     public static function getPages(): array
     {
         return [
@@ -219,7 +220,7 @@ final class PatientResource extends Resource
      *
      * @return Builder<Patient> The modified Eloquent query builder instance.
      */
-    #[\Override]
+    #[Override]
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -233,7 +234,7 @@ final class PatientResource extends Resource
      *
      * @return string The localized label for the model.
      */
-    #[\Override]
+    #[Override]
     public static function getModelLabel(): string
     {
         return __('Utente');

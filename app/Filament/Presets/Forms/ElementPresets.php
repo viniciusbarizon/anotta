@@ -419,7 +419,7 @@ final class ElementPresets
             return;
         }
 
-        $translated = collect($messages)->map(fn(string $message) => __($message))->toArray();
+        $translated = collect($messages)->map(fn (string $message) => __($message))->toArray();
 
         self::$element->validationMessages($translated);
     }
