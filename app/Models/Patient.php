@@ -49,16 +49,6 @@ final class Patient extends Base implements CipherSweetEncrypted
     }
 
     /**
-     * Get the clinicians associated with the patient.
-     *
-     * This defines a many-to-many relationship between the Patient model and the Clinician model.
-     */
-    public function clinicians(): BelongsToMany
-    {
-        return $this->belongsToMany(Clinician::class);
-    }
-
-    /**
      * Get the patient records associated with the patient.
      */
     public function records(): HasMany

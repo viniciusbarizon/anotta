@@ -248,7 +248,7 @@ final class PatientResource extends Resource
      */
     private static function getTaxIdMaxLength(?string $countryId): int
     {
-        return self::getCountry($countryId)?->tax_id_length ?? 20;
+        return self::getCountry($countryId)->tax_id_length ?? 20;
     }
 
     /**

@@ -48,14 +48,6 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     ];
 
     /**
-     * Get the clinician associated with the user.
-     */
-    public function clinician(): HasOne
-    {
-        return $this->hasOne(Clinician::class);
-    }
-
-    /**
      * Get the clinics associated with the user.
      *
      * @return BelongsToMany A relationship to clinics
