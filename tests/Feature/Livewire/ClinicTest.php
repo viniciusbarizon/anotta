@@ -45,23 +45,24 @@ describe('user not super admin', function (): void {
     });
 
     /**
-     * Assert sorting behavior for a table column.
+     * Asserts that the clinics table can be sorted by the specified column in both ascending and descending order.
      *
-     * This method tests table sorting functionality by:
-     * - Sorting the table by the specified column in ascending order
-     * - Verifying the table records match the ascending sorted collection
-     * - Sorting the table by the specified column in descending order
-     * - Verifying the table records match the descending sorted collection
+     * This method interacts with the table sorting functionality, first sorting by the given column in ascending order
+     * and asserting that the records are displayed in the correct order. It then sorts by the same column in descending
+     * order and asserts the records are displayed accordingly.
      *
-     * @param  string  $column  The column to test sorting on
+     * @param string $column The name of the column to sort by.
+     * @param int $flag Optional. The sorting flag to use (default is SORT_REGULAR).
+     *
+     * @return void
      */
-    function assertSort(string $column): void
+    function assertSort(string $column, int $flag = SORT_REGULAR): void
     {
         test()->manageClinics
             ->sortTable($column)
-            ->assertCanSeeTableRecords(test()->clinics->sortBy($column, SORT_LOCALE_STRING), inOrder: true)
+            ->assertCanSeeTableRecords(test()->clinics->sortBy($column, $flag), inOrder: true)
             ->sortTable($column, 'desc')
-            ->assertCanSeeTableRecords(test()->clinics->sortByDesc($column, SORT_LOCALE_STRING), inOrder: true);
+            ->assertCanSeeTableRecords(test()->clinics->sortByDesc($column, $flag), inOrder: true);
     }
 
     /**
@@ -222,12 +223,10 @@ describe('user not super admin', function (): void {
     });
 
     it('sorts by name', function (): void {
-        assertSort(column: 'name');
+        assertSort(column: 'name', flag: SORT_LOCALE_STRING);
     });
 
     it('sorts by created_at', function (): void {
-        createClinic();
-
         assertSort(column: 'created_at');
     });
 
