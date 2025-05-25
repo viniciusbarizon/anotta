@@ -15,7 +15,7 @@ final class HasAnotherWithSameNameAction
     /**
      * Handles the action of checking if another clinic with the same name exists.
      *
-     * @param string $name The name of the clinic to check.
+     * @param  string  $name  The name of the clinic to check.
      * @return bool True if another clinic with the same normalized name exists, false otherwise.
      */
     public function handle(string $name): bool
@@ -26,7 +26,7 @@ final class HasAnotherWithSameNameAction
     }
 
     /**
-     * Checks if there is another Clinic record (including soft-deleted ones) 
+     * Checks if there is another Clinic record (including soft-deleted ones)
      * with the same normalized name but a different ID.
      *
      * @return bool True if another clinic with the same normalized name exists, false otherwise.
