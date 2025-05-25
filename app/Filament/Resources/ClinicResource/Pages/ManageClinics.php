@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\ClinicResource\Pages;
 
-use Filament\Actions\CreateAction;
 use App\Filament\Presets\Actions\HeaderPresets;
 use App\Filament\Resources\ClinicResource;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRecords;
 
 final class ManageClinics extends ManageRecords

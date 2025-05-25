@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Database\Factories\PatientFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 final class Patient extends Base implements CipherSweetEncrypted
 {
