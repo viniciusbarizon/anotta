@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Presets\Tables;
 
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -16,7 +17,7 @@ final class ActionPresets
     /**
      * Defines a list of actions for the table.
      *
-     * @return array An array of actions, including:
+     * @return array<int, Action> An array of actions, including:
      *               - EditAction: Allows editing of the table entry.
      *               - deleteCascade: Deletes the entry and its related data.
      *               - restoreCascade: Restores the entry and its related data.

@@ -22,6 +22,13 @@ final class ElementPresets
 
     private static ?string $requiredWith;
 
+    /**
+     * The validation rules for the form element.
+     *
+     * This property can be an array of rules, a Closure that returns rules, or null if no rules are set.
+     *
+     * @var array<string>|Closure|null
+     */
     private static array|Closure|null $rules;
 
     /**
@@ -58,16 +65,17 @@ final class ElementPresets
     /**
      * Creates and configures a Select element with the specified parameters.
      *
-     * @param  string  $columnValue  The column to use for the select options' display text.
+     * @param  string  $columnValue  The column value to be used as the option value in the Select.
      * @param  string  $id  The unique identifier for the Select element.
      * @param  string  $label  The label for the Select element.
-     * @param  string  $model  The Eloquent model to fetch options from.
-     * @param  Closure|null  $afterStateUpdated  Optional callback to execute after the select state is updated.
-     * @param  string|null  $default  Optional default value for the select.
-     * @param  string|null  $helperText  Optional helper text to display below the select field.
-     * @param  bool  $isLive  Whether the select should update dynamically. Defaults to false.
-     * @param  bool  $isRequired  Whether the select is required. Defaults to true.
-     * @param  string|null  $requiredWith  Optional field name that makes this select required when the specified field is present.
+     * @param  string  $model  The model class from which to retrieve options.
+     * @param  Closure|null  $afterStateUpdated  Optional callback to execute after state updates.
+     * @param  string|null  $default  Optional default value for the Select element.
+     * @param  string|null  $helperText  Optional helper text to display below the Select.
+     * @param  bool  $isLive  Whether the Select should be live. Defaults to false.
+     * @param  bool  $isRequired  Whether the Select is required. Defaults to true.
+     * @param  string|null  $requiredWith  Optional field name that makes this input required.
+     * @param  array<Closure|string>|null  $rules  Optional validation rules for the Select element.
      * @return Select The configured Select element.
      */
     public static function select(
@@ -124,8 +132,8 @@ final class ElementPresets
      * @param  bool|Closure  $disabled  Whether the input is disabled. Defaults to false.
      * @param  bool  $isRequired  Whether the input is required. Defaults to true.
      * @param  string|null  $requiredWith  Optional field name that makes this input required.
-     * @param  array|Closure|null  $rules  Optional validation rules.
-     * @param  array|null  $validationMessages  Optional custom validation messages.
+     * @param  array<Closure|string>|Closure|null  $rules  Optional validation rules.
+     * @param  array<string,string>|null  $validationMessages  Optional custom validation messages.
      * @return TextInput The configured TextInput element.
      */
     public static function textInput(
@@ -362,7 +370,7 @@ final class ElementPresets
      * Sets the default value for a select element based on the provided options.
      *
      * @param  string|null  $default  The default value to set, or null if no default is specified.
-     * @param  Collection  $options  A collection of options for the select element.
+     * @param  Collection<string,string>  $options  A collection of options for the select element.
      */
     private static function setSelectDefault(?string $default, Collection $options): void
     {
@@ -403,7 +411,7 @@ final class ElementPresets
      * This method translates and applies custom validation messages
      * to the form element if any messages are provided.
      *
-     * @param  array|null  $messages  An array of custom validation messages to be translated.
+     * @param  array<string,string>|null  $messages  An array of custom validation messages to be translated.
      */
     private static function setValidationMessages(?array $messages): void
     {

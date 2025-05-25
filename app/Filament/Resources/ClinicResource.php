@@ -18,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\Pages\PageRegistration;
 
 final class ClinicResource extends Resource
 {
@@ -44,7 +45,7 @@ final class ClinicResource extends Resource
      * corresponding routes. For example, the 'index' page is mapped
      * to the route handled by the `Pages\ManageClinics` class.
      *
-     * @return array An associative array of page identifiers and their routes.
+     * @return array<string, PageRegistration> An associative array of page identifiers and their routes.
      */
     public static function getPages(): array
     {
@@ -60,7 +61,7 @@ final class ClinicResource extends Resource
      * and filters the results based on the authenticated user's ID.
      * It ensures that only records related to the current user are retrieved.
      *
-     * @return Builder The modified query builder instance.
+     * @return Builder<\App\Models\Clinic> The modified query builder instance.
      */
     public static function getEloquentQuery(): Builder
     {

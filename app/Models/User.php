@@ -23,14 +23,9 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are not mass assignable.
+     * The attributes that are mass assignable.
      *
-     * This property prevents the specified attributes from being
-     * mass-assigned to the model. In this case, the 'is_super_admin'
-     * attribute is protected to ensure it cannot be modified
-     * unintentionally through mass assignment.
-     *
-     * @var array
+     * @var array<int, string>
      */
     protected $guarded = [
         'is_super_admin',

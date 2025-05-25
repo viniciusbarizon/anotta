@@ -11,7 +11,7 @@ final class HeaderPresets
     /**
      * Returns the default configuration for header actions.
      *
-     * @return array The default array of actions, including a `CreateAction`
+     * @return array<CreateAction> The default array of actions, including a `CreateAction`
      *               with the "create another" option disabled.
      */
     public static function default(): array

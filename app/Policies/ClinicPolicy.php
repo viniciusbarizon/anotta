@@ -38,11 +38,12 @@ final class ClinicPolicy
     }
 
     /**
-     * Determine whether the given clinic can be viewed by the user.
+     * Determine whether the given user can create a clinic.
      *
-     * @param  User  $user  The user attempting to view the clinic.
-     * @param  Clinic  $clinic  The clinic being accessed.
-     * @return bool True if the user belongs to the clinic, false otherwise.
+     * Authorization is based on the user's role or permissions.
+     *
+     * @param  User  $user  The user attempting to create a clinic.
+     * @return bool True if the user can create a clinic, false otherwise.
      */
     public function create(User $user): bool
     {
