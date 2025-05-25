@@ -17,6 +17,7 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 final class ClinicResource extends Resource
 {
@@ -64,7 +65,7 @@ final class ClinicResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->withTrashed();
+            ->withoutGlobalScope(SoftDeletingScope::class);
     }
 
     /**

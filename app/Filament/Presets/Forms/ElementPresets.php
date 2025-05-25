@@ -26,16 +26,13 @@ final class ElementPresets
     private static array|Closure|null $rules;
 
     /**
-     * Creates a configured DatePicker element for a form.
+     * Creates and configures a DatePicker element with the specified parameters.
      *
      * @param  string  $id  The unique identifier for the DatePicker element.
-     * @param  string  $afterOrEqual  The date from which the selected date must be after or equal to.
-     * @param  string  $beforeOrEqual  The date until which the selected date must be before or equal to.
      * @param  string  $label  The label for the DatePicker element.
-     * @param  Carbon  $minDate  The minimum allowed date.
-     * @param  Carbon  $maxDate  The maximum allowed date.
-     * @param  array  $validationMessages  Custom validation error messages.
-     * @param  bool  $isRequired  Whether the DatePicker element is required. Defaults to true.
+     * @param  string  $minDate  The minimum date allowed in the DatePicker.
+     * @param  string  $maxDate  The maximum date allowed in the DatePicker.
+     * @param  bool  $isRequired  Whether the DatePicker is required. Defaults to true.
      * @return DatePicker The configured DatePicker element.
      */
     public static function datePicker(
