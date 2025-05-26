@@ -23,7 +23,8 @@ return RectorConfig::configure()
         deadCode: true,
         codeQuality: true,
         codingStyle: true,
-        naming: true,
+        naming: false,
+        privatization: false,
         typeDeclarations: true,
         rectorPreset: true,
     );
