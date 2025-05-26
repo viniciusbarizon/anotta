@@ -27,7 +27,7 @@ final class Clinic extends Base
      * when this Clinic model is deleted.
      *
      * @var array<string>
-     * 
+     *
      * Relationships:
      * - 'patientRecords': Deletes all patient records associated with the clinic.
      * - 'patients': Deletes all patients associated with the clinic.
