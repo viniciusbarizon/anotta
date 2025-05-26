@@ -22,6 +22,17 @@ final class Clinic extends Base
     /** @use HasFactory<ClinicFactory> */
     use HasFactory;
 
+    /**
+     * The list of related model relationships that should be automatically deleted
+     * when this Clinic model is deleted.
+     *
+     * @var array<string>
+     * 
+     * Relationships:
+     * - 'patientRecords': Deletes all patient records associated with the clinic.
+     * - 'patients': Deletes all patients associated with the clinic.
+     * - 'users': Deletes all users associated with the clinic.
+     */
     protected array $cascadeDeletes = [
         'patientRecords',
         'patients',

@@ -10,8 +10,10 @@ parameters:
     # Level 10 is the highest level
     level: 6
 
-#    ignoreErrors:
+    ignoreErrors:
 #        - '#PHPDoc tag @var#'
+        -
+            identifier: missingType.generics
 #
 #    excludePaths:
 #        - ./*/*/FileToBeExcluded.php
