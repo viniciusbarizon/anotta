@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     'title' => 'Redefinir a sua palavra-passe',

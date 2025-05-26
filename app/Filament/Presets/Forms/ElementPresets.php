@@ -185,7 +185,7 @@ final class ElementPresets
      */
     private static function setAfterStateUpdated(?Closure $afterStateUpdated): void
     {
-        if (is_null($afterStateUpdated) === true) {
+        if (is_null($afterStateUpdated)) {
             return;
         }
 
@@ -240,7 +240,7 @@ final class ElementPresets
      */
     private static function setExtraInputAttributes(?Closure $attributes): void
     {
-        if (is_null($attributes) === true) {
+        if (is_null($attributes)) {
             return;
         }
 
@@ -258,7 +258,7 @@ final class ElementPresets
      */
     private static function setHelperText(): void
     {
-        if (is_null(self::$helperText) === true) {
+        if (is_null(self::$helperText)) {
             return;
         }
 
@@ -310,7 +310,7 @@ final class ElementPresets
      */
     private static function setNullable(): void
     {
-        if (self::$isRequired === true) {
+        if (self::$isRequired) {
             return;
         }
 
@@ -343,7 +343,7 @@ final class ElementPresets
      */
     private static function setRequiredWith(): void
     {
-        if (is_null(self::$requiredWith) === true) {
+        if (is_null(self::$requiredWith)) {
             return;
         }
 
@@ -359,7 +359,7 @@ final class ElementPresets
      */
     private static function setRules(): void
     {
-        if (is_null(self::$rules) === true) {
+        if (is_null(self::$rules)) {
             return;
         }
 
@@ -415,7 +415,7 @@ final class ElementPresets
      */
     private static function setValidationMessages(?array $messages): void
     {
-        if (is_null($messages) === true) {
+        if (is_null($messages)) {
             return;
         }
 

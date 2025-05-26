@@ -128,7 +128,7 @@ final class PatientResource extends Resource
 
                 ElementPresets::select(
                     id: 'tax_country_id',
-                    afterStateUpdated: fn (Set $set) => $set('tax_id', null),
+                    afterStateUpdated: fn (Set $set): mixed => $set('tax_id', null),
                     columnValue: 'name',
                     helperText: 'País onde o NIF foi emitido. **Não confundir com nacionalidade.**',
                     label: 'País do NIF',
@@ -141,7 +141,7 @@ final class PatientResource extends Resource
                 ElementPresets::textInput(
                     id: 'tax_id',
                     disabled: fn (Get $get): bool => is_null($get('tax_country_id')),
-                    extraInputAttributes: fn (Get $get) => [
+                    extraInputAttributes: fn (Get $get): array => [
                         'oninput' => self::getTaxIdOnInput(countryId: $get('tax_country_id')),
                     ],
                     isAscii: true,
@@ -149,7 +149,7 @@ final class PatientResource extends Resource
                     maxLength: fn (Get $get): int => self::getTaxIdMaxLength($get('tax_country_id')),
                     isRequired: false,
                     requiredWith: 'tax_country_id',
-                    rules: fn (Get $get): array => self::isTaxIdNumeric($get('tax_country_id')) === true ?
+                    rules: fn (Get $get): array => self::isTaxIdNumeric($get('tax_country_id')) ?
                         ['regex:/^\d+$/'] : []
                 ),
             ]);
@@ -274,7 +274,7 @@ final class PatientResource extends Resource
      */
     private static function getTaxIdOnInput(?string $countryId): string
     {
-        if (self::isTaxIdNumeric(countryId: $countryId) === true) {
+        if (self::isTaxIdNumeric(countryId: $countryId)) {
             return 'this.value = this.value.replace(/[^0-9]/g, "")';
         }
 

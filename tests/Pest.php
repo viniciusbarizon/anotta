@@ -60,7 +60,7 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
  */
 function createClinic(?string $name = null): Clinic
 {
-    if (is_null($name) === true) {
+    if (is_null($name)) {
         return Clinic::factory()->create();
     }
 
@@ -82,11 +82,11 @@ function createUser(bool $isSuperAdmin = false, bool $unverified = false): User
 {
     $user = User::factory();
 
-    if ($isSuperAdmin === true) {
+    if ($isSuperAdmin) {
         $user = $user->superAdmin();
     }
 
-    if ($unverified === true) {
+    if ($unverified) {
         $user = $user->unverified();
     }
 

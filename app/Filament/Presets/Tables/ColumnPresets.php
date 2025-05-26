@@ -24,23 +24,23 @@ final class ColumnPresets
         bool $isVisible = true,
         ?string $label = null
     ): TextColumn {
-        $column = TextColumn::make($name)
+        $textColumn = TextColumn::make($name)
             ->searchable()
             ->visible($isVisible);
 
-        if ($isCopyable === true) {
-            $column->copyable();
+        if ($isCopyable) {
+            $textColumn->copyable();
         }
 
-        if ($isSortable === true) {
-            $column->sortable();
+        if ($isSortable) {
+            $textColumn->sortable();
         }
 
-        if (is_null($label) === true) {
-            return $column->translateLabel();
+        if (is_null($label)) {
+            return $textColumn->translateLabel();
         }
 
-        return $column->label($label);
+        return $textColumn->label($label);
     }
 
     /**

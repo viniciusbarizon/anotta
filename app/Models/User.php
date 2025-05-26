@@ -92,17 +92,17 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     /**
      * Scope a query to only include users who have not verified their email.
      */
-    protected function emailUnverified(Builder $query): void
+    protected function emailUnverified(Builder $builder): void
     {
-        $query->whereNull('email_verified_at');
+        $builder->whereNull('email_verified_at');
     }
 
     #[Scope]
     /**
      * Scope a query to only include users who have verified their email.
      */
-    protected function emailVerified(Builder $query): void
+    protected function emailVerified(Builder $builder): void
     {
-        $query->whereNotNull('email_verified_at');
+        $builder->whereNotNull('email_verified_at');
     }
 }

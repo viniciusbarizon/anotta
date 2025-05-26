@@ -21,7 +21,7 @@ trait SuperAdminOverride
      */
     public function before(User $user, string $ability): ?bool
     {
-        if (in_array($ability, ['forceDelete', 'update']) === true) {
+        if (in_array($ability, ['forceDelete', 'update'])) {
             return null;
         }
 

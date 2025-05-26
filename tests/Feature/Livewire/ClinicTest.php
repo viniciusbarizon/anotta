@@ -158,20 +158,20 @@ describe('user not super admin', function (): void {
      *
      * @param  Collection  $canSee  Collection of records expected to be visible after filtering
      * @param  int|string  $value  The trashed filter value (e.g., 0 for non-trashed, 1 for trashed)
-     * @param  Collection|null  $canNotSee  Optional collection of records not expected to be visible
+     * @param Collection|null $collection Optional collection of records not expected to be visible
      */
-    function filterTrashed(Collection $canSee, int|string $value, ?Collection $canNotSee = null): void
+    function filterTrashed(Collection $canSee, int|string $value, ?Collection $collection = null): void
     {
         test()->manageClinics
             ->filterTable('trashed', $value)
             ->assertCanSeeTableRecords($canSee);
 
-        if (is_null($canNotSee) === true) {
+        if (is_null($collection)) {
             return;
         }
 
         test()->manageClinics
-            ->assertCanNotSeeTableRecords($canNotSee);
+            ->assertCanNotSeeTableRecords($collection);
     }
 
     /**

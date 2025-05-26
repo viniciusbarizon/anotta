@@ -91,7 +91,7 @@ final class Clinic extends Base
     protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => (string) str($value)->squish()
+            set: fn (string $value): string => (string) str($value)->squish()
         );
     }
 }

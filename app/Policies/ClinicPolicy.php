@@ -15,7 +15,7 @@ final class ClinicPolicy
     /**
      * Determine whether the user can view any clinics.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
     {
         return true;
     }
@@ -42,10 +42,9 @@ final class ClinicPolicy
      *
      * Authorization is based on the user's role or permissions.
      *
-     * @param  User  $user  The user attempting to create a clinic.
      * @return bool True if the user can create a clinic, false otherwise.
      */
-    public function create(User $user): bool
+    public function create(): bool
     {
         return true;
     }
@@ -99,11 +98,9 @@ final class ClinicPolicy
     /**
      * Determine whether the user can permanently delete the clinic.
      *
-     * @param  User  $user  The user making the request.
-     * @param  Clinic  $clinic  The clinic instance being evaluated.
      * @return bool Returns false, indicating the user cannot permanently delete the clinic.
      */
-    public function forceDelete(User $user, Clinic $clinic): bool
+    public function forceDelete(): bool
     {
         return false;
     }

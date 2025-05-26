@@ -53,9 +53,9 @@ final class ReverifyEmailAction
      */
     private function sendVerification(): void
     {
-        $notification = app(VerifyEmail::class);
-        $notification->url = Filament::getVerifyEmailUrl($this->user);
+        $verifyEmail = app(VerifyEmail::class);
+        $verifyEmail->url = Filament::getVerifyEmailUrl($this->user);
 
-        $this->user->notify($notification);
+        $this->user->notify($verifyEmail);
     }
 }

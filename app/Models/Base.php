@@ -24,10 +24,10 @@ abstract class Base extends Model
      * @param  Builder  $query  The query builder instance.
      * @param  string|null  $id  The ID to exclude from the query. If null, no exclusion is applied.
      */
-    protected function notCurrentId(Builder $query, ?string $id): void
+    protected function notCurrentId(Builder $builder, ?string $id): void
     {
-        $query->when(is_null($id) === false, function (Builder $query) use ($id): void {
-            $query->where('id', '!=', $id);
+        $builder->when(is_null($id) === false, function (Builder $builder) use ($id): void {
+            $builder->where('id', '!=', $id);
         });
     }
 }
