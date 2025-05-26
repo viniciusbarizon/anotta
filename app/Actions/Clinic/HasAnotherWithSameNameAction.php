@@ -10,7 +10,7 @@ final class HasAnotherWithSameNameAction
 {
     private string $name;
 
-    public function __construct(private readonly ?string $currentId) {}
+    public function __construct(private readonly mixed $currentId) {}
 
     /**
      * Handles the action of checking if another clinic with the same name exists.

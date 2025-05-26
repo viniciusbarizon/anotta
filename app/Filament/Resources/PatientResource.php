@@ -103,6 +103,7 @@ final class PatientResource extends Resource
                                 ->where('clinic_id', $get('clinic_id'))
                                 ->where('birth_date', $get('birth_date'))
                                 ->whereBlind('full_name_normalized', 'full_name_normalized_index', normalize_name($fullName))
+                                // @phpstan-ignore argument.type
                                 ->whereBlind('mobile_phone', 'mobile_phone_index', $get('mobile_phone'))
                                 ->exists();
 
@@ -245,25 +246,27 @@ final class PatientResource extends Resource
     /**
      * Retrieves a Country model instance by its ID.
      *
-     * @param  string|null  $countryId  The unique identifier of the country.
+     * @param  mixed  $countryId  The unique identifier of the country.
      * @return Country|null The Country model instance if found, or null if the country ID is null or not found.
      */
-    private static function getCountry(?string $countryId): ?Country
+    private static function getCountry(mixed $countryId): ?Country
     {
         if (is_null($countryId)) {
             return null;
         }
 
-        return Country::find($countryId);
+        $country = Country::find($countryId);
+
+        return $country instanceof Country ? $country : null;
     }
 
     /**
      * Retrieves the maximum length for a tax ID based on the specified country.
      *
-     * @param  string|null  $countryId  The unique identifier of the country.
+     * @param  mixed  $countryId  The unique identifier of the country.
      * @return int The maximum allowed length for the tax ID, defaulting to 20 if no country-specific length is found.
      */
-    private static function getTaxIdMaxLength(?string $countryId): int
+    private static function getTaxIdMaxLength(mixed $countryId): int
     {
         return self::getCountry($countryId)->tax_id_length ?? 20;
     }
@@ -271,10 +274,10 @@ final class PatientResource extends Resource
     /**
      * Generates a JavaScript input validation script for tax ID based on country-specific rules.
      *
-     * @param  string|null  $countryId  The unique identifier of the country.
+     * @param  mixed  $countryId  The unique identifier of the country.
      * @return string A JavaScript snippet that sanitizes tax ID input according to the country's tax ID format.
      */
-    private static function getTaxIdOnInput(?string $countryId): string
+    private static function getTaxIdOnInput(mixed $countryId): string
     {
         if (self::isTaxIdNumeric(countryId: $countryId)) {
             return 'this.value = this.value.replace(/[^0-9]/g, "")';
@@ -286,10 +289,10 @@ final class PatientResource extends Resource
     /**
      * Determines if the tax ID for a given country is numeric.
      *
-     * @param  string|null  $countryId  The unique identifier of the country.
+     * @param  mixed  $countryId  The unique identifier of the country.
      * @return bool True if the tax ID for the specified country is numeric, false otherwise.
      */
-    private static function isTaxIdNumeric(?string $countryId): bool
+    private static function isTaxIdNumeric(mixed $countryId): bool
     {
         return self::getCountry(countryId: $countryId)?->is_tax_id_numeric === true;
     }
