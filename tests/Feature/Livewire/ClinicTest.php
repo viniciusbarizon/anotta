@@ -258,8 +258,8 @@ describe('user not super admin', function (): void {
         delete();
 
         filterTrashed(
-            canNotSee: test()->clinics->whereNotNull('deleted_at'),
             canSee: test()->clinics->whereNull('deleted_at'),
+            collection: test()->clinics->whereNotNull('deleted_at'),
             value: ''
         );
     });
@@ -268,8 +268,8 @@ describe('user not super admin', function (): void {
         delete();
 
         filterTrashed(
-            canNotSee: test()->clinics->whereNull('deleted_at'),
             canSee: test()->clinics->whereNotNull('deleted_at'),
+            collection: test()->clinics->whereNull('deleted_at'),
             value: 0
         );
     });
