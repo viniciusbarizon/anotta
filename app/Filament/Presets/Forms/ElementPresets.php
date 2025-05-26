@@ -14,7 +14,7 @@ final class ElementPresets
 {
     public static ?string $helperText = null;
 
-    private static DatePicker|Select|TextInput $element;
+    private static mixed $element;
 
     private static bool $isRequired;
 
@@ -27,7 +27,7 @@ final class ElementPresets
      *
      * This property can be an array of rules, a Closure that returns rules, or null if no rules are set.
      *
-     * @var array<string>|Closure|null
+     * @var array<Closure|string>|Closure|null
      */
     private static array|Closure|null $rules = null;
 
