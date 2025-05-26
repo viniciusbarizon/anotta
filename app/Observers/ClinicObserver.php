@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Observers;
 
 use App\Models\Clinic;
+use App\Models\User;
 
 final class ClinicObserver
 {
@@ -18,8 +19,11 @@ final class ClinicObserver
      */
     public function created(Clinic $clinic): void
     {
+        /** @var User $user */
+        $user = auth()->user();
+
         $clinic->users()->attach(
-            auth()->user()->id
+            $user->id
         );
     }
 }

@@ -9,6 +9,7 @@ use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Clinic;
 use App\Models\Country;
 use App\Models\Patient;
+use App\Models\User;
 use Closure;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Form;
@@ -70,6 +71,7 @@ final class PatientResource extends Resource
                     model: Clinic::class,
                     rules: [
                         function () {
+                            /** @var User $user */
                             $user = auth()->user();
 
                             if ($user->is_super_admin === true) {

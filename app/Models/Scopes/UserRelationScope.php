@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Scopes;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
@@ -22,10 +23,13 @@ final class UserRelationScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        if (auth()->user()->is_super_admin) {
+        /** @var User $user */
+        $user = auth()->user();
+
+        if ($user->is_super_admin) {
             return;
         }
 
-        $builder->whereRelation('users', 'user_id', auth()->user()->id);
+        $builder->whereRelation('users', 'user_id', $user->id);
     }
 }

@@ -133,13 +133,16 @@ final class ClinicResource extends Resource
     #[Override]
     public static function table(Table $table): Table
     {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+
         return $table
             ->filters(FilterPresets::filters())
             ->columns([
                 ColumnPresets::text(
                     isCopyable: true,
                     isSortable: false,
-                    isVisible: auth()->user()->is_super_admin,
+                    isVisible: $user->is_super_admin,
                     name: 'id',
                     label: 'ID'
                 ),
