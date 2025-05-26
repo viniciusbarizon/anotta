@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use RectorLaravel\Set\LaravelLevelSetList;
 
+use function Pest\Laravel\instance;
+
 return RectorConfig::configure()
     ->withPaths([
         __DIR__.'/app',
@@ -20,11 +22,15 @@ return RectorConfig::configure()
         LaravelLevelSetList::UP_TO_LARAVEL_120,
     ])
     ->withPreparedSets(
-        deadCode: true,
+        carbon: true,
         codeQuality: true,
         codingStyle: true,
+        deadCode: true,
+        earlyReturn: true,
+        instanceOf: true,
         naming: false,
         privatization: false,
-        typeDeclarations: true,
         rectorPreset: true,
+        strictBooleans: true,
+        typeDeclarations: true,
     );
