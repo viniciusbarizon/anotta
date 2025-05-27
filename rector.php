@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use RectorLaravel\Set\LaravelLevelSetList;
+use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -26,9 +27,12 @@ return RectorConfig::configure()
         deadCode: true,
         earlyReturn: true,
         instanceOf: true,
-        naming: false,
+        naming: true,
         privatization: false,
         rectorPreset: true,
         strictBooleans: true,
         typeDeclarations: true,
-    );
+    )
+    ->withSkip([
+        RenameParamToMatchTypeRector::class,
+    ]);

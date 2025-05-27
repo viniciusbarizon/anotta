@@ -160,18 +160,18 @@ describe('user not super admin', function (): void {
      * @param  int|string  $value  The trashed filter value (e.g., 0 for non-trashed, 1 for trashed)
      * @param  Collection|null  $collection  Optional collection of records not expected to be visible
      */
-    function filterTrashed(Collection $canSee, int|string $value, ?Collection $collection = null): void
+    function filterTrashed(Collection $canSee, int|string $value, ?Collection $canNotSee = null): void
     {
         test()->manageClinics
             ->filterTable('trashed', $value)
             ->assertCanSeeTableRecords($canSee);
 
-        if (is_null($collection)) {
+        if (is_null($canNotSee)) {
             return;
         }
 
         test()->manageClinics
-            ->assertCanNotSeeTableRecords($collection);
+            ->assertCanNotSeeTableRecords($canNotSee);
     }
 
     /**
@@ -258,8 +258,8 @@ describe('user not super admin', function (): void {
         delete();
 
         filterTrashed(
+            canNotSee: test()->clinics->whereNotNull('deleted_at'),
             canSee: test()->clinics->whereNull('deleted_at'),
-            collection: test()->clinics->whereNotNull('deleted_at'),
             value: ''
         );
     });
@@ -268,8 +268,8 @@ describe('user not super admin', function (): void {
         delete();
 
         filterTrashed(
+            canNotSee: test()->clinics->whereNull('deleted_at'),
             canSee: test()->clinics->whereNotNull('deleted_at'),
-            collection: test()->clinics->whereNull('deleted_at'),
             value: 0
         );
     });
