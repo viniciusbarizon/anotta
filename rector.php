@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
-use RectorLaravel\Set\LaravelLevelSetList;
 use Rector\Privatization\Rector\ClassMethod\PrivatizeFinalClassMethodRector;
 use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
+use RectorLaravel\Set\LaravelLevelSetList;
 
 return RectorConfig::configure()
     ->withPaths([
