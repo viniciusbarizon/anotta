@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use RectorLaravel\Set\LaravelLevelSetList;
+use Rector\Privatization\Rector\ClassMethod\PrivatizeFinalClassMethodRector;
+use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -28,11 +30,13 @@ return RectorConfig::configure()
         earlyReturn: true,
         instanceOf: true,
         naming: true,
-        privatization: false,
+        privatization: true,
         rectorPreset: true,
         strictBooleans: true,
         typeDeclarations: true,
     )
     ->withSkip([
+        PrivatizeFinalClassMethodRector::class,
+        PrivatizeFinalClassPropertyRector::class,
         RenameParamToMatchTypeRector::class,
     ]);
