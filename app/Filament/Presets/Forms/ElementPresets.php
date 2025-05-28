@@ -163,7 +163,6 @@ final class ElementPresets
             $textInput->minLength($maxLength);
         }
 
-
         if (is_string($requiredWith)) {
             $textInput->requiredWith($requiredWith);
         }
