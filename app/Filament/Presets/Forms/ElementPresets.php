@@ -129,6 +129,7 @@ final class ElementPresets
         ?Closure $extraInputAttributes = null,
         ?string $helperText = null,
         bool $isAscii = false,
+        bool $isMinLengthEqualToMaxLength = false,
         bool|Closure $disabled = false,
         bool $isRequired = true,
         ?string $requiredWith = null,
@@ -158,6 +159,11 @@ final class ElementPresets
             );
         }
 
+        if ($isMinLengthEqualToMaxLength) {
+            $textInput->minLength($maxLength);
+        }
+
+
         if (is_string($requiredWith)) {
             $textInput->requiredWith($requiredWith);
         }
@@ -166,8 +172,6 @@ final class ElementPresets
             $translated = collect($validationMessages)->map(fn (string $message) => __($message))->all();
             $textInput->validationMessages($translated);
         }
-
-        // self::setNullable();
 
         return $textInput;
     }

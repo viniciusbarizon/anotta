@@ -34,16 +34,6 @@ describe('creating a patient', function (): void {
         $this->currentId = null;
     });
 
-    /**
-     * Creates and persists a new Patient instance using the factory.
-     *
-     * @return Patient The newly created Patient model instance.
-     */
-    function createPatient(): Patient
-    {
-        return Patient::factory()->create();
-    }
-
     it('returns false if no duplicate exists', function (): void {
         $this->birthDate = fake()->date();
         $this->clinicId = createClinic()->id;

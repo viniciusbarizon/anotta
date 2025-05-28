@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Actions\Patient\AlreadyExistsAction;
 use App\Filament\Presets\Forms\ElementPresets;
 use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Clinic;
@@ -93,19 +94,18 @@ final class PatientResource extends Resource
                     ]
                 )
                     ->rule(static function (Get $get, Component $component): ?Closure {
-                        if (empty($get('birth_date')) || empty($get('mobile_phone'))) {
+                        if (empty($get('clinic_id')) || empty($get('birth_date')) || empty($get('mobile_phone'))) {
                             return null;
                         }
 
                         return static function (string $attribute, string $fullName, Closure $fail) use ($get): void {
-                            $exists = Patient::query()
-                                ->withTrashed()
-                                ->where('clinic_id', $get('clinic_id'))
-                                ->where('birth_date', $get('birth_date'))
-                                ->whereBlind('full_name_normalized', 'full_name_normalized_index', normalize_name($fullName))
-                                // @phpstan-ignore argument.type
-                                ->whereBlind('mobile_phone', 'mobile_phone_index', $get('mobile_phone'))
-                                ->exists();
+                            $exists = new AlreadyExistsAction(
+                                birthDate: $get('birth_date'),
+                                clinicId: $get('clinic_id'),
+                                currentId: $get('id'),
+                                fullName: $fullName,
+                                mobilePhone: $get('mobile_phone')
+                            )->handle();
 
                             if ($exists === false) {
                                 return;
@@ -127,7 +127,8 @@ final class PatientResource extends Resource
                     ->label(__('Telemóvel'))
                     ->locale('pt')
                     ->required()
-                    ->strictMode(),
+                    ->strictMode()
+                    ->regex('/^\d+$/'),
 
                 ElementPresets::select(
                     id: 'tax_country_id',
@@ -148,6 +149,7 @@ final class PatientResource extends Resource
                         'oninput' => self::getTaxIdOnInput(countryId: $get('tax_country_id')),
                     ],
                     isAscii: true,
+                    isMinLengthEqualToMaxLength: true,
                     label: 'NIF',
                     maxLength: fn (Get $get): int => self::getTaxIdMaxLength($get('tax_country_id')),
                     isRequired: false,

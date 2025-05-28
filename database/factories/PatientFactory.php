@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Clinic;
+use App\Models\Country;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,6 +28,8 @@ final class PatientFactory extends Factory
             'full_name' => $fullName,
             'full_name_normalized' => normalize_name($fullName),
             'mobile_phone' => fake()->e164PhoneNumber(),
+            'tax_country_id' => $this->getPortugalTaxCountryId(),
+            'tax_id' => fake()->taxpayerIdentificationNumber(),
         ];
     }
 
@@ -39,6 +42,19 @@ final class PatientFactory extends Factory
     {
         return Clinic::factory()
             ->create()
+            ->id;
+    }
+
+    /**
+     * Get the ID of the Portugal tax country.
+     *
+     * @return string The ID of the country with code 'PT'.
+     */
+    private function getPortugalTaxCountryId(): string
+    {
+        return Country::query()
+            ->where('code', 'PT')
+            ->first()
             ->id;
     }
 }

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Clinic;
+use App\Models\Patient;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
@@ -67,6 +68,16 @@ function createClinic(?string $name = null): Clinic
     return Clinic::factory()->create([
         'name' => $name,
     ]);
+}
+
+/**
+ * Creates and persists a new Patient instance using the factory.
+ *
+ * @return Patient The newly created Patient model instance.
+ */
+function createPatient(): Patient
+{
+    return Patient::factory()->create();
 }
 
 /**
