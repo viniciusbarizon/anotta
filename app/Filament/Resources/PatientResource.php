@@ -127,8 +127,7 @@ final class PatientResource extends Resource
                     ->label(__('Telemóvel'))
                     ->locale('pt')
                     ->required()
-                    ->strictMode()
-                    ->regex('/^\d+$/'),
+                    ->strictMode(),
 
                 ElementPresets::select(
                     id: 'tax_country_id',

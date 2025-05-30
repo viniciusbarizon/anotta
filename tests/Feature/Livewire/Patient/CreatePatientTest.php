@@ -175,13 +175,6 @@ describe('user not super admin', function (): void {
             );
         });
 
-        it('validates the mobile phone with invalid format', function (): void {
-            assertHasFormErrors(
-                errors: ['mobile_phone' => 'regex'],
-                patient: getPatient(['mobile_phone' => fake()->word()])
-            );
-        });
-
         it('validates the tax id with invalid format', function (): void {
             assertHasFormErrors(
                 errors: ['tax_id' => 'regex'],
