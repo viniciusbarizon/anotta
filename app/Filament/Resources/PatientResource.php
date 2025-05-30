@@ -99,6 +99,18 @@ final class PatientResource extends Resource
                         }
 
                         return static function (string $attribute, string $fullName, Closure $fail) use ($get): void {
+                            /** @phpstan-assert string $get('birth_date') */
+                            assert(is_string($get('birth_date')));
+
+                            /** @phpstan-assert string $get('clinic_id') */
+                            assert(is_string($get('clinic_id')));
+
+                            /** @phpstan-assert string $get('id') */
+                            assert(is_string($get('id')));
+
+                            /** @phpstan-assert string $get('mobile_phone') */
+                            assert(is_string($get('mobile_phone')));
+
                             $exists = new AlreadyExistsAction(
                                 birthDate: $get('birth_date'),
                                 clinicId: $get('clinic_id'),
