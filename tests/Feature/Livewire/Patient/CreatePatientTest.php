@@ -85,56 +85,56 @@ describe('user not super admin', function (): void {
             );
         });
 
-        it('validates the clinic as required', function (): void {
+        it('requires a clinic to pass validation', function (): void {
             assertHasFormErrors(
                 errors: ['clinic_id' => 'required'],
                 patient: getPatient(['clinic_id' => null])
             );
         });
 
-        it('validates the full name as required', function (): void {
+        it('requires the full name to pass validation', function (): void {
             assertHasFormErrors(
                 errors: ['full_name' => 'required'],
                 patient: getPatient(['full_name' => null])
             );
         });
 
-        it('validates the birth date as required', function (): void {
+        it('requires the birth date to pass validation', function (): void {
             assertHasFormErrors(
                 errors: ['birth_date' => 'required'],
                 patient: getPatient(['birth_date' => null])
             );
         });
 
-        it('validates the mobile phone as required', function (): void {
+        it('requires the mobile phone to pass validation', function (): void {
             assertHasFormErrors(
                 errors: ['mobile_phone' => 'required'],
                 patient: getPatient(['mobile_phone' => null])
             );
         });
 
-        it('validates the tax country as required if tax number is provided', function (): void {
+        it('requires the tax country if a tax number is provided', function (): void {
             assertHasFormErrors(
                 errors: ['tax_country_id' => 'required_with'],
                 patient: getPatient(['tax_country_id' => null])
             );
         });
 
-        it('validates the taxpayer identification number as required if tax country is provided', function (): void {
+        it('requires the taxpayer identification number if the tax country is present', function (): void {
             assertHasFormErrors(
                 errors: ['tax_id' => 'required_with'],
                 patient: getPatient(['tax_id' => null])
             );
         });
 
-        it('validates clinic as invalid', function (): void {
+        it('requires the clinic to be valid', function (): void {
             assertHasFormErrors(
                 errors: ['clinic_id' => 'exists'],
                 patient: getPatient(['clinic_id' => fake()->uuid()])
             );
         });
 
-        it('validates clinic as not associated with the user', function (): void {
+        it('requires the clinic to be associated with the user logged', function (): void {
             $clinic = createClinic();
 
             login();
@@ -145,14 +145,14 @@ describe('user not super admin', function (): void {
             );
         });
 
-        it('validates full name as too short', function (): void {
+        it('requires the full name to not have only the first name', function (): void {
             assertHasFormErrors(
                 errors: ['full_name' => 'regex'],
                 patient: getPatient(['full_name' => fake()->firstName()])
             );
         });
 
-        it('validates as duplicated', function (): void {
+        it('requires to be unique (not duplicated)', function (): void {
             $patient = createPatient();
 
             assertHasFormErrors(
@@ -161,49 +161,49 @@ describe('user not super admin', function (): void {
             );
         });
 
-        it('validates the birth date with date greater than today', function (): void {
+        it('requires the birth date to be lower or equal than today', function (): void {
             assertHasFormErrors(
                 errors: ['birth_date'],
                 patient: getPatient(['birth_date' => now()->addDay()->format('Y-m-d')])
             );
         });
 
-        it('validates the birth date with date before 123 years ago', function (): void {
+        it('requires the birth date to not be older than 123 years ago', function (): void {
             assertHasFormErrors(
                 errors: ['birth_date'],
                 patient: getPatient(['birth_date' => now()->subYears(124)->format('Y-m-d')])
             );
         });
 
-        it('validates the mobile phone with invalid format', function (): void {
+        it('requires the mobile phone to be in the E.164 format', function (): void {
             assertHasFormErrors(
                 errors: ['mobile_phone'],
-                patient: getPatient(['mobile_phone' => fake()->word()])
+                patient: getPatient(['mobile_phone' => fake()->phoneNumber()])
             );
         });
 
-        it('validates the tax id with invalid format', function (): void {
+        it('requires the tax id to be only with numbers', function (): void {
             assertHasFormErrors(
                 errors: ['tax_id' => 'regex'],
                 patient: getPatient(['tax_id' => fake()->word()])
             );
         });
 
-        it('validates the tax id greater than allowed', function (): void {
+        it('requires the tax id to be no longer than 9 characters', function (): void {
             assertHasFormErrors(
                 errors: ['tax_id' => 'max'],
                 patient: getPatient(['tax_id' => '00'.fake()->randomNumber(8, true)])
             );
         });
 
-        it('validates the tax id less than allowed', function (): void {
+        it('requires the tax id to be at least 9 characters', function (): void {
             assertHasFormErrors(
                 errors: ['tax_id' => 'min'],
                 patient: getPatient(['tax_id' => fake()->randomNumber(8, true)])
             );
         });
 
-        it('validates the full name greater than allowed', function (): void {
+        it('requires the full name to have a maximum of 255 characters', function (): void {
             assertHasFormErrors(
                 errors: ['full_name' => 'max'],
                 patient: getPatient(['full_name' => str()->random(256)])
