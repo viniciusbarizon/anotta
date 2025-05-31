@@ -70,9 +70,7 @@ describe('user not super admin', function (): void {
      * - Sort the table by the specified date column in ascending order and assert that the records are displayed in the correct order.
      * - Sort the table by the specified date column in descending order and assert that the records are displayed in the correct order.
      *
-     * @param string $column The name of the date column to sort by.
-     *
-     * @return void
+     * @param  string  $column  The name of the date column to sort by.
      */
     function assertSortDate(string $column): void
     {
