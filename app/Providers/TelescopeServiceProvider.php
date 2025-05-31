@@ -9,6 +9,7 @@ use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
 use Override;
+use App\Models\User;
 
 final class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {
@@ -58,7 +59,7 @@ final class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
     #[Override]
     protected function gate(): void
     {
-        Gate::define('viewTelescope', fn ($user): bool => in_array($user->email, [
+        Gate::define('viewTelescope', fn (User $user): bool => in_array($user->getAttribute('email'), [
             //
         ]));
     }

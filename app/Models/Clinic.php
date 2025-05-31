@@ -88,8 +88,11 @@ final class Clinic extends Base
     #[Override]
     protected static function booted(): void
     {
-        self::saving(function ($clinic): void {
-            $clinic->name_normalized = normalize_name($clinic->name);
+        self::saving(function (Clinic $clinic): void {
+            /** @var string $name */
+            $name = $clinic->getAttribute('name');
+
+            $clinic->name_normalized = normalize_name($name);
         });
     }
 

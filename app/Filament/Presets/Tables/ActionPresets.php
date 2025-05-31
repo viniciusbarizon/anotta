@@ -11,6 +11,7 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
+use Illuminate\Database\Eloquent\Model;
 
 final class ActionPresets
 {
@@ -44,9 +45,14 @@ final class ActionPresets
     {
         return DeleteAction::make()
             ->modalHeading(
-                fn ($record) => __('Tem a certeza que deseja eliminar :name?', [
-                    'name' => $record->name,
-                ])
+                function (Model $record) {
+                    /** @var string $name */
+                    $name = $record->getAttribute('name');
+
+                    return __('Tem a certeza que deseja eliminar :name?', [
+                        'name' => $name,
+                    ]);
+                }
             )
             ->modalDescription('⚠️ '.__('Esta ação irá ELIMINAR EM CASCATA todos os dados associados.'))
             ->modalSubmitActionLabel(__('Sim, apagar tudo'));

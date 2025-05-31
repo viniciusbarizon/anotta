@@ -8,6 +8,7 @@ use Closure;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 
 final class ElementPresets
@@ -65,6 +66,8 @@ final class ElementPresets
         ?array $rules = null,
     ): Select {
         $label = __($label);
+
+        /** @var Collection $options */
         $options = $model::pluck($columnValue, 'id');
 
         $select = Select::make($id)
