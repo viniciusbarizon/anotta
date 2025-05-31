@@ -39,6 +39,7 @@ jobs:
       run: |
           echo "APP_KEY=base64:$(php -r 'echo base64_encode(random_bytes(32));')" > .env.testing
           echo "APP_FAKER_LOCALE=pt_PT" >> .env.testing
+          echo "APP_LOCALE=pt_PT" >> .env.testing
           echo "DB_CONNECTION=pgsql" >> .env.testing
           echo "DB_HOST=127.0.0.1" >> .env.testing
           echo "DB_PORT=5432" >> .env.testing
