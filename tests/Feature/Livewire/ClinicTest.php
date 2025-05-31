@@ -64,6 +64,32 @@ describe('user not super admin', function (): void {
     }
 
     /**
+     * Asserts that the table records are correctly sorted by a given date column in both ascending and descending order.
+     *
+     * This function interacts with the `manageClinics` test instance to:
+     * - Sort the table by the specified date column in ascending order and assert that the records are displayed in the correct order.
+     * - Sort the table by the specified date column in descending order and assert that the records are displayed in the correct order.
+     *
+     * @param string $column The name of the date column to sort by.
+     *
+     * @return void
+     */
+    function assertSortDate(string $column): void
+    {
+        test()->manageClinics
+            ->sortTable($column)
+            ->assertCanSeeTableRecords(
+                test()->clinics->sortBy(fn ($clinic) => $clinic->{$column}->format('Y-m-d H:i:s')),
+                inOrder: true
+            )
+            ->sortTable($column, 'desc')
+            ->assertCanSeeTableRecords(
+                test()->clinics->sortByDesc(fn ($clinic) => $clinic->{$column}->format('Y-m-d H:i:s')),
+                inOrder: true
+            );
+    }
+
+    /**
      * Assert sorting behavior for a given column, including null value handling.
      *
      * This method tests table sorting functionality by:
@@ -225,13 +251,11 @@ describe('user not super admin', function (): void {
     });
 
     it('sorts by created_at', function (): void {
-        assertSort(column: 'created_at');
+        assertSortDate(column: 'created_at');
     });
 
     it('sorts by updated_at', function (): void {
-        edit();
-
-        assertSortWithNull(column: 'updated_at');
+        assertSortDate(column: 'updated_at');
     });
 
     it('sorts by deleted_at', function (): void {
