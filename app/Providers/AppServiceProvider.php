@@ -32,9 +32,25 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configureTable();
         $this->setDefaultForDateTime();
         $this->setDefaultsForModels();
         $this->setDefaultsForPasswords();
+    }
+
+    /**
+     * Configures the default settings for all Table instances.
+     *
+     * This method applies a global configuration to the Table component,
+     * setting it to use striped rows by default for improved readability.
+     *
+     * @return void
+     */
+    private function configureTable(): void
+    {
+        Table::configureUsing(function (Table $table): void {
+            $table->striped();
+        });
     }
 
     /**
