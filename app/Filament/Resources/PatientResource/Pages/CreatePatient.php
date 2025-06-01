@@ -13,6 +13,23 @@ final class CreatePatient extends CreateRecord
     protected static string $resource = PatientResource::class;
 
     /**
+     * Returns the URL to redirect to after creating a patient.
+     *
+     * This method retrieves the index URL of the associated resource,
+     * typically used to redirect the user back to the patient list page
+     * after a successful creation.
+     *
+     * @return string The URL to redirect to.
+     */
+    protected function getRedirectUrl(): string
+    {
+        /** @var string $url */
+        $url = $this->getResource()::getUrl('index');
+
+        return $url;
+    }
+
+    /**
      * Mutates the form data before creating a new patient record.
      *
      * This method normalizes the 'full_name' field using the `normalize_name` function

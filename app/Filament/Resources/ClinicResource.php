@@ -133,36 +133,12 @@ final class ClinicResource extends Resource
     #[Override]
     public static function table(Table $table): Table
     {
-        /** @var \App\Models\User $user */
-        $user = auth()->user();
-
         return $table
             ->filters(FilterPresets::filters())
             ->columns([
-                ColumnPresets::text(
-                    isCopyable: true,
-                    isSortable: false,
-                    isVisible: $user->is_super_admin,
-                    name: 'id',
-                    label: 'ID'
-                ),
-
-                ColumnPresets::text(name: 'name'),
-
-                ColumnPresets::dateTime(
-                    name: 'created_at',
-                    label: __('Criado')
-                ),
-
-                ColumnPresets::dateTime(
-                    name: 'updated_at',
-                    label: __('Atualizado')
-                ),
-
-                ColumnPresets::dateTime(
-                    name: 'deleted_at',
-                    label: __('Eliminado')
-                ),
+                ColumnPresets::id(),
+                ColumnPresets::text(column: 'name'),
+                ColumnPresets::createdAt(),
             ])
             ->actions(
                 ActionPresets::actions()

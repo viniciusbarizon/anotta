@@ -238,8 +238,6 @@ describe('user not super admin', function (): void {
             ->assertCanSeeTableRecords($this->clinics)
             ->assertCanRenderTableColumn('name')
             ->assertCanRenderTableColumn('created_at')
-            ->assertCanRenderTableColumn('updated_at')
-            ->assertCanRenderTableColumn('deleted_at')
             ->assertCountTableRecords(10)
             ->assertTableColumnHidden('id');
     });
@@ -250,16 +248,6 @@ describe('user not super admin', function (): void {
 
     it('sorts by created_at', function (): void {
         assertSortDate(column: 'created_at');
-    });
-
-    it('sorts by updated_at', function (): void {
-        assertSortDate(column: 'updated_at');
-    });
-
-    it('sorts by deleted_at', function (): void {
-        delete();
-
-        assertSortWithNull(column: 'deleted_at');
     });
 
     it('searches by name', function (): void {

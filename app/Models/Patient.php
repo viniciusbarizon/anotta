@@ -12,6 +12,8 @@ use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Country;
 
 final class Patient extends Base implements CipherSweetEncrypted
 {
@@ -58,5 +60,45 @@ final class Patient extends Base implements CipherSweetEncrypted
     public function records(): HasMany
     {
         return $this->hasMany(PatientRecord::class);
+    }
+
+    /**
+     * Get the country associated with the patient's tax information.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function taxCountry(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * Get the patient's tax attribute by concatenating the country code and tax ID.
+     *
+     * This accessor returns a string combining the patient's tax country code and their tax ID.
+     * If the tax ID is null, it returns null.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function tax(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes): ?string {
+                if (is_null($attributes['tax_id'])) {
+                    return null;
+                }
+
+                /** @var Country $country */
+                $country = $this->taxCountry;
+
+                /** @var string $countryCode */
+                $countryCode = $country->code;
+
+                /** @var string $taxId */
+                $taxId = $attributes['tax_id'];
+
+                return $countryCode.$taxId;
+            } 
+        );
     }
 }

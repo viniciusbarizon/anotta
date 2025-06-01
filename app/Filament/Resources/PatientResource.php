@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Actions\Patient\AlreadyExistsAction;
+use App\Filament\Presets\Tables\ColumnPresets;
 use App\Filament\Presets\Forms\ElementPresets;
 use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Clinic;
@@ -177,28 +178,34 @@ final class PatientResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('birth_date')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('clinic.name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('tax_country_id')
-                    ->searchable(),
+                ColumnPresets::id(),
+
+                ColumnPresets::text(
+                    column: 'clinic.name',
+                    label: 'Clínica'
+                ),
+
+                ColumnPresets::text(
+                    column: 'full_name',
+                    label: 'Nome Completo'
+                ),
+
+                ColumnPresets::date(
+                    column: 'birth_date',
+                    label: 'Data de Nascimento'
+                ),
+
+                ColumnPresets::text(
+                    column: 'mobile_phone',
+                    label: 'Telemóvel'
+                ),
+
+                ColumnPresets::text(
+                    column: 'tax',
+                    label: 'NIF'
+                ),
+
+                ColumnPresets::createdAt(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
