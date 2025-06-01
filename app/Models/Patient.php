@@ -13,7 +13,10 @@ use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
+use App\Models\Scopes\ClinicUserRelationScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
+#[ScopedBy([ClinicUserRelationScope::class])]
 final class Patient extends Base implements CipherSweetEncrypted
 {
     /** @use HasFactory<PatientFactory> */

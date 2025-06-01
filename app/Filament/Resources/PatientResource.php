@@ -27,6 +27,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rule;
 use Override;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use App\Filament\Presets\Tables\ActionPresets;
+use App\Filament\Presets\Tables\FilterPresets;
+//use Filament\Tables\Columns\Layout\Split;
 
 final class PatientResource extends Resource
 {
@@ -61,6 +64,22 @@ final class PatientResource extends Resource
         return false;
     }
 
+    /**
+     * Defines the form schema for the Patient resource.
+     *
+     * The form includes the following fields:
+     * - clinic_id: Select input for the clinic, with validation based on user permissions.
+     * - full_name: Text input for the patient's full name, requiring at least two words and custom validation to ensure uniqueness within the clinic based on name, birth date, and mobile phone.
+     * - birth_date: Date picker for the patient's date of birth, restricted to a valid age range.
+     * - mobile_phone: Phone input for the patient's mobile number, required and validated in strict international format.
+     * - tax_country_id: Select input for the country where the tax ID was issued, with helper text and dynamic behavior.
+     * - tax_id: Text input for the tax ID, enabled and validated based on the selected country.
+     *
+     * Validation rules and dynamic behaviors are applied to ensure data integrity and a responsive user experience.
+     *
+     * @param Form $form The form instance to configure.
+     * @return Form The configured form instance with the defined schema.
+     */
     #[Override]
     public static function form(Form $form): Form
     {
@@ -173,53 +192,63 @@ final class PatientResource extends Resource
             ]);
     }
 
+    /**
+     * Defines the table configuration for the PatientResource.
+     *
+     * This method sets up the table's actions, bulk actions, columns, and filters.
+     * - Actions and bulk actions are defined using presets from ActionPresets.
+     * - Columns include patient ID, clinic name (conditionally visible if there is more than one clinic),
+     *   full name, birth date, mobile phone, tax number (NIF), and creation date, using ColumnPresets.
+     * - Filters are applied using FilterPresets.
+     *
+     * @param Table $table The Filament Table instance to configure.
+     * @return Table The configured Table instance.
+     */
     #[Override]
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                ColumnPresets::id(),
-
-                ColumnPresets::text(
-                    column: 'clinic.name',
-                    label: 'Clínica'
-                ),
-
-                ColumnPresets::text(
-                    column: 'full_name',
-                    label: 'Nome Completo'
-                ),
-
-                ColumnPresets::date(
-                    column: 'birth_date',
-                    label: 'Data de Nascimento'
-                ),
-
-                ColumnPresets::text(
-                    column: 'mobile_phone',
-                    label: 'Telemóvel'
-                ),
-
-                ColumnPresets::text(
-                    column: 'tax',
-                    label: 'NIF'
-                ),
-
-                ColumnPresets::createdAt(),
-            ])
-            ->filters([
-                Tables\Filters\TrashedFilter::make(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+            ->actions(ActionPresets::actions())
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
-            ]);
+                ActionPresets::bulkActions(),
+            ])
+            ->columns([
+                //Split::make([
+                    ColumnPresets::id(),
+
+                    ColumnPresets::text(
+                        column: 'clinic.name',
+                            label: 'Clínica',
+                            visible: fn(): bool => count(Patient::pluck('clinic_id')->toArray()) > 1
+                    ),
+
+                    ColumnPresets::text(
+                        column: 'full_name',
+                        label: 'Nome Completo'
+                    ),
+
+                    ColumnPresets::date(
+                        column: 'birth_date',
+                        label: 'Data de Nascimento'
+                    ),
+
+                    ColumnPresets::text(
+                        column: 'mobile_phone',
+                        label: 'Telemóvel'
+                    )->icon('fas-mobile'),
+
+                    ColumnPresets::text(
+                        column: 'tax',
+                        label: 'NIF'
+                    ),
+
+                    ColumnPresets::createdAt(),
+                //])->from('md')
+                
+            ])
+            ->filters(
+                filters: FilterPresets::filters()
+            );
     }
 
     /**
@@ -248,9 +277,7 @@ final class PatientResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+            ->withoutGlobalScope(SoftDeletingScope::class);
     }
 
     /**

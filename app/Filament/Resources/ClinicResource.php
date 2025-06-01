@@ -113,38 +113,29 @@ final class ClinicResource extends Resource
         ]);
     }
 
+    
     /**
-     * Configures the table for the ClinicResource.
+     * Defines the table configuration for the Clinic resource in Filament.
      *
-     * @param  Table  $table  The table instance to be configured.
-     * @return Table The configured table instance.
+     * This method sets up the table actions, bulk actions, columns, and filters
+     * using preset configurations for consistency and reusability.
      *
-     * The table includes:
-     * - Filters defined by `FilterPresets::filters()`.
-     * - Columns:
-     *   - A text column for the 'id' field, which is copyable and visible only to super admins.
-     *   - A text column for the 'name' field.
-     *   - A date-time column for the 'created_at' field, labeled as 'Criado'.
-     *   - A date-time column for the 'updated_at' field, labeled as 'Atualizado'.
-     *   - A date-time column for the 'deleted_at' field, labeled as 'Eliminado'.
-     * - Actions defined by `ActionPresets::actions()`.
-     * - Bulk actions defined by `ActionPresets::bulkActions()`.
+     * @param Table $table The Filament Table instance to configure.
+     * @return Table The configured Table instance.
      */
     #[Override]
     public static function table(Table $table): Table
     {
         return $table
-            ->filters(FilterPresets::filters())
+            ->actions(ActionPresets::actions())
+            ->bulkActions([
+                ActionPresets::bulkActions(),
+            ])
             ->columns([
                 ColumnPresets::id(),
                 ColumnPresets::text(column: 'name'),
                 ColumnPresets::createdAt(),
             ])
-            ->actions(
-                ActionPresets::actions()
-            )
-            ->bulkActions([
-                ActionPresets::bulkActions(),
-            ]);
+            ->filters(FilterPresets::filters());
     }
 }

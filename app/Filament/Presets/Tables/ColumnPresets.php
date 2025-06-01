@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Presets\Tables;
 
+use Closure;
 use Filament\Tables\Columns\TextColumn;
 
 final class ColumnPresets
@@ -75,10 +76,10 @@ final class ColumnPresets
             column: 'id',
             isCopyable: true,
             isSortable: false,
-            isVisible: $user->is_super_admin,
             label: 'ID',
-            limit: 7
-        );
+            limit: 7,
+            visible: $user->is_super_admin,
+        )->visibleFrom('md');
     }
 
     /**
@@ -87,7 +88,7 @@ final class ColumnPresets
      * @param  string  $column  The name of the column to display.
      * @param  bool  $isCopyable  Whether the column is copyable.
      * @param  bool  $isSortable  Whether the column is sortable.
-     * @param  bool  $isVisible  Whether the column is visible.
+     * @param  bool|Closure  $visible  Whether the column is visible.
      * @param  string|null  $label  The label for the column, if any.
      * @param  int|null  $limit  The character limit for the text, if any.
      * @return TextColumn The configured TextColumn instance.
@@ -96,13 +97,13 @@ final class ColumnPresets
         string $column,
         bool $isCopyable = false,
         bool $isSortable = true,
-        bool $isVisible = true,
         ?string $label = null,
-        ?int $limit = null
+        ?int $limit = null,
+        bool|Closure $visible = true,
     ): TextColumn {
         $textColumn = TextColumn::make($column)
             ->searchable()
-            ->visible($isVisible);
+            ->visible($visible);
 
         if ($isCopyable) {
             $textColumn->copyable();

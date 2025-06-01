@@ -21,6 +21,7 @@ final class CreatePatient extends CreateRecord
      *
      * @return string The URL to redirect to.
      */
+    #[Override]
     protected function getRedirectUrl(): string
     {
         /** @var string $url */
