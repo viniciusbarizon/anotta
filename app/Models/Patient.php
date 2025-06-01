@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Scopes\ClinicUserRelationScope;
 use Database\Factories\PatientFactory;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,8 +15,6 @@ use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
-use App\Models\Scopes\ClinicUserRelationScope;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
 #[ScopedBy([ClinicUserRelationScope::class])]
 final class Patient extends Base implements CipherSweetEncrypted

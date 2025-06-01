@@ -6,7 +6,9 @@ namespace App\Filament\Resources;
 
 use App\Actions\Patient\AlreadyExistsAction;
 use App\Filament\Presets\Forms\ElementPresets;
+use App\Filament\Presets\Tables\ActionPresets;
 use App\Filament\Presets\Tables\ColumnPresets;
+use App\Filament\Presets\Tables\FilterPresets;
 use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Clinic;
 use App\Models\Country;
@@ -20,16 +22,14 @@ use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rule;
 use Override;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
-use App\Filament\Presets\Tables\ActionPresets;
-use App\Filament\Presets\Tables\FilterPresets;
-//use Filament\Tables\Columns\Layout\Split;
+
+// use Filament\Tables\Columns\Layout\Split;
 
 final class PatientResource extends Resource
 {
@@ -77,7 +77,7 @@ final class PatientResource extends Resource
      *
      * Validation rules and dynamic behaviors are applied to ensure data integrity and a responsive user experience.
      *
-     * @param Form $form The form instance to configure.
+     * @param  Form  $form  The form instance to configure.
      * @return Form The configured form instance with the defined schema.
      */
     #[Override]
@@ -201,7 +201,7 @@ final class PatientResource extends Resource
      *   full name, birth date, mobile phone, tax number (NIF), and creation date, using ColumnPresets.
      * - Filters are applied using FilterPresets.
      *
-     * @param Table $table The Filament Table instance to configure.
+     * @param  Table  $table  The Filament Table instance to configure.
      * @return Table The configured Table instance.
      */
     #[Override]
@@ -213,38 +213,38 @@ final class PatientResource extends Resource
                 ActionPresets::bulkActions(),
             ])
             ->columns([
-                //Split::make([
-                    ColumnPresets::id(),
+                // Split::make([
+                ColumnPresets::id(),
 
-                    ColumnPresets::text(
-                        column: 'clinic.name',
-                            label: 'Clínica',
-                            visible: fn(): bool => count(Patient::pluck('clinic_id')->toArray()) > 1
-                    ),
+                ColumnPresets::text(
+                    column: 'clinic.name',
+                    label: 'Clínica',
+                    visible: fn (): bool => count(Patient::pluck('clinic_id')->toArray()) > 1
+                ),
 
-                    ColumnPresets::text(
-                        column: 'full_name',
-                        label: 'Nome Completo'
-                    ),
+                ColumnPresets::text(
+                    column: 'full_name',
+                    label: 'Nome Completo'
+                ),
 
-                    ColumnPresets::date(
-                        column: 'birth_date',
-                        label: 'Data de Nascimento'
-                    ),
+                ColumnPresets::date(
+                    column: 'birth_date',
+                    label: 'Data de Nascimento'
+                ),
 
-                    ColumnPresets::text(
-                        column: 'mobile_phone',
-                        label: 'Telemóvel'
-                    )->icon('fas-mobile'),
+                ColumnPresets::text(
+                    column: 'mobile_phone',
+                    label: 'Telemóvel'
+                )->icon('fas-mobile'),
 
-                    ColumnPresets::text(
-                        column: 'tax',
-                        label: 'NIF'
-                    ),
+                ColumnPresets::text(
+                    column: 'tax',
+                    label: 'NIF'
+                ),
 
-                    ColumnPresets::createdAt(),
-                //])->from('md')
-                
+                ColumnPresets::createdAt(),
+                // ])->from('md')
+
             ])
             ->filters(
                 filters: FilterPresets::filters()

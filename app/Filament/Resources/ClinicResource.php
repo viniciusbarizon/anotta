@@ -113,14 +113,13 @@ final class ClinicResource extends Resource
         ]);
     }
 
-    
     /**
      * Defines the table configuration for the Clinic resource in Filament.
      *
      * This method sets up the table actions, bulk actions, columns, and filters
      * using preset configurations for consistency and reusability.
      *
-     * @param Table $table The Filament Table instance to configure.
+     * @param  Table  $table  The Filament Table instance to configure.
      * @return Table The configured Table instance.
      */
     #[Override]
