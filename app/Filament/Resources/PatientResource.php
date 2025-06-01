@@ -236,7 +236,7 @@ final class PatientResource extends Resource
                     column: 'mobile_phone',
                     label: 'Telemóvel'
                 ),
-                //>icon('fas-mobile')
+                // >icon('fas-mobile')
 
                 ColumnPresets::text(
                     column: 'tax',
