@@ -24,8 +24,8 @@ final class ColumnPresets
     /**
      * Creates a TextColumn configured to display a date with a tooltip and "since" formatting.
      *
-     * @param string $column The name of the column to display.
-     * @param string $label The label to use for the column.
+     * @param  string  $column  The name of the column to display.
+     * @param  string  $label  The label to use for the column.
      * @return TextColumn The configured TextColumn instance with date tooltip and relative "since" formatting.
      */
     public static function date(string $column, string $label): TextColumn
@@ -34,23 +34,23 @@ final class ColumnPresets
             column: $column,
             label: $label
         )
-        ->dateTooltip()
-        ->since();
+            ->dateTooltip()
+            ->since();
     }
 
     /**
      * Creates a TextColumn configured to display a date and time with a tooltip and "since" formatting.
      *
-     * @param string $column The name of the column to display.
-     * @param string $label The label to use for the column.
+     * @param  string  $column  The name of the column to display.
+     * @param  string  $label  The label to use for the column.
      * @return TextColumn The configured TextColumn instance with date and time tooltip and relative "since" formatting.
      */
     public static function dateTime(string $column, string $label): TextColumn
     {
         return self::text(
-                column: $column,
-                label: $label
-            )
+            column: $column,
+            label: $label
+        )
             ->dateTimeTooltip()
             ->since();
     }
@@ -84,12 +84,12 @@ final class ColumnPresets
     /**
      * Creates a TextColumn with various configuration options.
      *
-     * @param string $column The name of the column to display.
-     * @param bool $isCopyable Whether the column is copyable.
-     * @param bool $isSortable Whether the column is sortable.
-     * @param bool $isVisible Whether the column is visible.
-     * @param string|null $label The label for the column, if any.
-     * @param int|null $limit The character limit for the text, if any.
+     * @param  string  $column  The name of the column to display.
+     * @param  bool  $isCopyable  Whether the column is copyable.
+     * @param  bool  $isSortable  Whether the column is sortable.
+     * @param  bool  $isVisible  Whether the column is visible.
+     * @param  string|null  $label  The label for the column, if any.
+     * @param  int|null  $limit  The character limit for the text, if any.
      * @return TextColumn The configured TextColumn instance.
      */
     public static function text(

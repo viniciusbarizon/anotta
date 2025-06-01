@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Database\Factories\PatientFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,8 +13,6 @@ use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Models\Country;
 
 final class Patient extends Base implements CipherSweetEncrypted
 {
@@ -64,8 +63,6 @@ final class Patient extends Base implements CipherSweetEncrypted
 
     /**
      * Get the country associated with the patient's tax information.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function taxCountry(): BelongsTo
     {
@@ -77,8 +74,6 @@ final class Patient extends Base implements CipherSweetEncrypted
      *
      * This accessor returns a string combining the patient's tax country code and their tax ID.
      * If the tax ID is null, it returns null.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     protected function tax(): Attribute
     {
@@ -98,7 +93,7 @@ final class Patient extends Base implements CipherSweetEncrypted
                 $taxId = $attributes['tax_id'];
 
                 return $countryCode.$taxId;
-            } 
+            }
         );
     }
 }
