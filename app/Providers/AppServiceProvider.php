@@ -43,8 +43,6 @@ final class AppServiceProvider extends ServiceProvider
      *
      * This method applies a global configuration to the Table component,
      * setting it to use striped rows by default for improved readability.
-     *
-     * @return void
      */
     private function configureTable(): void
     {
