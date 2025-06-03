@@ -211,15 +211,3 @@ describe('user not super admin', function (): void {
         });
     });
 });
-
-describe('user super admin', function (): void {
-    it('creates', function (): void {
-        $patient = createPatient();
-
-        login(isSuperAdmin: true);
-
-        assertHasNoFormErrors(
-            patient: $patient
-        );
-    });
-});

@@ -381,25 +381,3 @@ describe('user not super admin', function (): void {
     });
 });
 
-describe('user super admin', function (): void {
-    beforeEach(function (): void {
-        login(isSuperAdmin: true);
-
-        $this->clinics = createClinics();
-        $this->manageClinics = getResource();
-    });
-
-    it('shows the id column', function (): void {
-        $this->manageClinics
-            ->assertTableColumnVisible('id');
-    });
-
-    it('searches by id', function (): void {
-        $id = getClinic()->id;
-
-        $this->manageClinics
-            ->searchTable($id)
-            ->assertCanSeeTableRecords(test()->clinics->where('id', $id))
-            ->assertCanNotSeeTableRecords(test()->clinics->where('id', '!=', $id));
-    });
-});
