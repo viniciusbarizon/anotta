@@ -14,21 +14,16 @@ final class UserRelationScope implements Scope
     /**
      * Apply the scope to a given Eloquent query builder.
      *
-     * This scope restricts the query results based on the authenticated user's role.
-     * If the authenticated user is a super admin, no restrictions are applied.
-     * Otherwise, the query is filtered to include only records related to the authenticated user.
+     * This method applies a scope to the query builder to filter results based on
+     * the authenticated user's relation to the 'users' table.
      *
-     * @param  Builder  $builder  The query builder instance.
-     * @param  Model  $model  The Eloquent model instance.
+     * @param Builder $builder The Eloquent query builder instance.
+     * @param Model $model The model being queried.
      */
     public function apply(Builder $builder, Model $model): void
     {
         /** @var User $user */
         $user = auth()->user();
-
-        if ($user->is_super_admin) {
-            return;
-        }
 
         $builder->whereRelation('users', 'user_id', $user->id);
     }

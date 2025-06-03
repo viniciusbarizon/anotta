@@ -78,7 +78,7 @@ final class ColumnPresets
             isSortable: false,
             label: 'ID',
             limit: 7,
-            visible: $user->is_super_admin,
+            visible: $user->isImpersonated(),
         )->visibleFrom('md');
     }
 
