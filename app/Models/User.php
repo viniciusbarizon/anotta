@@ -42,6 +42,28 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
         'password',
         'remember_token',
     ];
+    
+    /**
+     * Determine if the user can be impersonated.
+     *
+     * A user can be impersonated if they are not a super admin.
+     *
+     * @return bool True if the user can be impersonated, false otherwise.
+     */
+    public function canBeImpersonated(): bool
+    {
+        return $this->is_super_admin === false;
+    }
+
+    /**
+     * Determine if the user has permission to impersonate other users.
+     *
+     * @return bool True if the user is a super admin and can impersonate others, false otherwise.
+     */
+    public function canImpersonate(): bool
+    {
+        return $this->is_super_admin;
+    }
 
     /**
      * Get the clinics associated with the user.
@@ -75,16 +97,22 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
         return true;
     }
 
+    
     /**
-     * Get the attributes that should be cast.
+     * Get the attributes that should be cast to native types.
      *
-     * @return array<string, string>
+     * @return array<string, string> The array of attribute casts.
+     *
+     * - 'email_verified_at': Casts to a datetime instance.
+     * - 'password': Casts to a hashed value.
+     * - 'is_super_admin': Casts to a boolean value.
      */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_super_admin' => 'boolean',
         ];
     }
 
