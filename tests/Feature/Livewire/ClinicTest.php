@@ -380,4 +380,3 @@ describe('user not super admin', function (): void {
         }
     });
 });
-
