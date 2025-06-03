@@ -23,9 +23,8 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
-    use Notifiable;
-
     use Impersonate;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.

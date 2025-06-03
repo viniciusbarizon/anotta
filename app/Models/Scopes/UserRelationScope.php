@@ -17,8 +17,8 @@ final class UserRelationScope implements Scope
      * This method applies a scope to the query builder to filter results based on
      * the authenticated user's relation to the 'users' table.
      *
-     * @param Builder $builder The Eloquent query builder instance.
-     * @param Model $model The model being queried.
+     * @param  Builder  $builder  The Eloquent query builder instance.
+     * @param  Model  $model  The model being queried.
      */
     public function apply(Builder $builder, Model $model): void
     {
