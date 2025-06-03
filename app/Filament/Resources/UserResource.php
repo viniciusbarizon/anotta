@@ -13,6 +13,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Override;
 use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
 final class UserResource extends Resource
@@ -29,7 +30,7 @@ final class UserResource extends Resource
      * This method removes the global SoftDeletingScope from the query,
      * allowing retrieval of both soft-deleted and non-deleted records.
      */
-    #[\Override]
+    #[Override]
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -41,7 +42,7 @@ final class UserResource extends Resource
      *
      * @return array<string, PageRegistration> An associative array mapping page identifiers to their corresponding route definitions.
      */
-    #[\Override]
+    #[Override]
     public static function getPages(): array
     {
         return [
@@ -52,17 +53,17 @@ final class UserResource extends Resource
     /**
      * Defines the table configuration for the User resource in Filament.
      *
-     * @param Table $table The Filament Table instance to configure.
+     * @param  Table  $table  The Filament Table instance to configure.
      * @return Table The configured Table instance with columns:
-     *   - ID
-     *   - Name (text)
-     *   - Email (text)
-     *   - Email Verified At (date, labeled "E-mail Verificado")
-     *   - Super Admin (icon boolean)
-     *   - Created At (date)
-     *   - Updated At (dateTime, labeled "Atualizado")
+     *               - ID
+     *               - Name (text)
+     *               - Email (text)
+     *               - Email Verified At (date, labeled "E-mail Verificado")
+     *               - Super Admin (icon boolean)
+     *               - Created At (date)
+     *               - Updated At (dateTime, labeled "Atualizado")
      */
-    #[\Override]
+    #[Override]
     public static function table(Table $table): Table
     {
         return $table

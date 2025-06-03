@@ -42,7 +42,7 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
         'password',
         'remember_token',
     ];
-    
+
     /**
      * Determine if the user can be impersonated.
      *
@@ -97,7 +97,6 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
         return true;
     }
 
-    
     /**
      * Get the attributes that should be cast to native types.
      *

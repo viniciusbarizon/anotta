@@ -6,13 +6,13 @@ namespace App\Policies;
 
 use App\Models\User;
 
-class UserPolicy
+final class UserPolicy
 {
     /**
      * Determine whether the given user can view any user records.
      *
-     * @param  \App\Models\User  $user  The user making the request.
-     * @return bool  True if the user is a super admin, false otherwise.
+     * @param  User  $user  The user making the request.
+     * @return bool True if the user is a super admin, false otherwise.
      */
     public function viewAny(User $user): bool
     {
