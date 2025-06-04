@@ -15,8 +15,6 @@ use Livewire\Features\SupportTesting\Testable;
 use function Pest\Livewire\livewire;
 
 beforeEach(function (): void {
-    login();
-
     $this->clinics = createClinics();
     $this->manageClinics = getResource();
 });

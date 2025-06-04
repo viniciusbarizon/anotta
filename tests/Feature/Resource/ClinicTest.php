@@ -9,13 +9,13 @@ beforeEach(function (): void {
 });
 
 it('renders the index page', function (): void {
-    login();
-
     $this->get($this->url)
         ->assertOk();
 });
 
 it('redirects to login page if not logged', function (): void {
+    logout();
+
     $this->get($this->url)
         ->assertFound();
 });

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Actions\Patient\AlreadyExistsAction;
-use App\Models\Patient;
 
 beforeEach(function (): void {
     login();

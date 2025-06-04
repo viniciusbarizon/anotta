@@ -21,6 +21,9 @@ use function Pest\Laravel\actingAs;
 
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->beforeEach(function (): void {
+        login();
+    })
     ->in('Feature');
 
 pest()->extend(Tests\TestCase::class)
@@ -117,4 +120,17 @@ function login(bool $isSuperAdmin = false): void
 
     /** @var Illuminate\Contracts\Auth\Authenticatable $user */
     actingAs($user);
+}
+
+/**
+ * Logs out the currently authenticated user from the default authentication guard.
+ *
+ * This function calls the logout method on the default authentication guard,
+ * effectively ending the user's session.
+ *
+ * @return void
+ */
+function logout(): void
+{
+    auth()->guard()->logout();
 }

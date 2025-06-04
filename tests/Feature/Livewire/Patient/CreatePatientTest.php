@@ -8,10 +8,6 @@ use Filament\Notifications\Notification;
 
 use function Pest\Livewire\livewire;
 
-beforeEach(function (): void {
-    login();
-});
-
 /**
  * Asserts that the given form submission for creating a patient results in the specified validation errors.
  *
@@ -135,6 +131,7 @@ it('requires the clinic to be valid', function (): void {
 it('requires the clinic to be associated with the user logged', function (): void {
     $clinic = createClinic();
 
+    logout();
     login();
 
     assertHasFormErrors(

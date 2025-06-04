@@ -15,10 +15,6 @@ function getIndexUrl(): string
 }
 
 describe('logged', function (): void {
-    beforeEach(function (): void {
-        login();
-    });
-
     /**
      * Returns the URL for creating a new patient resource.
      *
@@ -49,6 +45,8 @@ describe('logged', function (): void {
 
 describe('not logged', function (): void {
     it('redirects to login page if not logged', function (): void {
+        logout();
+
         $this->get(getIndexUrl())
             ->assertFound();
     });
