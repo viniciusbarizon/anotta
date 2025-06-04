@@ -212,7 +212,6 @@ final class PatientResource extends Resource
                 ActionPresets::bulkActions(),
             ])
             ->columns([
-                // Split::make([
                 ColumnPresets::id(),
 
                 ColumnPresets::text(
@@ -235,7 +234,6 @@ final class PatientResource extends Resource
                     column: 'mobile_phone',
                     label: 'Telemóvel'
                 ),
-                // >icon('fas-mobile')
 
                 ColumnPresets::text(
                     column: 'tax',
@@ -243,8 +241,6 @@ final class PatientResource extends Resource
                 ),
 
                 ColumnPresets::createdAt(),
-                // ])->from('md')
-
             ])
             ->filters(
                 filters: FilterPresets::filters()
