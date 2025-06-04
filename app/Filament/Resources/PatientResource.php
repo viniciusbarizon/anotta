@@ -26,10 +26,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
 use Override;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
-
-// use Filament\Tables\Columns\Layout\Split;
 
 final class PatientResource extends Resource
 {
@@ -91,13 +90,13 @@ final class PatientResource extends Resource
                     label: 'Clínica',
                     model: Clinic::class,
                     rules: [
-                        function () {
+                        /**
+                         * Returns a validation rule that checks if a clinic ID exists in the 'clinics' table
+                         * and is associated with the currently authenticated user.
+                         */
+                        function (): Exists {
                             /** @var User $user */
                             $user = auth()->user();
-
-                            if ($user->is_super_admin === true) {
-                                return Rule::exists('clinics', 'id');
-                            }
 
                             return Rule::exists('clinics', 'id')
                                 ->whereIn('id', $user->clinics->pluck('id')->toArray());
