@@ -127,8 +127,6 @@ function login(bool $isSuperAdmin = false): void
  *
  * This function calls the logout method on the default authentication guard,
  * effectively ending the user's session.
- *
- * @return void
  */
 function logout(): void
 {
