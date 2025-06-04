@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Presets\Tables;
 
+use App\Models\User;
 use Closure;
 use Filament\Tables\Columns\TextColumn;
 
@@ -69,7 +70,7 @@ final class ColumnPresets
      */
     public static function id(): TextColumn
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = auth()->user();
 
         return self::text(
