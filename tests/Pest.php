@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/Pest/Helpers/auth.php';
+require __DIR__.'/Pest/Helpers/auth.php';
 
 use App\Models\Clinic;
 use App\Models\Patient;
@@ -55,17 +55,14 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
-
 /**
  * Asserts that a table can be sorted by a given column in both ascending and descending order,
  * and that the records are displayed in the correct order.
  *
- * @param Collection $collection The collection of records to be sorted and asserted.
- * @param string $column The column name to sort by.
- * @param Testable $page The page object that provides table sorting and assertion methods.
- * @param int $flag The sorting flag to use (default is SORT_REGULAR).
- *
- * @return void
+ * @param  Collection  $collection  The collection of records to be sorted and asserted.
+ * @param  string  $column  The column name to sort by.
+ * @param  Testable  $page  The page object that provides table sorting and assertion methods.
+ * @param  int  $flag  The sorting flag to use (default is SORT_REGULAR).
  */
 function assertSort(
     Collection $collection,
@@ -73,8 +70,7 @@ function assertSort(
     Testable $page,
     int $flag = SORT_REGULAR,
     ?array $sortColumns = null
-): void
-{
+): void {
     $page->sortTable($column)
         ->assertCanSeeTableRecords($collection->sortBy($sortColumns ?? $column, $flag), inOrder: true)
         ->sortTable($column, 'desc')
@@ -85,11 +81,9 @@ function assertSort(
  * Asserts that a table can be sorted by a date column in both ascending and descending order,
  * and that the records are displayed in the correct order based on the formatted date.
  *
- * @param Collection $collection The collection of records to be sorted and asserted.
- * @param string $column The date column name to sort by.
- * @param Testable $page The page object that provides table sorting and assertion methods.
- *
- * @return void
+ * @param  Collection  $collection  The collection of records to be sorted and asserted.
+ * @param  string  $column  The date column name to sort by.
+ * @param  Testable  $page  The page object that provides table sorting and assertion methods.
  */
 function assertSortDate(Collection $collection, string $column, Testable $page): void
 {
