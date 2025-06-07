@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
+require __DIR__ . '/Pest/Helpers/auth.php';
+
 use App\Models\Clinic;
 use App\Models\Patient;
-use App\Models\User;
-
-use function Pest\Laravel\actingAs;
+use Illuminate\Support\Collection;
+use Livewire\Features\SupportTesting\Testable;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,56 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
+
+/**
+ * Asserts that a table can be sorted by a given column in both ascending and descending order,
+ * and that the records are displayed in the correct order.
+ *
+ * @param Collection $collection The collection of records to be sorted and asserted.
+ * @param string $column The column name to sort by.
+ * @param Testable $page The page object that provides table sorting and assertion methods.
+ * @param int $flag The sorting flag to use (default is SORT_REGULAR).
+ *
+ * @return void
+ */
+function assertSort(
+    Collection $collection,
+    string $column,
+    Testable $page,
+    int $flag = SORT_REGULAR,
+    ?array $sortColumns = null
+): void
+{
+    $page->sortTable($column)
+        ->assertCanSeeTableRecords($collection->sortBy($sortColumns ?? $column, $flag), inOrder: true)
+        ->sortTable($column, 'desc')
+        ->assertCanSeeTableRecords($collection->sortByDesc($sortColumns ?? $column, $flag), inOrder: true);
+}
+
+/**
+ * Asserts that a table can be sorted by a date column in both ascending and descending order,
+ * and that the records are displayed in the correct order based on the formatted date.
+ *
+ * @param Collection $collection The collection of records to be sorted and asserted.
+ * @param string $column The date column name to sort by.
+ * @param Testable $page The page object that provides table sorting and assertion methods.
+ *
+ * @return void
+ */
+function assertSortDate(Collection $collection, string $column, Testable $page): void
+{
+    $page->sortTable($column)
+        ->assertCanSeeTableRecords(
+            $collection->sortBy(fn ($model) => $model->{$column}->format('Y-m-d H:i:s')),
+            inOrder: true
+        )
+        ->sortTable($column, 'desc')
+        ->assertCanSeeTableRecords(
+            $collection->sortByDesc(fn ($model) => $model->{$column}->format('Y-m-d H:i:s')),
+            inOrder: true
+        );
+}
+
 /**
  * Creates a new Clinic instance using the factory.
  *
@@ -81,54 +132,4 @@ function createClinic(?string $name = null): Clinic
 function createPatient(): Patient
 {
     return Patient::factory()->create();
-}
-
-/**
- * Creates a new User instance using the factory.
- *
- * Optionally marks the user as a super admin or unverified.
- *
- * @param  bool  $isSuperAdmin  Whether to create the user as a super admin. Defaults to false.
- * @param  bool  $unverified  Whether to create the user as unverified. Defaults to false.
- * @return User The created User instance.
- */
-function createUser(bool $isSuperAdmin = false, bool $unverified = false): User
-{
-    $user = User::factory();
-
-    if ($isSuperAdmin) {
-        $user = $user->superAdmin();
-    }
-
-    if ($unverified) {
-        $user = $user->unverified();
-    }
-
-    return $user->create();
-}
-
-/**
- * Creates a new User instance using the factory and logs in the user.
- *
- * Optionally marks the user as a super admin if the $isSuperAdmin parameter is true.
- *
- * @param  bool  $isSuperAdmin  Whether to create the user as a super admin. Defaults to false.
- */
-function login(bool $isSuperAdmin = false): void
-{
-    $user = createUser(isSuperAdmin: $isSuperAdmin);
-
-    /** @var Illuminate\Contracts\Auth\Authenticatable $user */
-    actingAs($user);
-}
-
-/**
- * Logs out the currently authenticated user from the default authentication guard.
- *
- * This function calls the logout method on the default authentication guard,
- * effectively ending the user's session.
- */
-function logout(): void
-{
-    auth()->guard()->logout();
 }

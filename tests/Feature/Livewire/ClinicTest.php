@@ -45,49 +45,6 @@ function getResource(): Testable
 
 describe('not impersonated', function (): void {
     /**
-     * Asserts that the clinics table can be sorted by the specified column in both ascending and descending order.
-     *
-     * This method interacts with the table sorting functionality, first sorting by the given column in ascending order
-     * and asserting that the records are displayed in the correct order. It then sorts by the same column in descending
-     * order and asserts the records are displayed accordingly.
-     *
-     * @param  string  $column  The name of the column to sort by.
-     * @param  int  $flag  Optional. The sorting flag to use (default is SORT_REGULAR).
-     */
-    function assertSort(string $column, int $flag = SORT_REGULAR): void
-    {
-        test()->manageClinics
-            ->sortTable($column)
-            ->assertCanSeeTableRecords(test()->clinics->sortBy($column, $flag), inOrder: true)
-            ->sortTable($column, 'desc')
-            ->assertCanSeeTableRecords(test()->clinics->sortByDesc($column, $flag), inOrder: true);
-    }
-
-    /**
-     * Asserts that the table records are correctly sorted by a given date column in both ascending and descending order.
-     *
-     * This function interacts with the `manageClinics` test instance to:
-     * - Sort the table by the specified date column in ascending order and assert that the records are displayed in the correct order.
-     * - Sort the table by the specified date column in descending order and assert that the records are displayed in the correct order.
-     *
-     * @param  string  $column  The name of the date column to sort by.
-     */
-    function assertSortDate(string $column): void
-    {
-        test()->manageClinics
-            ->sortTable($column)
-            ->assertCanSeeTableRecords(
-                test()->clinics->sortBy(fn ($clinic) => $clinic->{$column}->format('Y-m-d H:i:s')),
-                inOrder: true
-            )
-            ->sortTable($column, 'desc')
-            ->assertCanSeeTableRecords(
-                test()->clinics->sortByDesc(fn ($clinic) => $clinic->{$column}->format('Y-m-d H:i:s')),
-                inOrder: true
-            );
-    }
-
-    /**
      * Assert sorting behavior for a given column, including null value handling.
      *
      * This method tests table sorting functionality by:
@@ -243,11 +200,20 @@ describe('not impersonated', function (): void {
     });
 
     it('sorts by name', function (): void {
-        assertSort(column: 'name', flag: SORT_LOCALE_STRING);
+        assertSort(
+            collection: test()->clinics,
+            column: 'name',
+            flag: SORT_LOCALE_STRING,
+            page: $this->manageClinics
+        );
     });
 
     it('sorts by created_at', function (): void {
-        assertSortDate(column: 'created_at');
+        assertSortDate(
+            collection: test()->clinics,
+            column: 'created_at',
+            page: $this->manageClinics
+        );
     });
 
     it('searches by name', function (): void {

@@ -232,11 +232,13 @@ final class PatientResource extends Resource
 
                 ColumnPresets::text(
                     column: 'mobile_phone',
+                    isSortable: false,
                     label: 'Telemóvel'
                 ),
 
                 ColumnPresets::text(
                     column: 'tax',
+                    isSortable: false,
                     label: 'NIF'
                 ),
 
