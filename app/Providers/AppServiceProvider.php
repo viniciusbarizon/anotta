@@ -22,13 +22,12 @@ final class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstraps application services.
+     * Bootstrap any application services.
      *
-     * - Sets the default date and time display format for tables to 'd/m/Y H:i'.
-     * - Configures the default password validation rules:
-     *   - Minimum length of 12 characters.
-     *   - Must include letters, mixed case, numbers, symbols, and be uncompromised.
-     * - Enables automatic eager loading of relationships for Eloquent models.
+     * This method is called after all service providers have been registered.
+     * It is used to configure global settings for the application, such as
+     * table configurations, default date formats, model behaviors, and password
+     * validation rules.
      */
     public function boot(): void
     {

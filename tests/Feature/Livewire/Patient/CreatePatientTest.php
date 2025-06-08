@@ -198,9 +198,9 @@ it('requires the tax id to be at least 9 characters', function (): void {
     );
 });
 
-it('requires the full name to have a maximum of 255 characters', function (): void {
+it('requires the full name to have a maximum of 150 characters', function (): void {
     assertHasFormErrors(
         errors: ['full_name' => 'max'],
-        patient: getPatient(['full_name' => str()->random(256)])
+        patient: getPatient(['full_name' => str()->random(151)])
     );
 });

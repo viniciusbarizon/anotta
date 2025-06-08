@@ -9,14 +9,13 @@ use App\Models\User;
 final class UserPolicy
 {
     /**
-     * Determine whether the given user can view any user records.
+     * Determine whether the user can view any resources.
      *
-     * @param  User  $user  The user making the request.
-     * @return bool True if the user is a super admin, false otherwise.
+     * @return bool Always returns true, allowing access to view any resources.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
     {
-        return $user->is_super_admin;
+        return true;
     }
 
     /**
@@ -42,11 +41,13 @@ final class UserPolicy
     /**
      * Determine whether the user can update the resource.
      *
-     * @return bool Always returns false, denying update permission.
+     * @param  User  $user  The user attempting to update the model.
+     * @param  User  $model  The user model being updated.
+     * @return bool True if the user is updating their own profile, false otherwise.
      */
-    public function update(): bool
+    public function update(User $user, User $model): bool
     {
-        return false;
+        return $user->id === $model->id;
     }
 
     /**

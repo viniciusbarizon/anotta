@@ -25,6 +25,20 @@ final class UserResource extends Resource
     protected static ?int $navigationSort = 110;
 
     /**
+     * Determine whether any patient resources can be viewed by the current user.
+     *
+     * @return bool Returns true if the authenticated user is a super admin; otherwise, false.
+     */
+    public static function canViewAny(): bool
+    {
+        if (is_null(auth()->user())) {
+            return false;
+        }
+
+        return auth()->user()->is_super_admin;
+    }
+
+    /**
      * Overrides the default Eloquent query for the resource.
      *
      * This method removes the global SoftDeletingScope from the query,

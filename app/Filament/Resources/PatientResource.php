@@ -106,7 +106,7 @@ final class PatientResource extends Resource
                 ElementPresets::textInput(
                     id: 'full_name',
                     label: 'Nome Completo',
-                    maxLength: 255,
+                    maxLength: 150,
                     rules: ['regex:/^\s*\S+\s+\S+.*$/'],
                     validationMessages: [
                         'regex' => 'O campo ":attribute" deve conter o primeiro nome e o apelido do utente.',
@@ -227,6 +227,7 @@ final class PatientResource extends Resource
 
                 ColumnPresets::date(
                     column: 'birth_date',
+                    isSortable: false,
                     label: 'Data de Nascimento'
                 ),
 
@@ -239,7 +240,8 @@ final class PatientResource extends Resource
                 ColumnPresets::text(
                     column: 'tax',
                     isSortable: false,
-                    label: 'NIF'
+                    label: 'NIF',
+                    searchable: ['tax_country_id', 'tax_id']
                 ),
 
                 ColumnPresets::createdAt(),

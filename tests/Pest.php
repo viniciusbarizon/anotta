@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
+require __DIR__.'/Pest/Helpers/assert.php';
 require __DIR__.'/Pest/Helpers/auth.php';
 
 use App\Models\Clinic;
 use App\Models\Patient;
-use Illuminate\Support\Collection;
-use Livewire\Features\SupportTesting\Testable;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,28 +53,6 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-/**
- * Asserts that a table can be sorted by a given column in both ascending and descending order,
- * and that the records are displayed in the correct order.
- *
- * @param  Collection  $collection  The collection of records to be sorted and asserted.
- * @param  string  $column  The column name to sort by.
- * @param  Testable  $page  The page object that provides table sorting and assertion methods.
- * @param  int  $flag  The sorting flag to use (default is SORT_REGULAR).
- */
-function assertSort(
-    Collection $collection,
-    string $column,
-    Testable $page,
-    int $flag = SORT_REGULAR,
-    ?array $sortColumns = null
-): void {
-    $page->sortTable($column)
-        ->assertCanSeeTableRecords($collection->sortBy($sortColumns ?? $column, $flag), inOrder: true)
-        ->sortTable($column, 'desc')
-        ->assertCanSeeTableRecords($collection->sortByDesc($sortColumns ?? $column, $flag), inOrder: true);
-}
 
 /**
  * Creates a new Clinic instance using the factory.

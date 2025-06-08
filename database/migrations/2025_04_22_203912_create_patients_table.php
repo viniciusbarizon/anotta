@@ -32,9 +32,9 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->ulid('id')->primary();
 
-            $table->date('birth_date')->index();
-            $table->text('full_name');
-            $table->text('full_name_normalized');
+            $table->text('birth_date');
+            $table->string('full_name', 150)->index();
+            $table->string('full_name_normalized', 150)->index();
             $table->text('mobile_phone');
             $table->text('tax_id')->nullable();
 

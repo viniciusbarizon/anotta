@@ -24,16 +24,21 @@ final class ColumnPresets
     }
 
     /**
-     * Creates a TextColumn configured to display a date with a tooltip and "since" formatting.
+     * Creates a date column preset for a table.
      *
-     * @param  string  $column  The name of the column to display.
-     * @param  string  $label  The label to use for the column.
-     * @return TextColumn The configured TextColumn instance with date tooltip and relative "since" formatting.
+     * This method returns a `TextColumn` configured to display a date value with a tooltip and a "since" indicator.
+     *
+     * @param string $column      The name of the column to display.
+     * @param string $label       The label to use for the column header.
+     * @param bool   $isSortable  Whether the column should be sortable. Defaults to true.
+     *
+     * @return TextColumn         The configured date column.
      */
-    public static function date(string $column, string $label): TextColumn
+    public static function date(string $column, string $label, bool $isSortable = true): TextColumn
     {
         return self::text(
             column: $column,
+            isSortable: $isSortable,
             label: $label
         )
             ->dateTooltip()
@@ -84,14 +89,15 @@ final class ColumnPresets
     }
 
     /**
-     * Creates a TextColumn with various configuration options.
+     * Creates a TextColumn with customizable options for displaying text data in a table.
      *
      * @param  string  $column  The name of the column to display.
      * @param  bool  $isCopyable  Whether the column is copyable.
      * @param  bool  $isSortable  Whether the column is sortable.
-     * @param  bool|Closure  $visible  Whether the column is visible.
      * @param  string|null  $label  The label for the column, if any.
      * @param  int|null  $limit  The character limit for the text, if any.
+     * @param  array<string>|bool  $searchable  A closure to define custom search behavior, if any.
+     * @param  bool|Closure  $visible  Whether the column is visible, can be a boolean or a closure.
      * @return TextColumn The configured TextColumn instance.
      */
     public static function text(
@@ -100,10 +106,11 @@ final class ColumnPresets
         bool $isSortable = true,
         ?string $label = null,
         ?int $limit = null,
+        array|bool $searchable = true,
         bool|Closure $visible = true,
     ): TextColumn {
         $textColumn = TextColumn::make($column)
-            ->searchable()
+            ->searchable($searchable)
             ->visible($visible);
 
         if ($isCopyable) {

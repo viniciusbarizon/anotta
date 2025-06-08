@@ -208,7 +208,7 @@ describe('not impersonated', function (): void {
         );
     });
 
-    it('sorts by created_at', function (): void {
+    it('sorts by created at', function (): void {
         assertSort(
             collection: test()->clinics,
             column: 'created_at',
@@ -217,18 +217,15 @@ describe('not impersonated', function (): void {
     });
 
     it('searches by name', function (): void {
-        $name = getClinic()->name;
-
-        $this->manageClinics
-            ->searchTable($name)
-            ->assertCanSeeTableRecords(test()->clinics->where('name', $name))
-            ->assertCanNotSeeTableRecords(test()->clinics->where('name', '!=', $name));
+        assertSearch(
+            collection: test()->clinics,
+            column: 'name',
+            page: $this->manageClinics,
+            value: getClinic()->name
+        );
     });
 
-    it('has an deleted filter', function (): void {
-        $this->manageClinics
-            ->assertTableFilterExists('trashed');
-    });
+    it('has an deleted filter', fn () => $this->manageClinics->assertTableFilterExists('trashed'));
 
     it('filters by only active', function (): void {
         delete();

@@ -40,13 +40,19 @@ function getListPatients(): Testable
     return livewire(ListPatients::class);
 }
 
-it('renders the page', fn () => $this->listPatients->assertSuccessful());
+function getPatientInfo(string $column): string
+{
+    return test()->patients
+        ->first()
+        ->{$column};
+}
 
 describe('not impersonated', function (): void {
     it('lists', function (): void {
         $this->listPatients
             ->assertCanSeeTableRecords($this->patients)
             ->assertCanRenderTableColumn('clinic.name')
+            ->assertCanRenderTableColumn('full_name')
             ->assertCanRenderTableColumn('birth_date')
             ->assertCanRenderTableColumn('mobile_phone')
             ->assertCanRenderTableColumn('tax')
@@ -55,18 +61,10 @@ describe('not impersonated', function (): void {
             ->assertTableColumnHidden('id');
     });
 
-    it('sorts by name', function (): void {
+    it('sorts by full name', function (): void {
         assertSort(
             collection: $this->patients,
-            column: 'name',
-            page: $this->listPatients
-        );
-    });
-
-    it('sorts by birth date', function (): void {
-        assertSort(
-            collection: $this->patients,
-            column: 'birth_date',
+            column: 'full_name',
             page: $this->listPatients
         );
     });
@@ -76,6 +74,15 @@ describe('not impersonated', function (): void {
             collection: $this->patients,
             column: 'created_at',
             page: $this->listPatients
+        );
+    });
+
+    it('searches by full name', function (): void {
+        assertSearch(
+            collection: $this->patients,
+            column: 'full_name',
+            page: $this->listPatients,
+            value: getPatientInfo(column: 'full_name')
         );
     });
 });
