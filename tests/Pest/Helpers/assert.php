@@ -12,16 +12,13 @@ use Livewire\Features\SupportTesting\Testable;
  * - Records with a non-null 'deleted_at' field are visible.
  * - Records with a null 'deleted_at' field are not visible.
  *
- * @param Collection $collection The collection of records to check.
- * @param Testable $page The page object used for assertions.
- *
- * @return void
+ * @param  Collection  $collection  The collection of records to check.
+ * @param  Testable  $page  The page object used for assertions.
  */
 function assertOnlyDeleted(
     Collection $collection,
     Testable $page
-): void
-{
+): void {
     $page->filterTable('trashed', 0)
         ->assertCanSeeTableRecords($collection->whereNotNull('deleted_at'))
         ->assertCanNotSeeTableRecords($collection->whereNull('deleted_at'));
@@ -65,8 +62,7 @@ function assertSort(
     Testable $page,
     int $flag = SORT_REGULAR,
     ?array $sortColumns = null
-): void
-{
+): void {
     $page->sortTable($column)
         ->assertCanSeeTableRecords($collection->sortBy($sortColumns ?? $column, $flag), inOrder: true)
         ->sortTable($column, 'desc')

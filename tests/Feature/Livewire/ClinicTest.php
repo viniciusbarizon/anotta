@@ -250,7 +250,6 @@ describe('not impersonated', function (): void {
         );
     });
 
-
     it('filters by only deleted', function (): void {
         assertOnlyDeleted(
             collection: test()->clinics,
