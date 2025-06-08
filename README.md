@@ -20,6 +20,7 @@ Online medical records system for doctors and clinics.
 ```sql
 CREATE USER anotta WITH PASSWORD 'password-here';
 CREATE DATABASE anotta OWNER anotta;
+CREATE DATABASE testing OWNER anotta;
 ALTER USER anotta CREATEDB;
 ```
 3. Locate the `pg_hba.conf` file (right-click on your database instance in DBngin and select **“Show Database Files”**).
