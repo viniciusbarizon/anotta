@@ -22,15 +22,23 @@ beforeEach(function (): void {
 });
 
 /**
- * Create and persist a collection of Clinic models using the factory.
+ * Create a collection of clinics with different creation dates.
  *
- * @return Collection A collection containing 10 Clinic instances.
+ * This function generates 10 clinics, each created on a different day,
+ * starting from today and going back 9 days.
+ *
+ * @return Collection A collection of Clinic models
  */
 function createClinics(): Collection
 {
-    return Clinic::factory()
-        ->count(10)
-        ->create();
+    collect(range(0, 9))->each(function (int $i) {
+        Clinic::factory()
+            ->create([
+                'created_at' => now()->subDays($i),
+            ]);
+    });
+
+    return Clinic::all();
 }
 
 /**

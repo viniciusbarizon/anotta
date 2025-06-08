@@ -22,9 +22,10 @@ beforeEach(function (): void {
 function createPatients(): Collection
 {
     collect(range(0, 4))->each(function (int $i) {
-        Patient::factory()->create([
-            'created_at' => now()->subDays($i),
-        ]);
+        Patient::factory()
+            ->create([
+                'created_at' => now()->subDays($i),
+            ]);
     });
 
     return Patient::all();
