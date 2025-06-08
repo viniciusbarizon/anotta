@@ -32,9 +32,14 @@ beforeEach(function (): void {
 function createClinics(): Collection
 {
     collect(range(0, 9))->each(function (int $i) {
+        $date = now()->subDays($i);
+        $deletedAt = $i === 0 ? $date : null;
+
         Clinic::factory()
             ->create([
-                'created_at' => now()->subDays($i),
+                'created_at' => $date,
+                'updated_at' => $date,
+                'deleted_at' => $deletedAt,
             ]);
     });
 
@@ -245,13 +250,11 @@ describe('not impersonated', function (): void {
         );
     });
 
-    it('filters by only deleted', function (): void {
-        delete();
 
-        filterTrashed(
-            canNotSee: test()->clinics->whereNull('deleted_at'),
-            canSee: test()->clinics->whereNotNull('deleted_at'),
-            value: 0
+    it('filters by only deleted', function (): void {
+        assertOnlyDeleted(
+            collection: test()->clinics,
+            page: $this->manageClinics
         );
     });
 

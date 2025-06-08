@@ -6,6 +6,28 @@ use Illuminate\Support\Collection;
 use Livewire\Features\SupportTesting\Testable;
 
 /**
+ * Asserts that only deleted records are visible in the table.
+ *
+ * Filters the table by the 'trashed' value and checks that:
+ * - Records with a non-null 'deleted_at' field are visible.
+ * - Records with a null 'deleted_at' field are not visible.
+ *
+ * @param Collection $collection The collection of records to check.
+ * @param Testable $page The page object used for assertions.
+ *
+ * @return void
+ */
+function assertOnlyDeleted(
+    Collection $collection,
+    Testable $page
+): void
+{
+    $page->filterTable('trashed', 0)
+        ->assertCanSeeTableRecords($collection->whereNotNull('deleted_at'))
+        ->assertCanNotSeeTableRecords($collection->whereNull('deleted_at'));
+}
+
+/**
  * Asserts that a table search displays only the records matching the given column and value.
  *
  * @param  Collection  $collection  The collection of records to filter and assert against.
@@ -43,7 +65,8 @@ function assertSort(
     Testable $page,
     int $flag = SORT_REGULAR,
     ?array $sortColumns = null
-): void {
+): void
+{
     $page->sortTable($column)
         ->assertCanSeeTableRecords($collection->sortBy($sortColumns ?? $column, $flag), inOrder: true)
         ->sortTable($column, 'desc')

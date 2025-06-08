@@ -23,11 +23,13 @@ function createPatients(): Collection
 {
     collect(range(0, 4))->each(function (int $i) {
         $date = now()->subDays($i);
+        $deletedAt = $i === 0 ? $date : null;
 
         Patient::factory()
             ->create([
                 'created_at' => $date,
                 'updated_at' => $date,
+                'deleted_at' => $deletedAt,
             ]);
     });
 
@@ -160,6 +162,15 @@ describe('not impersonated', function (): void {
             column: 'created_at',
             page: $this->listPatients,
             value: getPatient()->created_at->format('Y-m-d')
+        );
+    });
+
+    it('has an deleted filter', fn () => $this->listPatients->assertTableFilterExists('trashed'));
+
+    it('filters by only deleted', function (): void {
+        assertOnlyDeleted(
+            collection: $this->patients,
+            page: $this->listPatients,
         );
     });
 });
