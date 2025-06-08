@@ -28,11 +28,10 @@ final class ColumnPresets
      *
      * This method returns a `TextColumn` configured to display a date value with a tooltip and a "since" indicator.
      *
-     * @param string $column      The name of the column to display.
-     * @param string $label       The label to use for the column header.
-     * @param bool   $isSortable  Whether the column should be sortable. Defaults to true.
-     *
-     * @return TextColumn         The configured date column.
+     * @param  string  $column  The name of the column to display.
+     * @param  string  $label  The label to use for the column header.
+     * @param  bool  $isSortable  Whether the column should be sortable. Defaults to true.
+     * @return TextColumn The configured date column.
      */
     public static function date(string $column, string $label, bool $isSortable = true): TextColumn
     {
