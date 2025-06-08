@@ -22,9 +22,12 @@ beforeEach(function (): void {
 function createPatients(): Collection
 {
     collect(range(0, 4))->each(function (int $i) {
+        $date = now()->subDays($i);
+
         Patient::factory()
             ->create([
-                'created_at' => now()->subDays($i),
+                'created_at' => $date,
+                'updated_at' => $date,
             ]);
     });
 
@@ -41,11 +44,15 @@ function getListPatients(): Testable
     return livewire(ListPatients::class);
 }
 
-function getPatientInfo(string $column): string
+/**
+ * Retrieves the first Patient instance from the test patients collection.
+ *
+ * @return Patient The first patient from the test data.
+ */
+function getPatient(): Patient
 {
     return test()->patients
-        ->first()
-        ->{$column};
+        ->first();
 }
 
 describe('not impersonated', function (): void {
@@ -62,10 +69,20 @@ describe('not impersonated', function (): void {
             ->assertTableColumnHidden('id');
     });
 
+    it('sorts by clinic', function (): void {
+        assertSort(
+            collection: $this->patients,
+            column: 'clinic.name',
+            flag: SORT_LOCALE_STRING,
+            page: $this->listPatients
+        );
+    });
+
     it('sorts by full name', function (): void {
         assertSort(
             collection: $this->patients,
             column: 'full_name',
+            flag: SORT_LOCALE_STRING,
             page: $this->listPatients
         );
     });
@@ -78,12 +95,57 @@ describe('not impersonated', function (): void {
         );
     });
 
+    /* it('searches by clinic', function (): void {
+        assertSearch(
+            collection: $this->patients,
+            column: 'clinic.name',
+            page: $this->listPatients,
+            value: getPatient()->clinic->name
+        );
+    }); */
+
     it('searches by full name', function (): void {
         assertSearch(
             collection: $this->patients,
             column: 'full_name',
             page: $this->listPatients,
-            value: getPatientInfo(column: 'full_name')
+            value: getPatient()->full_name
+        );
+    });
+
+    it('searches by birth date', function (): void {
+        assertSearch(
+            collection: $this->patients,
+            column: 'birth_date',
+            page: $this->listPatients,
+            value: getPatient()->birth_date
+        );
+    });
+
+    it('searches by mobile phone', function (): void {
+        assertSearch(
+            collection: $this->patients,
+            column: 'mobile_phone',
+            page: $this->listPatients,
+            value: getPatient()->mobile_phone
+        );
+    });
+
+    it('searches by tax id', function (): void {
+        assertSearch(
+            collection: $this->patients,
+            column: 'tax_id',
+            page: $this->listPatients,
+            value: getPatient()->tax_id
+        );
+    });
+
+    it('searches by created at', function (): void {
+        assertSearch(
+            collection: $this->patients,
+            column: 'created_at',
+            page: $this->listPatients,
+            value: getPatient()->created_at->format('Y-m-d')
         );
     });
 });

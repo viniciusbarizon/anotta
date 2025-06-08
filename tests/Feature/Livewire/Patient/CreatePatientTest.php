@@ -59,7 +59,7 @@ function getFormArray(Patient $patient): array
  * @param  array|null  $data  Optional data to override default factory attributes.
  * @return Patient The newly created Patient instance.
  */
-function getPatient(?array $data = null): Patient
+function getPatientFactory(?array $data = null): Patient
 {
     return Patient::factory($data)->make();
 }
@@ -75,56 +75,56 @@ it('receives a notification if no clinic exists', function (): void {
 
 it('creates', function (): void {
     assertHasNoFormErrors(
-        patient: getPatient()
+        patient: getPatientFactory()
     );
 });
 
 it('requires a clinic to pass validation', function (): void {
     assertHasFormErrors(
         errors: ['clinic_id' => 'required'],
-        patient: getPatient(['clinic_id' => null])
+        patient: getPatientFactory(['clinic_id' => null])
     );
 });
 
 it('requires the full name to pass validation', function (): void {
     assertHasFormErrors(
         errors: ['full_name' => 'required'],
-        patient: getPatient(['full_name' => null])
+        patient: getPatientFactory(['full_name' => null])
     );
 });
 
 it('requires the birth date to pass validation', function (): void {
     assertHasFormErrors(
         errors: ['birth_date' => 'required'],
-        patient: getPatient(['birth_date' => null])
+        patient: getPatientFactory(['birth_date' => null])
     );
 });
 
 it('requires the mobile phone to pass validation', function (): void {
     assertHasFormErrors(
         errors: ['mobile_phone' => 'required'],
-        patient: getPatient(['mobile_phone' => null])
+        patient: getPatientFactory(['mobile_phone' => null])
     );
 });
 
 it('requires the tax country if a tax number is provided', function (): void {
     assertHasFormErrors(
         errors: ['tax_country_id' => 'required_with'],
-        patient: getPatient(['tax_country_id' => null])
+        patient: getPatientFactory(['tax_country_id' => null])
     );
 });
 
 it('requires the taxpayer identification number if the tax country is present', function (): void {
     assertHasFormErrors(
         errors: ['tax_id' => 'required_with'],
-        patient: getPatient(['tax_id' => null])
+        patient: getPatientFactory(['tax_id' => null])
     );
 });
 
 it('requires the clinic to be valid', function (): void {
     assertHasFormErrors(
         errors: ['clinic_id' => 'exists'],
-        patient: getPatient(['clinic_id' => fake()->uuid()])
+        patient: getPatientFactory(['clinic_id' => fake()->uuid()])
     );
 });
 
@@ -136,14 +136,14 @@ it('requires the clinic to be associated with the user logged', function (): voi
 
     assertHasFormErrors(
         errors: ['clinic_id' => 'exists'],
-        patient: getPatient(['clinic_id' => $clinic->id])
+        patient: getPatientFactory(['clinic_id' => $clinic->id])
     );
 });
 
 it('requires the full name to not have only the first name', function (): void {
     assertHasFormErrors(
         errors: ['full_name' => 'regex'],
-        patient: getPatient(['full_name' => fake()->firstName()])
+        patient: getPatientFactory(['full_name' => fake()->firstName()])
     );
 });
 
@@ -159,48 +159,48 @@ it('requires to be unique (not duplicated)', function (): void {
 it('requires the birth date to be lower or equal than today', function (): void {
     assertHasFormErrors(
         errors: ['birth_date'],
-        patient: getPatient(['birth_date' => now()->addDay()->format('Y-m-d')])
+        patient: getPatientFactory(['birth_date' => now()->addDay()->format('Y-m-d')])
     );
 });
 
 it('requires the birth date to not be older than 123 years ago', function (): void {
     assertHasFormErrors(
         errors: ['birth_date'],
-        patient: getPatient(['birth_date' => now()->subYears(124)->format('Y-m-d')])
+        patient: getPatientFactory(['birth_date' => now()->subYears(124)->format('Y-m-d')])
     );
 });
 
 it('requires the mobile phone to be in the E.164 format', function (): void {
     assertHasFormErrors(
         errors: ['mobile_phone'],
-        patient: getPatient(['mobile_phone' => fake()->phoneNumber()])
+        patient: getPatientFactory(['mobile_phone' => fake()->phoneNumber()])
     );
 });
 
 it('requires the tax id to be only with numbers', function (): void {
     assertHasFormErrors(
         errors: ['tax_id' => 'regex'],
-        patient: getPatient(['tax_id' => fake()->word()])
+        patient: getPatientFactory(['tax_id' => fake()->word()])
     );
 });
 
 it('requires the tax id to be no longer than 9 characters', function (): void {
     assertHasFormErrors(
         errors: ['tax_id' => 'max'],
-        patient: getPatient(['tax_id' => '00'.fake()->randomNumber(8, true)])
+        patient: getPatientFactory(['tax_id' => '00'.fake()->randomNumber(8, true)])
     );
 });
 
 it('requires the tax id to be at least 9 characters', function (): void {
     assertHasFormErrors(
         errors: ['tax_id' => 'min'],
-        patient: getPatient(['tax_id' => fake()->randomNumber(8, true)])
+        patient: getPatientFactory(['tax_id' => fake()->randomNumber(8, true)])
     );
 });
 
 it('requires the full name to have a maximum of 150 characters', function (): void {
     assertHasFormErrors(
         errors: ['full_name' => 'max'],
-        patient: getPatient(['full_name' => str()->random(151)])
+        patient: getPatientFactory(['full_name' => str()->random(151)])
     );
 });

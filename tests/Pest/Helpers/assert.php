@@ -16,8 +16,16 @@ use Livewire\Features\SupportTesting\Testable;
 function assertSearch(Collection $collection, string $column, Testable $page, string $value): void
 {
     $page->searchTable($value)
-        ->assertCanSeeTableRecords($collection->where($column, $value))
-        ->assertCanNotSeeTableRecords($collection->where($column, '!=', $value));
+        ->assertCanSeeTableRecords(
+            $collection->filter(
+                fn ($item) => str_contains(strtolower((string) $item[$column]), strtolower($value))
+            )
+        )
+        ->assertCanNotSeeTableRecords(
+            $collection->filter(
+                fn ($item) => !str_contains(strtolower((string) $item[$column]), strtolower($value))
+            )
+        );
 }
 
 /**

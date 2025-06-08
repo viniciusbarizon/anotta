@@ -33,12 +33,18 @@ final class ColumnPresets
      * @param  bool  $isSortable  Whether the column should be sortable. Defaults to true.
      * @return TextColumn The configured date column.
      */
-    public static function date(string $column, string $label, bool $isSortable = true): TextColumn
+    public static function date(
+        string $column,
+        string $label,
+        bool $isSortable = true,
+        ?Closure $searchableQuery = null
+    ): TextColumn
     {
         return self::text(
             column: $column,
             isSortable: $isSortable,
-            label: $label
+            label: $label,
+            searchableQuery: $searchableQuery
         )
             ->dateTooltip()
             ->since();
@@ -96,6 +102,7 @@ final class ColumnPresets
      * @param  string|null  $label  The label for the column, if any.
      * @param  int|null  $limit  The character limit for the text, if any.
      * @param  array<string>|bool  $searchable  A closure to define custom search behavior, if any.
+     * @param  Closure|null  $searchableQuery  A closure to define custom search behavior, if any.
      * @param  bool|Closure  $visible  Whether the column is visible, can be a boolean or a closure.
      * @return TextColumn The configured TextColumn instance.
      */
@@ -106,10 +113,11 @@ final class ColumnPresets
         ?string $label = null,
         ?int $limit = null,
         array|bool $searchable = true,
+        ?Closure $searchableQuery = null,
         bool|Closure $visible = true,
     ): TextColumn {
         $textColumn = TextColumn::make($column)
-            ->searchable($searchable)
+            ->searchable($searchable, $searchableQuery)
             ->visible($visible);
 
         if ($isCopyable) {
