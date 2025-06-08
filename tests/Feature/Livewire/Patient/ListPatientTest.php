@@ -15,15 +15,19 @@ beforeEach(function (): void {
 });
 
 /**
- * Creates a collection of 5 Patient instances using the factory.
+ * Creates a collection of patients with different creation dates.
  *
- * @return Collection A collection of created Patient models.
+ * @return Collection A collection of Patient models.
  */
 function createPatients(): Collection
 {
-    return Patient::factory()
-        ->count(5)
-        ->create();
+    collect(range(0, 4))->each(function (int $i) {
+        Patient::factory()->create([
+            'created_at' => now()->subDays($i),
+        ]);
+    });
+
+    return Patient::all();
 }
 
 /**
@@ -67,13 +71,11 @@ describe('not impersonated', function (): void {
         );
     });
 
-    /* it('sorts by created at', function (): void {
-        dd($this->patients);
+    it('sorts by created at', function (): void {
         assertSortDate(
             collection: $this->patients,
             column: 'created_at',
-            //flag: SORT_STRING,
-            page: livewire(ListPatients::class)
+            page: $this->listPatients
         );
-    }); */
+    });
 });
