@@ -95,14 +95,28 @@ describe('not impersonated', function (): void {
         );
     });
 
-    /* it('searches by clinic', function (): void {
-        assertSearch(
-            collection: $this->patients,
-            column: 'clinic.name',
-            page: $this->listPatients,
-            value: getPatient()->clinic->name
-        );
-    }); */
+    it('searches by clinic', function (): void {
+        $clinic = getPatient()->clinic->name;
+
+        $this->listPatients
+            ->searchTable(getPatient()->clinic->name)
+            ->assertCanSeeTableRecords(
+                $this->patients->filter(
+                    fn (Patient $patient) => str_contains(
+                        mb_strtolower($patient->clinic->name),
+                        mb_strtolower($clinic)
+                    )
+                )
+            )
+            ->assertCanNotSeeTableRecords(
+                $this->patients->filter(
+                    fn (Patient $patient) => str_contains(
+                        mb_strtolower($patient->clinic->name),
+                        mb_strtolower($clinic)
+                    ) === false
+                )
+            );
+    });
 
     it('searches by full name', function (): void {
         assertSearch(
