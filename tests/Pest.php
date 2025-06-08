@@ -78,28 +78,6 @@ function assertSort(
 }
 
 /**
- * Asserts that a table can be sorted by a date column in both ascending and descending order,
- * and that the records are displayed in the correct order based on the formatted date.
- *
- * @param  Collection  $collection  The collection of records to be sorted and asserted.
- * @param  string  $column  The date column name to sort by.
- * @param  Testable  $page  The page object that provides table sorting and assertion methods.
- */
-function assertSortDate(Collection $collection, string $column, Testable $page): void
-{
-    $page->sortTable($column)
-        ->assertCanSeeTableRecords(
-            $collection->sortBy(fn ($model) => $model->{$column}->format('Y-m-d H:i:s')),
-            inOrder: true
-        )
-        ->sortTable($column, 'desc')
-        ->assertCanSeeTableRecords(
-            $collection->sortByDesc(fn ($model) => $model->{$column}->format('Y-m-d H:i:s')),
-            inOrder: true
-        );
-}
-
-/**
  * Creates a new Clinic instance using the factory.
  *
  * Optionally allows specifying a name for the clinic.

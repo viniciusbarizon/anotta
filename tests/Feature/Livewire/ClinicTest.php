@@ -209,7 +209,7 @@ describe('not impersonated', function (): void {
     });
 
     it('sorts by created_at', function (): void {
-        assertSortDate(
+        assertSort(
             collection: test()->clinics,
             column: 'created_at',
             page: $this->manageClinics

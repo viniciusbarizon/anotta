@@ -72,7 +72,7 @@ describe('not impersonated', function (): void {
     });
 
     it('sorts by created at', function (): void {
-        assertSortDate(
+        assertSort(
             collection: $this->patients,
             column: 'created_at',
             page: $this->listPatients
