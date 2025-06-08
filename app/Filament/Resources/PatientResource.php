@@ -229,24 +229,21 @@ final class PatientResource extends Resource
                     column: 'birth_date',
                     isSortable: false,
                     label: 'Data de Nascimento',
-                    searchableQuery: fn(Builder $query, string $search): Builder =>
-                        $query->whereBlind('birth_date', 'birth_date_index', $search)
+                    searchableQuery: fn (Builder $query, string $search): Builder => $query->whereBlind('birth_date', 'birth_date_index', $search)
                 ),
 
                 ColumnPresets::text(
                     column: 'mobile_phone',
                     isSortable: false,
                     label: 'Telemóvel',
-                    searchableQuery: fn(Builder $query, string $search): Builder =>
-                        $query->whereBlind('mobile_phone', 'mobile_phone_index', $search)
+                    searchableQuery: fn (Builder $query, string $search): Builder => $query->whereBlind('mobile_phone', 'mobile_phone_index', $search)
                 ),
 
                 ColumnPresets::text(
                     column: 'tax',
                     isSortable: false,
                     label: 'NIF',
-                    searchableQuery: fn(Builder $query, string $search): Builder =>
-                        $query->whereBlind('tax_id', 'tax_id_index', $search)
+                    searchableQuery: fn (Builder $query, string $search): Builder => $query->whereBlind('tax_id', 'tax_id_index', $search)
                 ),
 
                 ColumnPresets::createdAt(),

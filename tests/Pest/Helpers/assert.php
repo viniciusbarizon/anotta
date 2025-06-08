@@ -18,12 +18,12 @@ function assertSearch(Collection $collection, string $column, Testable $page, st
     $page->searchTable($value)
         ->assertCanSeeTableRecords(
             $collection->filter(
-                fn ($item) => str_contains(strtolower((string) $item[$column]), strtolower($value))
+                fn ($item) => str_contains(mb_strtolower((string) $item[$column]), mb_strtolower($value))
             )
         )
         ->assertCanNotSeeTableRecords(
             $collection->filter(
-                fn ($item) => !str_contains(strtolower((string) $item[$column]), strtolower($value))
+                fn ($item) => ! str_contains(mb_strtolower((string) $item[$column]), mb_strtolower($value))
             )
         );
 }

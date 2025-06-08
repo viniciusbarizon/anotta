@@ -38,8 +38,7 @@ final class ColumnPresets
         string $label,
         bool $isSortable = true,
         ?Closure $searchableQuery = null
-    ): TextColumn
-    {
+    ): TextColumn {
         return self::text(
             column: $column,
             isSortable: $isSortable,
