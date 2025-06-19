@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use App\Filament\Resources\PatientResource\Pages\EditPatient;
 use App\Models\Patient;
-use Livewire\Features\SupportTesting\Testable;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\RestoreAction;
+use Livewire\Features\SupportTesting\Testable;
 
 use function Pest\Livewire\livewire;
 
