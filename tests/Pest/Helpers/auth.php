@@ -35,8 +35,6 @@ function createUser(bool $isSuperAdmin = false, bool $unverified = false): User
  *
  * This function logs out the current user, logs in as a super admin,
  * and then impersonates the original user using the impersonate method.
- *
- * @return void
  */
 function impersonateUser(): void
 {
