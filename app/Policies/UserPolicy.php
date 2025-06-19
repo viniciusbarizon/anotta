@@ -9,13 +9,18 @@ use App\Models\User;
 final class UserPolicy
 {
     /**
-     * Determine whether the user can view any resources.
+     * Determine whether the user can view any users.
      *
-     * @return bool Always returns true, allowing access to view any resources.
+     * @param  User  $user  The user attempting to view the list of users.
+     * @return bool True if the user is a super admin or has not verified their email, false otherwise.
      */
-    public function viewAny(): bool
+    public function viewAny(User $user): bool
     {
-        return true;
+        if (is_null($user->email_verified_at)) {
+            return true;
+        }
+
+        return $user->is_super_admin;
     }
 
     /**

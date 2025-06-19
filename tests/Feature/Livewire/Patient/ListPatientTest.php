@@ -174,3 +174,18 @@ describe('not impersonated', function (): void {
         );
     });
 });
+
+describe('impersonated', function (): void {
+    beforeEach(fn () => impersonateUser());
+
+    it('shows the id column', fn () => getListPatients()->assertTableColumnVisible('id'));
+
+    it('searches by id', function (): void {
+        $id = getPatient()->id;
+
+        getListPatients()
+            ->searchTable($id)
+            ->assertCanSeeTableRecords($this->patients->where('id', $id))
+            ->assertCanNotSeeTableRecords($this->patients->where('id', '!=', $id));
+    });
+});

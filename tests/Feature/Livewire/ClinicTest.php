@@ -356,12 +356,7 @@ describe('not impersonated', function (): void {
 
 describe('impersonated', function (): void {
     beforeEach(function (): void {
-        $user = auth()->user();
-        logout();
-
-        login(isSuperAdmin: true);
-
-        auth()->user()->impersonate($user);
+        impersonateUser();
     });
 
     it('shows the id column', function (): void {

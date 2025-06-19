@@ -31,6 +31,24 @@ function createUser(bool $isSuperAdmin = false, bool $unverified = false): User
 }
 
 /**
+ * Impersonates the currently authenticated user.
+ *
+ * This function logs out the current user, logs in as a super admin,
+ * and then impersonates the original user using the impersonate method.
+ *
+ * @return void
+ */
+function impersonateUser(): void
+{
+    $user = auth()->user();
+    logout();
+
+    login(isSuperAdmin: true);
+
+    auth()->user()->impersonate($user);
+}
+
+/**
  * Creates a new User instance using the factory and logs in the user.
  *
  * Optionally marks the user as a super admin if the $isSuperAdmin parameter is true.
