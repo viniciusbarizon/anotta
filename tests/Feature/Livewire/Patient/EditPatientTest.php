@@ -31,7 +31,7 @@ it('retrieves the data ', function () {
         ]);
 });
 
-it('updates the patient', function() {
+it('updates the patient', function () {
     $newData = Patient::factory()->make();
 
     getComponent($this->patient)
@@ -55,7 +55,7 @@ it('updates the patient', function() {
         ->tax_id->toBe($newData->tax_id);
 });
 
-it ('does not validate the name as duplicate', function () {
+it('does not validate the name as duplicate', function () {
     getComponent($this->patient)
         ->fillForm([
             'birth_date' => $this->patient->birth_date,
