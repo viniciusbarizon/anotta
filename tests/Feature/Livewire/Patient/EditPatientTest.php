@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Filament\Resources\PatientResource\Pages\EditPatient;
 use App\Models\Patient;
 use Livewire\Features\SupportTesting\Testable;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\RestoreAction;
 
 use function Pest\Livewire\livewire;
 
@@ -12,7 +14,13 @@ beforeEach(function (): void {
     $this->patient = createPatient();
 });
 
-function getComponent(Patient $patient): Testable
+/**
+ * Returns a Testable Livewire component instance for the EditPatient component,
+ * initialized with the route key of the test patient record.
+ *
+ * @return Testable The Livewire component instance for testing.
+ */
+function getComponent(): Testable
 {
     return livewire(EditPatient::class, [
         'record' => test()->patient->getRouteKey(),
@@ -20,7 +28,7 @@ function getComponent(Patient $patient): Testable
 }
 
 it('retrieves the data ', function () {
-    getComponent($this->patient)
+    getComponent()
         ->assertFormSet([
             'birth_date' => $this->patient->birth_date,
             'clinic_id' => $this->patient->clinic_id,
@@ -34,7 +42,7 @@ it('retrieves the data ', function () {
 it('updates the patient', function () {
     $newData = Patient::factory()->make();
 
-    getComponent($this->patient)
+    getComponent()
         ->fillForm([
             'birth_date' => $newData->birth_date,
             'clinic_id' => $newData->clinic_id,
@@ -55,8 +63,8 @@ it('updates the patient', function () {
         ->tax_id->toBe($newData->tax_id);
 });
 
-it('does not validate the name as duplicate', function () {
-    getComponent($this->patient)
+it('allows the same name during update without triggering a uniqueness validation error', function () {
+    getComponent()
         ->fillForm([
             'birth_date' => $this->patient->birth_date,
             'clinic_id' => $this->patient->clinic_id,
@@ -67,4 +75,21 @@ it('does not validate the name as duplicate', function () {
         ])
         ->call('save')
         ->assertHasNoFormErrors();
+});
+
+it('deletes', function () {
+    getComponent()
+        ->callAction(DeleteAction::class);
+
+    $this->assertSoftDeleted($this->patient);
+});
+
+it('restores', function () {
+    getComponent()
+        ->callAction(DeleteAction::class);
+
+    getComponent()
+        ->callAction(RestoreAction::class);
+
+    $this->assertNotSoftDeleted($this->patient);
 });
