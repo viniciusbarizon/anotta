@@ -27,7 +27,7 @@ final class PatientFactory extends Factory
             'clinic_id' => $this->getClinicId(),
             'full_name' => $fullName,
             'full_name_normalized' => normalize_name($fullName),
-            'mobile_phone' => fake()->e164PhoneNumber(),
+            'mobile_phone' => '+351'.fake()->randomNumber(9, true),
             'tax_country_id' => $this->getPortugalTaxCountryId(),
             'tax_id' => fake()->taxpayerIdentificationNumber(),
         ];
