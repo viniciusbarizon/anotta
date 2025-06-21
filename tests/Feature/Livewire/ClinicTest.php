@@ -17,34 +17,9 @@ use function Pest\Livewire\livewire;
 setlocale(LC_COLLATE, 'pt_PT.UTF-8');
 
 beforeEach(function (): void {
-    $this->clinics = createClinics();
+    $this->clinics = createMultiples(Clinic::class);
     $this->manageClinics = getResource();
 });
-
-/**
- * Create a collection of clinics with different creation dates.
- *
- * This function generates 10 clinics, each created on a different day,
- * starting from today and going back 9 days.
- *
- * @return Collection A collection of Clinic models
- */
-function createClinics(): Collection
-{
-    collect(range(0, 9))->each(function (int $i) {
-        $date = now()->subDays($i);
-        $deletedAt = $i === 0 ? $date : null;
-
-        Clinic::factory()
-            ->create([
-                'created_at' => $date,
-                'updated_at' => $date,
-                'deleted_at' => $deletedAt,
-            ]);
-    });
-
-    return Clinic::all();
-}
 
 /**
  * Create a Livewire testable instance for the ManageClinics resource.
