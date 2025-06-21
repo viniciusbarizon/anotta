@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/Pest/Helpers/assert.php';
-require __DIR__.'/Pest/Helpers/auth.php';
+$helpersPath = __DIR__.'/Pest/Helpers/';
 
-use App\Models\Clinic;
-use App\Models\Patient;
+require $helpersPath.'assert.php';
+require $helpersPath.'auth.php';
+require $helpersPath.'factory.php';
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,15 +22,15 @@ use App\Models\Patient;
 |
 */
 
-pest()->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
     ->beforeEach(function (): void {
         login();
     })
     ->in('Feature');
 
-pest()->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
     ->in('Unit');
 
 /*
@@ -53,32 +56,3 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-/**
- * Creates a new Clinic instance using the factory.
- *
- * Optionally allows specifying a name for the clinic.
- *
- * @param  string|null  $name  The name of the clinic. Defaults to null.
- * @return Clinic The created Clinic instance.
- */
-function createClinic(?string $name = null): Clinic
-{
-    if (is_null($name)) {
-        return Clinic::factory()->create();
-    }
-
-    return Clinic::factory()->create([
-        'name' => $name,
-    ]);
-}
-
-/**
- * Creates and persists a new Patient instance using the factory.
- *
- * @return Patient The newly created Patient model instance.
- */
-function createPatient(): Patient
-{
-    return Patient::factory()->create();
-}
