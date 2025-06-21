@@ -3,14 +3,10 @@
 declare(strict_types=1);
 
 use App\Filament\Resources\UserResource\Pages\ManageUsers;
+use App\Models\User;
 use Livewire\Features\SupportTesting\Testable;
 
 use function Pest\Livewire\livewire;
-
-beforeEach(function (): void {
-    // $this->clinics = createClinics();
-    $this->manageUsers = getUserComponent();
-});
 
 /**
  * Returns a testable instance of the ManageUsers Livewire component.
@@ -22,8 +18,39 @@ function getUserComponent(): Testable
     return livewire(ManageUsers::class);
 }
 
-it('receives http forbidden if user logged is not super admin', function () {
-    $response = $this->get('medical/users');
+describe('user not super admin', function (): void
+{
+    it('receives http forbidden if user logged is not super admin', function ()
+    {
+        $response = $this->get('medical/users');
+        $response->assertStatus(403);
+    });
+});
 
-    $response->assertStatus(403);
+describe('user super admin', function (): void
+{
+    beforeEach(function (): void {
+        logout();
+        login(isSuperAdmin: true);
+
+        $this->users = createMultiples(
+            hasDeletedAt: false,
+            model: User::class
+        );
+
+        $this->manageUsers = getUserComponent();
+    });
+
+    it('lists', function (): void
+    {
+        $this->manageUsers
+            /*->assertCanSeeTableRecords($this->users)
+            ->assertCanRenderTableColumn('name')
+            ->assertCanRenderTableColumn('email')
+            ->assertCanRenderTableColumn('email_verified_at')
+            ->assertCanRenderTableColumn('is_super_admin')
+            ->assertCanRenderTableColumn('created_at')
+            ->assertCanRenderTableColumn('updated_at')*/ 
+            ->assertCountTableRecords(12);
+    });
 });

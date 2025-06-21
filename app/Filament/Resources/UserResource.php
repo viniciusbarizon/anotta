@@ -25,19 +25,6 @@ final class UserResource extends Resource
     protected static ?int $navigationSort = 110;
 
     /**
-     * Overrides the default Eloquent query for the resource.
-     *
-     * This method removes the global SoftDeletingScope from the query,
-     * allowing retrieval of both soft-deleted and non-deleted records.
-     */
-    #[Override]
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScope(SoftDeletingScope::class);
-    }
-
-    /**
      * Returns an array of page routes for the UserResource.
      *
      * @return array<string, PageRegistration> An associative array mapping page identifiers to their corresponding route definitions.
