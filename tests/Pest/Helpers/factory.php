@@ -32,7 +32,7 @@ function createClinic(?string $name = null): Clinic
  * The most recent instance (i = 0) will have its 'deleted_at' field set,
  * while the others will have 'deleted_at' as null.
  *
- * @param mixed $model The Eloquent model class name.
+ * @param  mixed  $model  The Eloquent model class name.
  * @return Collection The collection of all model instances.
  */
 function createMultiples(mixed $model): Collection

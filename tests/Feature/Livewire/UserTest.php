@@ -8,7 +8,7 @@ use Livewire\Features\SupportTesting\Testable;
 use function Pest\Livewire\livewire;
 
 beforeEach(function (): void {
-    //$this->clinics = createClinics();
+    // $this->clinics = createClinics();
     $this->manageUsers = getUserComponent();
 });
 
