@@ -32,7 +32,8 @@ describe('user super admin', function (): void {
 
         $this->users = createMultiples(
             hasDeletedAt: false,
-            model: User::class
+            model: User::class,
+            total: 8
         );
 
         $this->manageUsers = getUserComponent();
@@ -40,13 +41,46 @@ describe('user super admin', function (): void {
 
     it('lists', function (): void {
         $this->manageUsers
-            /*->assertCanSeeTableRecords($this->users)
+            ->assertCanSeeTableRecords($this->users)
             ->assertCanRenderTableColumn('name')
             ->assertCanRenderTableColumn('email')
             ->assertCanRenderTableColumn('email_verified_at')
             ->assertCanRenderTableColumn('is_super_admin')
             ->assertCanRenderTableColumn('created_at')
-            ->assertCanRenderTableColumn('updated_at')*/
-            ->assertCountTableRecords(12);
+            ->assertCanRenderTableColumn('updated_at')
+            ->assertCountTableRecords(10);
+    });
+
+    it('sorts by name', function (): void {
+        assertSort(
+            collection: $this->users,
+            column: 'name',
+            flag: SORT_LOCALE_STRING,
+            page: $this->manageUsers
+        );
+    });
+
+    it('sorts by email', function (): void {
+        assertSort(
+            collection: $this->users,
+            column: 'email',
+            page: $this->manageUsers
+        );
+    });
+
+    it('sorts by created at', function (): void {
+        assertSort(
+            collection: $this->users,
+            column: 'created_at',
+            page: $this->manageUsers
+        );
+    });
+
+    it('sorts by updated at', function (): void {
+        assertSort(
+            collection: $this->users,
+            column: 'updated_at',
+            page: $this->manageUsers
+        );
     });
 });

@@ -25,6 +25,8 @@ final class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $date = fake()->dateTime('Y-m-d H:i:s');
+
         return [
             'name' => get_fake_full_name(),
             'email' => fake()->unique()->safeEmail(),
@@ -32,6 +34,8 @@ final class UserFactory extends Factory
             'password' => self::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'is_super_admin' => false,
+            'created_at' => $date,
+            'updated_at' => $date,
         ];
     }
 

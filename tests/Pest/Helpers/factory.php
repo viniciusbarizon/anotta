@@ -28,31 +28,24 @@ function createClinic(?string $name = null): Clinic
 /**
  * Creates multiple instances of a given model using the factory.
  *
- * This function generates 10 instances of the specified model, each with
- * a unique `created_at` and `updated_at` timestamp. If `$hasDeletedAt` is true,
- * it also sets the `deleted_at` field for the first instance.
- *
- * @param  mixed  $model  The model class to create instances of.
- * @param  bool  $hasDeletedAt  Whether to include a `deleted_at` field.
+ * @param  mixed  $model  The model class or instance to create.
+ * @param  bool  $hasDeletedAt  Whether the model has a 'deleted_at' attribute. Defaults to true.
+ * @param  int  $total  The total number of instances to create. Defaults to 10.
  * @return Collection A collection of created model instances.
  */
-function createMultiples(mixed $model, $hasDeletedAt = true): Collection
+function createMultiples(mixed $model, $hasDeletedAt = true, $total = 10): Collection
 {
-    collect(range(0, 9))->each(function (int $i) use ($hasDeletedAt, $model) {
-        $date = now()->subDays($i);
-
-        $attributes = [
-            'created_at' => $date,
-            'updated_at' => $date,
-        ];
-
-        if ($hasDeletedAt) {
-            $deletedAt = $i === 0 ? $date : null;
-            $attributes['deleted_at'] = $deletedAt ?? null;
+    collect(range(0, $total - 1))->each(function (int $i) use ($hasDeletedAt, $model) {
+        if ($hasDeletedAt && $i === 0) {
+            $model::factory()
+                ->create([
+                    'deleted_at' => fake()->dateTime('Y-m-d H:i:s')
+                ]);
+            return;
         }
 
         $model::factory()
-            ->create($attributes);
+            ->create();
     });
 
     return $model::all();

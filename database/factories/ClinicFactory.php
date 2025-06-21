@@ -18,8 +18,12 @@ final class ClinicFactory extends Factory
      */
     public function definition(): array
     {
+        $date = fake()->dateTime('Y-m-d H:i:s');
+
         return [
             'name' => fake()->company(),
+            'created_at' => $date,
+            'updated_at' => $date,
         ];
     }
 }
