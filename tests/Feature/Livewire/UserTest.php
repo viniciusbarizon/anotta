@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Filament\Resources\UserResource\Pages\ManageUsers;
 use Livewire\Features\SupportTesting\Testable;
 
@@ -25,5 +27,3 @@ it('receives http forbidden if user logged is not super admin', function () {
 
     $response->assertStatus(403);
 });
-
-
