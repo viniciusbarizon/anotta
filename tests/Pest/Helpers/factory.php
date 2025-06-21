@@ -39,8 +39,9 @@ function createMultiples(mixed $model, $hasDeletedAt = true, $total = 10): Colle
         if ($hasDeletedAt && $i === 0) {
             $model::factory()
                 ->create([
-                    'deleted_at' => fake()->dateTime('Y-m-d H:i:s')
+                    'deleted_at' => fake()->dateTime('Y-m-d H:i:s'),
                 ]);
+
             return;
         }
 
