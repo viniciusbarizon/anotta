@@ -24,7 +24,19 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
- 
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y locales
+        sudo locale-gen pt_PT.UTF-8
+        sudo update-locale LANG=pt_PT.UTF-8 LC_ALL=pt_PT.UTF-8
+
+    - name: Set environment for pt_PT.UTF-8
+      run: |
+        echo "LANG=pt_PT.UTF-8" >> $GITHUB_ENV
+        echo "LC_ALL=pt_PT.UTF-8" >> $GITHUB_ENV
+  
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -32,7 +44,7 @@ jobs:
         tools: composer:v2
         coverage: xdebug
 
-    - name: Install Dependencies
+    - name: Install Composer Dependencies
       run: composer install --no-interaction --prefer-dist --optimize-autoloader
  
     - name: Create .env.testing file
