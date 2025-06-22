@@ -44,13 +44,6 @@ jobs:
         tools: composer:v2
         coverage: xdebug
 
-    - name: Cache Composer Download Cache
-      uses: actions/cache@v3
-      with:
-        path: ~/.composer/cache
-        key: composer-cache-${{ hashFiles('composer.lock') }}
-        restore-keys: composer-cache-
-
     - name: Install Composer Dependencies
       run: composer install --no-interaction --prefer-dist --optimize-autoloader
  
