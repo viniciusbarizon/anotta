@@ -11,6 +11,8 @@ require $helpersPath.'factory.php';
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+setlocale(LC_COLLATE, 'pt_PT.UTF-8');
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
