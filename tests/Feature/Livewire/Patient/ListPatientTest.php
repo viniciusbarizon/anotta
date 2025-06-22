@@ -21,7 +21,7 @@ beforeEach(function (): void {
  */
 function createPatients(): Collection
 {
-    collect(range(0, 4))->each(function (int $i) {
+    collect(range(0, 4))->each(function (int $i): void {
         $date = now()->subDays($i);
         $deletedAt = $i === 0 ? $date : null;
 
@@ -104,16 +104,16 @@ describe('not impersonated', function (): void {
             ->searchTable(getPatient()->clinic->name)
             ->assertCanSeeTableRecords(
                 $this->patients->filter(
-                    fn (Patient $patient) => str_contains(
-                        mb_strtolower($patient->clinic->name),
+                    fn (Patient $patient): bool => str_contains(
+                        mb_strtolower((string) $patient->clinic->name),
                         mb_strtolower($clinic)
                     )
                 )
             )
             ->assertCanNotSeeTableRecords(
                 $this->patients->filter(
-                    fn (Patient $patient) => str_contains(
-                        mb_strtolower($patient->clinic->name),
+                    fn (Patient $patient): bool => str_contains(
+                        mb_strtolower((string) $patient->clinic->name),
                         mb_strtolower($clinic)
                     ) === false
                 )

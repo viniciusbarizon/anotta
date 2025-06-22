@@ -19,7 +19,7 @@ function getUserComponent(): Testable
 }
 
 describe('user not super admin', function (): void {
-    it('receives http forbidden if user logged is not super admin', function () {
+    it('receives http forbidden if user logged is not super admin', function (): void {
         $response = $this->get('medical/users');
         $response->assertStatus(403);
     });

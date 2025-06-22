@@ -35,7 +35,7 @@ function createClinic(?string $name = null): Clinic
  */
 function createMultiples(mixed $model, $hasDeletedAt = true, $total = 10): Collection
 {
-    collect(range(0, $total - 1))->each(function (int $i) use ($hasDeletedAt, $model) {
+    collect(range(0, $total - 1))->each(function (int $i) use ($hasDeletedAt, $model): void {
         if ($hasDeletedAt && $i === 0) {
             $model::factory()
                 ->create([

@@ -27,7 +27,7 @@ function getComponent(): Testable
     ]);
 }
 
-it('retrieves the data ', function () {
+it('retrieves the data ', function (): void {
     getComponent()
         ->assertFormSet([
             'birth_date' => $this->patient->birth_date,
@@ -39,7 +39,7 @@ it('retrieves the data ', function () {
         ]);
 });
 
-it('updates the patient', function () {
+it('updates the patient', function (): void {
     $newData = Patient::factory()->make();
 
     getComponent()
@@ -63,7 +63,7 @@ it('updates the patient', function () {
         ->tax_id->toBe($newData->tax_id);
 });
 
-it('allows the same name during update without triggering a uniqueness validation error', function () {
+it('allows the same name during update without triggering a uniqueness validation error', function (): void {
     getComponent()
         ->fillForm([
             'birth_date' => $this->patient->birth_date,
@@ -77,14 +77,14 @@ it('allows the same name during update without triggering a uniqueness validatio
         ->assertHasNoFormErrors();
 });
 
-it('deletes', function () {
+it('deletes', function (): void {
     getComponent()
         ->callAction(DeleteAction::class);
 
     $this->assertSoftDeleted($this->patient);
 });
 
-it('restores', function () {
+it('restores', function (): void {
     getComponent()
         ->callAction(DeleteAction::class);
 
