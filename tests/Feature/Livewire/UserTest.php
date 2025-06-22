@@ -8,6 +8,8 @@ use Livewire\Features\SupportTesting\Testable;
 
 use function Pest\Livewire\livewire;
 
+setlocale(LC_COLLATE, 'pt_PT.UTF-8');
+
 /**
  * Returns a testable instance of the ManageUsers Livewire component.
  *
