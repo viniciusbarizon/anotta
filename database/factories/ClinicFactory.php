@@ -26,4 +26,18 @@ final class ClinicFactory extends Factory
             'updated_at' => $date,
         ];
     }
+
+    /**
+     * Indicate that the model's clinic is soft deleted.
+     *
+     * This sets the `deleted_at` attribute to the same value as `created_at`.
+     *
+     * @return static
+     */
+    public function softDeleted(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'deleted_at' => $attributes['created_at'],
+        ]);
+    }
 }

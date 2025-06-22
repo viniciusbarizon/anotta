@@ -38,9 +38,8 @@ function createMultiples(mixed $model, $hasDeletedAt = true, $total = 10): Colle
     collect(range(0, $total - 1))->each(function (int $i) use ($hasDeletedAt, $model): void {
         if ($hasDeletedAt && $i === 0) {
             $model::factory()
-                ->create([
-                    'deleted_at' => fake()->dateTime('Y-m-d H:i:s'),
-                ]);
+                ->softDeleted()
+                ->create();
 
             return;
         }
