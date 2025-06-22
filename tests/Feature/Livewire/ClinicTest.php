@@ -14,8 +14,6 @@ use Livewire\Features\SupportTesting\Testable;
 
 use function Pest\Livewire\livewire;
 
-setlocale(LC_COLLATE, 'pt_PT.UTF-8');
-
 beforeEach(function (): void {
     $this->clinics = createMultiples(Clinic::class);
     $this->manageClinics = getResource();
@@ -188,7 +186,6 @@ describe('not impersonated', function (): void {
     });
 
     it('sorts by name', function (): void {
-        echo 'Locale ativo: '.setlocale(LC_COLLATE, 0).PHP_EOL;
         assertSort(
             collection: test()->clinics,
             column: 'name',
