@@ -188,6 +188,7 @@ describe('not impersonated', function (): void {
     });
 
     it('sorts by name', function (): void {
+        echo 'Locale ativo: ' . setlocale(LC_COLLATE, 0) . PHP_EOL;
         assertSort(
             collection: test()->clinics,
             column: 'name',

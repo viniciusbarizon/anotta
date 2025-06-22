@@ -54,6 +54,7 @@ describe('user super admin', function (): void {
     });
 
     it('sorts by name', function (): void {
+        echo 'Locale ativo: ' . setlocale(LC_COLLATE, 0) . PHP_EOL;
         assertSort(
             collection: $this->users,
             column: 'name',
