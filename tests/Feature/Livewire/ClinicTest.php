@@ -14,8 +14,6 @@ use Livewire\Features\SupportTesting\Testable;
 
 use function Pest\Livewire\livewire;
 
-setlocale(LC_COLLATE, 'pt_PT.UTF-8');
-
 beforeEach(function (): void {
     $this->clinics = createMultiples(Clinic::class);
     $this->manageClinics = getResource();
