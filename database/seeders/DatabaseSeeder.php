@@ -9,17 +9,10 @@ use Illuminate\Database\Seeder;
 final class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database with initial data.
+     * Run the database seeds.
      *
-     * This method calls the specified seeders to populate the database
-     * with default data. In this case, it runs the UserSeeder and
-     * ClinicSeeder classes to insert user and clinic-related data.
+     * This method is intentionally left empty. It can be used to seed the database
+     * with initial data or configurations if needed in the future.
      */
-    public function run(): void
-    {
-        $this->call([
-            UserSeeder::class,
-            ClinicSeeder::class,
-        ]);
-    }
+    public function run(): void {}
 }

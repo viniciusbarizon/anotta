@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Observers;
 
 use App\Models\Clinic;
+use App\Models\User;
 
 final class ClinicObserver
 {
@@ -18,40 +19,11 @@ final class ClinicObserver
      */
     public function created(Clinic $clinic): void
     {
+        /** @var User $user */
+        $user = auth()->user();
+
         $clinic->users()->attach(
-            auth()->user()->id
+            $user->id
         );
-    }
-
-    /**
-     * Handle the Clinic "updated" event.
-     */
-    public function updated(Clinic $clinic): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Clinic "deleted" event.
-     */
-    public function deleted(Clinic $clinic): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Clinic "restored" event.
-     */
-    public function restored(Clinic $clinic): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Clinic "force deleted" event.
-     */
-    public function forceDeleted(Clinic $clinic): void
-    {
-        //
     }
 }

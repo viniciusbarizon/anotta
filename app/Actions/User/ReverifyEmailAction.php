@@ -15,7 +15,7 @@ final class ReverifyEmailAction
     /**
      * Handles the process of re-verifying a user's email address.
      *
-     * @param  mixed  $user  The user object whose email needs to be re-verified.
+     * @param  User  $user  The user object whose email needs to be re-verified.
      * @return void
      *
      * This method checks if the user's email has been modified. If the email
@@ -53,9 +53,9 @@ final class ReverifyEmailAction
      */
     private function sendVerification(): void
     {
-        $notification = app(VerifyEmail::class);
-        $notification->url = Filament::getVerifyEmailUrl($this->user);
+        $verifyEmail = app(VerifyEmail::class);
+        $verifyEmail->url = Filament::getVerifyEmailUrl($this->user);
 
-        $this->user->notify($notification);
+        $this->user->notify($verifyEmail);
     }
 }

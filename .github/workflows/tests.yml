@@ -1,0 +1,64 @@
+name: Tests
+ 
+on: ['push', 'pull_request']
+ 
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+ 
+    services:
+        postgres:
+          image: postgres:15
+          env:
+            POSTGRES_DB: testing
+            POSTGRES_USER: test_user
+            POSTGRES_PASSWORD: test_pass
+          ports:
+            - 5432:5432
+          options: >-
+            --health-cmd="pg_isready -U test_user"
+            --health-interval=10s
+            --health-timeout=5s
+            --health-retries=5
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y locales
+        sudo locale-gen pt_PT.UTF-8
+        sudo update-locale LANG=pt_PT.UTF-8 LC_ALL=pt_PT.UTF-8
+
+    - name: Set environment for pt_PT.UTF-8
+      run: |
+        echo "LANG=pt_PT.UTF-8" >> $GITHUB_ENV
+        echo "LC_ALL=pt_PT.UTF-8" >> $GITHUB_ENV
+  
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.4
+        tools: composer:v2
+        coverage: xdebug
+
+    - name: Install Composer Dependencies
+      run: composer install --no-interaction --prefer-dist --optimize-autoloader
+ 
+    - name: Create .env.testing file
+      run: |
+          echo "APP_KEY=base64:$(php -r 'echo base64_encode(random_bytes(32));')" > .env.testing
+          echo "APP_FAKER_LOCALE=pt_PT" >> .env.testing
+          echo "APP_LOCALE=pt_PT" >> .env.testing
+          echo "DB_CONNECTION=pgsql" >> .env.testing
+          echo "DB_HOST=127.0.0.1" >> .env.testing
+          echo "DB_PORT=5432" >> .env.testing
+          echo "DB_DATABASE=testing" >> .env.testing
+          echo "DB_USERNAME=test_user" >> .env.testing
+          echo "DB_PASSWORD=test_pass" >> .env.testing
+          echo "CIPHERSWEET_KEY=0640af164fed92d580f89cdc76201b8f2b34dcfa89320fcd1fa57b21df34f451" >> .env.testing
+
+    - name: Tests
+      run: ./vendor/bin/pest --ci

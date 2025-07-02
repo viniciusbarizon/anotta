@@ -10,6 +10,17 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * This migration creates the `clinician_patient` pivot table, which establishes
+     * a many-to-many relationship between clinicians and patients. The table includes:
+     *
+     * - `clinician_id`: A foreign ULID referencing the `clinicians` table.
+     * - `patient_id`: A foreign ULID referencing the `patients` table.
+     * - A composite primary key consisting of `clinician_id` and `patient_id`.
+     * - A `created_at` timestamp column with default current timestamp.
+     * - A `deleted_at` column for soft deletes.
+     *
+     * The foreign keys are automatically constrained to ensure referential integrity.
      */
     public function up(): void
     {
@@ -22,13 +33,5 @@ return new class extends Migration
             $table->timestamp('created_at', precision: 0)->useCurrent();
             $table->softDeletes();
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('clinician_patient');
     }
 };

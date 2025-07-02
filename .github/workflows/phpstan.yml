@@ -1,0 +1,25 @@
+name: PHPStan
+
+on: ['push', 'pull_request']
+
+jobs:
+  phpstan:
+    name: Run PHPStan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: mbstring, dom, fileinfo
+          tools: composer
+
+      - name: Install dependencies
+        run: composer require --dev larastan/larastan
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse

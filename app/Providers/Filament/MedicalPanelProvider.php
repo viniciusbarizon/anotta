@@ -70,7 +70,7 @@ final class MedicalPanelProvider extends PanelProvider
                     ->shouldShowDeleteAccountForm(false),
             ])
             ->userMenuItems([
-                'profile' => MenuItem::make('profile')
+                'profile' => MenuItem::make()
                     ->label(fn () => __('Editar Perfil'))
                     ->url(fn (): string => EditProfilePage::getUrl()),
             ]);

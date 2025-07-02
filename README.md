@@ -12,20 +12,20 @@ Online medical records system for doctors and clinics.
 
 ## Running Locally with Herd and DBngin
 
-1. Locate the `pg_hba.conf` file (right-click on your database instance in DBngin and select **“Show Database Files”**).
-
-2. Make sure the authentication method in that file is set to `md5` for the line: host all all 127.0.0.1/32.
-
-3. Use the default credentials to log in via DBeaver (or another database client):  
+1. Use the default credentials to log in via DBeaver (or another database client):  
 **user:** `postgres`  
 **password:** *(leave empty)*
 
-4. Create the `anotta` database and the `anotta` user in **DBeaver**:
+2. Create the `anotta` database and the `anotta` user in **DBeaver**:
 ```sql
 CREATE USER anotta WITH PASSWORD 'password-here';
 CREATE DATABASE anotta OWNER anotta;
 CREATE DATABASE testing OWNER anotta;
+ALTER USER anotta CREATEDB;
 ```
+3. Locate the `pg_hba.conf` file (right-click on your database instance in DBngin and select **“Show Database Files”**).
+
+4. Make sure the authentication method in that file is set to `md5` for the line: host all all 127.0.0.1/32.
 
 5. Run the commands inside the Herd folder:
 

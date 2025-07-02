@@ -13,12 +13,6 @@ final class PatientRecord extends Base implements CipherSweetEncrypted
 {
     use UsesCipherSweet;
 
-    protected $fillable = [
-        'clinical_note',
-        'patient_id',
-        'professional_id',
-    ];
-
     /**
      * Configures the CipherSweet encryption for the PatientRecord model.
      *
@@ -42,17 +36,6 @@ final class PatientRecord extends Base implements CipherSweetEncrypted
     public function clinic(): BelongsTo
     {
         return $this->belongsTo(Clinic::class);
-    }
-
-    /**
-     * Get the clinician that owns the patient record.
-     *
-     * This method defines an inverse one-to-many relationship
-     * between the PatientRecord model and the Clinician model.
-     */
-    public function clinician(): BelongsTo
-    {
-        return $this->belongsTo(Clinician::class);
     }
 
     /**

@@ -4,26 +4,39 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Scopes\UserRelationScope;
 use App\Observers\ClinicObserver;
+use Database\Factories\ClinicFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Attributes\Scope;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Override;
 
 #[ObservedBy([ClinicObserver::class])]
+#[ScopedBy([UserRelationScope::class])]
 final class Clinic extends Base
 {
-    protected $cascadeDeletes = [
+    /** @use HasFactory<ClinicFactory> */
+    use HasFactory;
+
+    /**
+     * The list of related model relationships that should be automatically deleted
+     * when this Clinic model is deleted.
+     *
+     * @var array<string>
+     *
+     * Relationships:
+     * - 'patientRecords': Deletes all patient records associated with the clinic.
+     * - 'patients': Deletes all patients associated with the clinic.
+     * - 'users': Deletes all users associated with the clinic.
+     */
+    protected array $cascadeDeletes = [
         'patientRecords',
         'patients',
         'users',
-    ];
-
-    protected $fillable = [
-        'name',
-        'name_normalized',
     ];
 
     /**
@@ -72,10 +85,14 @@ final class Clinic extends Base
      * "normalize_name" helper function before the model is persisted to the
      * database.
      */
+    #[Override]
     protected static function booted(): void
     {
-        self::saving(function ($clinic) {
-            $clinic->name_normalized = normalize_name($clinic->name);
+        self::saving(function (Clinic $clinic): void {
+            /** @var string $name */
+            $name = $clinic->getAttribute('name');
+
+            $clinic->name_normalized = normalize_name($name);
         });
     }
 
@@ -88,22 +105,7 @@ final class Clinic extends Base
     protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => (string) str($value)->squish()
+            set: fn (string $value): string => (string) str($value)->squish()
         );
-    }
-
-    #[Scope]
-    /**
-     * Scope a query to filter clinics associated with the currently logged-in user.
-     *
-     * This scope applies a condition to the query that ensures only clinics
-     * related to the authenticated user are retrieved. It uses the `whereRelation`
-     * method to filter based on the relationship between clinics and users.
-     *
-     * @param  Builder  $query  The query builder instance.
-     */
-    protected function fromUserLogged(Builder $query): void
-    {
-        $query->whereRelation('users', 'user_id', auth()->user()->id);
     }
 }

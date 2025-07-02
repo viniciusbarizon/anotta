@@ -7,29 +7,39 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
+        "andreiio/blade-remix-icon": "^3.6",
         "devaslanphp/filament-avatar": "^1.0",
         "dyrynda/laravel-cascade-soft-deletes": "^4.5",
         "filament/filament": "^3.3",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^12.0",
         "laravel/pail": "^1.2",
+        "laravel/telescope": "^5.7",
         "laravel/tinker": "^2.10.1",
         "owenvoke/blade-fontawesome": "^2.9",
         "prevailexcel/laravel-action-service-trait": "^1.0",
         "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-ciphersweet": "^1.6",
         "square-bit/laravel-pt-localization": "^12.0",
-        "troccoli/blade-health-icons": "^5.0"
+        "square-bit/laravel-pt-rules": "^1.4",
+        "stechstudio/filament-impersonate": "^3.16",
+        "troccoli/blade-health-icons": "^5.0",
+        "ysfkaya/filament-phone-input": "^3.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",
+        "driftingly/rector-laravel": "^2.0",
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^3.8",
-        "pestphp/pest-plugin-laravel": "^3.2"
+        "pestphp/pest-plugin-laravel": "^3.2",
+        "pestphp/pest-plugin-livewire": "^3.0",
+        "pestphp/pest-plugin-type-coverage": "^3.5",
+        "symfony/var-dumper": "^7.3"
     },
     "autoload": {
         "files": [

@@ -9,35 +9,50 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations to create the 'patients' table.
+     *
+     * The table includes the following columns:
+     * - id: Primary key, ULID.
+     * - birth_date: Date and time of birth, indexed.
+     * - full_name: Full name of the patient.
+     * - mobile_phone: Patient's mobile phone number.
+     * - tax_id: Tax identification number, nullable.
+     * - created_at: Timestamp when the record was created.
+     * - updated_at: Timestamp when the record was last updated.
+     * - deleted_at: Soft delete timestamp.
+     * - clinic_id: Foreign ULID referencing the associated clinic, indexed.
+     * - tax_country_id: Foreign ULID referencing the country for tax purposes, nullable and indexed.
+     *
+     * Foreign key constraints:
+     * - clinic_id references the clinics table.
+     * - tax_country_id references the countries table.
      */
     public function up(): void
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->ulid('id')->primary();
 
-            $table->char('country_code', 2);
-            $table->string('full_name', 255);
-            $table->string('tax_id', 20);
+            $table->text('birth_date');
+            $table->string('full_name', 150)->index();
+            $table->string('full_name_normalized', 150)->index();
+            $table->text('mobile_phone');
+            $table->text('tax_id')->nullable();
 
             $table->timestamp('created_at', precision: 0)->useCurrent();
-            $table->timestamp('updated_at', precision: 0)->useCurrent()->useCurrentOnUpdate();
+
+            $table->timestamp('updated_at', precision: 0)->useCurrent()
+                ->useCurrentOnUpdate();
+
             $table->softDeletes();
 
             $table->foreignUlid('clinic_id')->constrained();
 
-            $table->unique(['clinic_id', 'country_code', 'tax_id']);
-            $table->index('country_code');
-            $table->index('full_name');
-            $table->index('tax_id');
-        });
-    }
+            $table->foreignUlid('tax_country_id')
+                ->nullable()
+                ->constrained(table: 'countries');
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('patients');
+            $table->index('clinic_id');
+            $table->index('tax_country_id');
+        });
     }
 };
